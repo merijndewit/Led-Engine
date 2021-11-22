@@ -1,0 +1,15 @@
+{
+  "name": "ledserver",
+  "version": "1.0.0",
+  "description": "This is a webserver that can control gpio pins on the raspberry pi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Merijn",
+  "license": "ISC",
+  "dependencies": {
+    "onoff": "^6.0.3",
+    "socket.io": "^4.4.0"
+  }
+}
