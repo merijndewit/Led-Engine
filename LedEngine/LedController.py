@@ -2,6 +2,11 @@ from threading import Thread
 from time import sleep     # Import the sleep function from the time module
 import socket
 import RPi.GPIO as GPIO
+from rpi_ws281x import Color
+
+#LedEngine Scripts
+import LedstripController as Ledstrip
+
 
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
@@ -23,12 +28,10 @@ GPIO.setwarnings(False)
 GPIO.setup(21,GPIO.OUT) 
 GPIO.output(21,GPIO.HIGH)
 
-
 def newclient():
      if GPIO.input(21):
-          sockTX.sendto(bytes('{"GPIO21T":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-
-               
+          sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
+          
 def Update():
      while True:
           data, addr = sockRX.recvfrom(1024) # buffer size is 1024 bytes
@@ -36,19 +39,12 @@ def Update():
           print(JsonStr)
           if (JsonStr.find('{"NewClient":1}') != -1):
                newclient()
-          elif (JsonStr.find('{"GPIO21T":1}') != -1):
-               if GPIO.input(21):
-                  GPIO.output(21,GPIO.LOW)
-                  sockTX.sendto(bytes('{"GPIO21T":0}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-               else:
-                  GPIO.output(21,GPIO.HIGH)  
-                  sockTX.sendto(bytes('{"GPIO21T":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-          elif (JsonStr.find('{"GPIO21M":1}') != -1):
-                  sockTX.sendto(bytes('{"GPIO21T":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-                  GPIO.output(21,GPIO.HIGH)  
-          elif (JsonStr.find('{"GPIO21M":0}') != -1):
-                  sockTX.sendto(bytes('{"GPIO21T":0}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-                  GPIO.output(21,GPIO.LOW)  
+          elif (JsonStr.find('{"LedStrip0":1}') != -1):
+                  sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
+                  Ledstrip.setColor(Color(255, 0, 0)) 
+          elif (JsonStr.find('{"LedStrip0":0}') != -1):
+                  sockTX.sendto(bytes('{"LedStrip0":0}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
+                  Ledstrip.setColor(Color(0, 0, 0))
 
 
 newclient()
