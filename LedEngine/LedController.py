@@ -3,6 +3,9 @@ from time import sleep     # Import the sleep function from the time module
 import socket
 import RPi.GPIO as GPIO
 from rpi_ws281x import Color
+import json
+from PIL import ImageColor
+import re
 
 #LedEngine Scripts
 import LedstripController as Ledstrip
@@ -33,10 +36,16 @@ def newclient():
           sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
           
 def Update():
+     Ledstrip.setColor(Color(0, 0, 0))
      while True:
-          data, addr = sockRX.recvfrom(1024) # buffer size is 1024 bytes
+          data, addr = sockRX.recvfrom(2048) # buffer size is 1024 bytes
           JsonStr = data.decode('utf_8')
-          print(JsonStr)
+          key = "HEX"
+          if JsonStr:
+               sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT)) 
+               aDict = json.loads(JsonStr)
+               
+
           if (JsonStr.find('{"NewClient":1}') != -1):
                newclient()
           elif (JsonStr.find('{"LedStrip0":1}') != -1):
@@ -45,7 +54,10 @@ def Update():
           elif (JsonStr.find('{"LedStrip0":0}') != -1):
                   sockTX.sendto(bytes('{"LedStrip0":0}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
                   Ledstrip.setColor(Color(0, 0, 0))
-
+          elif (key in aDict):
+               string = str(ImageColor.getrgb(aDict[key])).lstrip('()')
+               numbers = re.findall(r'\d+', string)
+               Ledstrip.setColor(Color(int(numbers[0]), int(numbers[1]), int(numbers[2])))
 
 newclient()
 p2 = Thread(target = Update)

@@ -1,5 +1,3 @@
-import time
-import datetime
 from rpi_ws281x import Adafruit_NeoPixel, Color
 
 # LED strip configuration:

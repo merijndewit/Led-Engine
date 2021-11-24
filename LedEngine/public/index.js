@@ -1,7 +1,9 @@
 var socket = io();
+var color;
 
 window.addEventListener("load", function()//when page loads
-{ 
+{   
+    color = document.getElementById("colorChoice").value;
     if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)){
         //using touchscreen
         document.addEventListener("touchstart", ReportTouchStart, false);
@@ -111,3 +113,20 @@ socket.on('FB',function (data)
         }
     }
 });
+//function updates color when color picker is ajusted
+function valueChanged(value){
+    socket.emit('msg','{"HEX":"'+value.value+'"}');
+
+    //let a = e.value;
+    //// This updates the bar volume gauage
+    //var pickerDiv = document.getElementById("picker");
+    //pickerDiv.innerHTML = a;
+  
+    //// This updates the digital volume gauge
+    //var value = document.getElementById("pickerValue");
+    //value.innerHTML = a;
+  
+    //// This sends the new volume level to Server
+    //
+    //document.getElementById("DebugData").innerHTML = '{"HEX":'+e.value+'}';
+}
