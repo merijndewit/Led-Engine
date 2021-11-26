@@ -10,11 +10,13 @@ pixels = neopixel.NeoPixel(board.D21, pixelCount)
 def Clear():
     pixels.fill((0, 0, 0))
 
+def SetBrightness(brightnessValue):
+    pixels.brightness = brightnessValue
+
 def setColor(R, G, B):
     pixels.fill((R, G, B))
 
 def rainbow_cycle():
-    pixels.fill((0, 0, 0))
     R = 255
     G = 0
     B = 0

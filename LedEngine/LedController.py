@@ -55,10 +55,14 @@ def Update():
                Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
           elif (JsonStr.find('{"rainbowButton":0}') != -1):
                rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
+               
                rainbow.start()
           elif (JsonStr.find('{"stopButton":0}') != -1):
                rainbow.terminate()
                Ledstrip.Clear()
+          elif ("brightness" in aDict):
+               print()
+               Ledstrip.SetBrightness(float(aDict["brightness"])/100)
 
 newclient()
 p2 = Thread(target = Update)

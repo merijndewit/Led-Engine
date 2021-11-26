@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="icon" href="/img/icon.png">
+    <title>LED-Engine</title>
     <link rel="stylesheet" href="styles.css">
   </head>
 <body>
+  <img src="/img/banner.png" alt="Banner Led Engine" width="12%" height="auto">
+  <ul>
+    <li><a href="staticColor.asp">Static Color</a></li>
+    <li><a href="modes.asp">Modes</a></li>
+    <li><a href="setup.asp">Setup</a></li>
+  </ul>
 
 <div class="noselect" >
   <div class="keypadContainer">
-    <h1 class="TextCenter">Control GPIO</h1>
 
     <div class="GpioContainer">
       <strong>Led Strip</strong>
@@ -17,7 +24,12 @@
       <br>
       <button class="button1"  id="rainbowButton">Rainbow Mode</button>
       <button class="button1"  id="stopButton">Stop</button>
+      <br>
+      <input type="range" min="0" max="100" value="100" class="slider" id="brightnessSlider" oninput="valueSliderChanged(this)">
     </div>
+
+      
+
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

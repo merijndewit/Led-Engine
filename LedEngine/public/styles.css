@@ -1,7 +1,39 @@
 body {
+  /*Banner font: hieragino maru gothic proN*/
     font-family: Helvetica;
+    background-color: rgb(20, 20, 20);
     /*background: url("img/circuit.png") repeat; this is for a background*/
   }
+h1{
+  color: white;
+}
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(34, 34, 34);
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
+
+
   p {
     color: red;
   }
