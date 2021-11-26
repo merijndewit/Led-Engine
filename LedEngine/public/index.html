@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+  </head>
 <body>
 
 <div class="noselect" >
-
   <div class="keypadContainer">
     <h1 class="TextCenter">Control GPIO</h1>
 
     <div class="GpioContainer">
-      <strong>LedStrip0</strong>
+      <strong>Led Strip</strong>
       <br>
-      <button class="btn inactive"  id="LedStrip0"></button>
-      <br>
+      <strong>Set static color:</strong>
       <input type="color" id="colorChoice" oninput="valueChanged(this)">
+      <br>
+      <button class="button1"  id="rainbowButton">Rainbow Mode</button>
+      <button class="button1"  id="stopButton">Stop</button>
     </div>
-  </div>
+</div>
+
 <script src="/socket.io/socket.io.js"></script>
 
 <script src="index.js"></script>

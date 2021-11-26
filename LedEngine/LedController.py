@@ -3,8 +3,7 @@ from time import sleep     # Import the sleep function from the time module
 import socket
 import RPi.GPIO as GPIO
 import json
-
-
+import multiprocessing
 
 #LedEngine Scripts
 import LedstripController as Ledstrip
@@ -37,14 +36,12 @@ def newclient():
 def Update():
      Ledstrip.setColor(0, 0, 0)
      while True:
-          data, addr = sockRX.recvfrom(2048) # buffer size is 1024 bytes
+          data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
           JsonStr = data.decode('utf_8')
           key = "HEX"
           if JsonStr:
                sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT)) 
                aDict = json.loads(JsonStr)
-               
-
           if (JsonStr.find('{"NewClient":1}') != -1):
                newclient()
           elif (JsonStr.find('{"LedStrip0":1}') != -1):
@@ -56,6 +53,12 @@ def Update():
           elif (key in aDict):
                string = str(aDict[key]).lstrip("#")
                Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
+          elif (JsonStr.find('{"rainbowButton":0}') != -1):
+               rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
+               rainbow.start()
+          elif (JsonStr.find('{"stopButton":0}') != -1):
+               rainbow.terminate()
+               Ledstrip.Clear()
 
 newclient()
 p2 = Thread(target = Update)
