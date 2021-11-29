@@ -8,56 +8,54 @@ h1{
   color: white;
 }
 
-  ul {
+.StaticColor{
+  color: white;
+}
+
+ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: rgb(34, 34, 34);
-  }
+    border-radius: 25px;
+}
   
-  li {
+li {
     float: left;
-  }
+}
   
-  li a {
+li a {
     display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-  }
+}
   
   /* Change the link color to #111 (black) on hover */
-  li a:hover {
+li a:hover {
     background-color: #111;
-  }
+}
 
-
-  p {
+p {
     color: red;
-  }
-  .button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-  }
-  
-  .button1 {
-    background-color: white; 
-    color: black; 
-    border: 2px solid #3d3d3d;
-  }
-  
-  .button1:hover {
-    background-color: #3d3d3d;
-    color: white;
-  }
+}
+
+input{
+  background-color:rgb(34, 34, 34); 
+  border: 1px solid #3d3d3d;
+  border-radius: 5px;
+}
+
+button {
+  background-color: rgb(40, 40, 40); 
+  color: white;
+  border: 1px solid #3d3d3d;
+  border-radius: 25px;
+}
+
+button:hover {
+  background-color: #3d3d3d;
+  color: white;
+}

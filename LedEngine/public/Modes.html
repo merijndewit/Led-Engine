@@ -14,11 +14,14 @@
   </ul>
 
 
-<div class="StaticColor">
-  <h1>Static Color</h1>
+<div class="Modes">
+  <h1>Modes:</h1>
   <br>
-  <strong>Set the LED-strip to a static color:</strong>
-  <input type="color" id="colorChoice" oninput="valueChanged(this)">
+
+  <button id="rainbowButton">Rainbow Mode</button>
+  <button id="stopButton">Stop</button>
+  <br>
+  <input type="range" min="0" max="100" value="100" class="slider" id="brightnessSlider" oninput="valueSliderChanged(this)">
 </div>
 
 
