@@ -3,8 +3,6 @@ import neopixel
 import time
 
 pixelCount = 13
-canRun = True
-
 pixels = neopixel.NeoPixel(board.D21, pixelCount)
 
 def Clear():
@@ -20,7 +18,7 @@ def rainbow_cycle():
     R = 255
     G = 0
     B = 0
-    while canRun:
+    while True:
         if R == 255 and G == 0:
             B += 1
             pixels.fill((R, G, B))
@@ -45,3 +43,13 @@ def rainbow_cycle():
             G -= 1
             pixels.fill((R, G, B))
             time.sleep(0.005)
+
+#def wave():
+#    while True:
+#        for j in range(256*5):
+#            for i in range(pixelCount):
+#                pixels.setPixelColor(i, wheel(((i * 256 // pixels.numPixels()) + j) & 255))
+#        pixels.show()
+#        time.sleep(0.3)
+#
+

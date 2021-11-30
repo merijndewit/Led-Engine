@@ -44,12 +44,6 @@ def Update():
                aDict = json.loads(JsonStr)
           if (JsonStr.find('{"NewClient":1}') != -1):
                newclient()
-          elif (JsonStr.find('{"LedStrip0":1}') != -1):
-                  sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-                  Ledstrip.setColor(255, 0, 0)
-          elif (JsonStr.find('{"LedStrip0":0}') != -1):
-                  sockTX.sendto(bytes('{"LedStrip0":0}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-                  Ledstrip.setColor(0, 0, 0)
           elif (key in aDict):
                string = str(aDict[key]).lstrip("#")
                Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb

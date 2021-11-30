@@ -3,7 +3,7 @@ var color;
 
 window.addEventListener("load", function()//when page loads
 {   
-    color = document.getElementById("colorChoice").value;
+    //color = document.getElementById("colorChoice").value;
     if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)){
         //using touchscreen
         document.addEventListener("touchstart", ReportTouchStart, false);

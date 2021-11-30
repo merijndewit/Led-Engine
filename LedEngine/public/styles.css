@@ -12,6 +12,32 @@ h1{
   color: white;
 }
 
+.slider {
+  -webkit-appearance: none;
+  width: 99%;
+  height: 5px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 25%; 
+  background: #333333;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 5px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
