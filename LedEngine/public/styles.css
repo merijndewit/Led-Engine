@@ -12,7 +12,7 @@ h1{
   color: white;
 }
 
-.slider {
+.range-slider {
   -webkit-appearance: none;
   width: 99%;
   height: 5px;
@@ -20,7 +20,7 @@ h1{
   background: #d3d3d3;
 }
 
-.slider::-webkit-slider-thumb {
+.range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
@@ -30,7 +30,7 @@ h1{
   cursor: pointer;
 }
 
-.slider::-moz-range-thumb {
+.range-slider::-moz-range-thumb {
   width: 15px;
   height: 5px;
   border-radius: 50%;

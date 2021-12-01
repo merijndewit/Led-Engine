@@ -10,17 +10,18 @@
   <ul>
     <li><a href="index.html">Static Color</a></li>
     <li><a href="Modes.html">Modes</a></li>
-    <li><a href="Settings.html">Setup</a></li>
+    <li><a href="Settings.html">Setup</a></li> 
   </ul>
 
 
 <div class="StaticColor">
-  <input type="range" min="0" max="100" value="100" class="slider" id="brightnessSlider" oninput="valueSliderChanged(this)">
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
   <h1>Static Color</h1>
   <br>
   <strong>Set the LED-strip to a static color:</strong>
   <input type="color" id="colorChoice" oninput="valueChanged(this)">
 </div>
+
 
 
 <script src="/socket.io/socket.io.js"></script>
