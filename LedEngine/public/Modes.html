@@ -15,8 +15,10 @@
 
 
 <div class="Modes">
-  <input type="range" min="0" max="100" value="100" class="slider" id="brightnessSlider" oninput="valueSliderChanged(this)">
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="A1" oninput="brightnessSliderChanged(this)">
   <h1>Modes:</h1>
+  <br>
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="rainbowSpeedSlider" oninput="rainbowSliderChanged(this)">
   <br>
   <button id="rainbowButton">Rainbow Mode</button>
   <button id="stopButton">Stop</button>
@@ -26,7 +28,7 @@
 
 <script src="/socket.io/socket.io.js"></script>
 
-<script src="index.js"></script>
+<script src="Modes.js"></script>
 
 </body>
 </html>

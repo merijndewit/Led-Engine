@@ -8,13 +8,11 @@ import multiprocessing
 #LedEngine Scripts
 import LedstripController as Ledstrip
 
-
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
 
 UDP_RX_IP = "127.0.0.1"
 UDP_RX_PORT = 3001
-
 
 print("UDP target IP: %s" % UDP_TX_IP)
 print("UDP target port: %s" % UDP_TX_PORT)
@@ -55,12 +53,15 @@ def CheckInput():
         elif (JsonStr.find('{"stopButton":0}') != -1):
             rainbow.terminate()
             Ledstrip.Clear()
-        elif ("brightness" in aDict):
-            print()
-            Ledstrip.SetBrightness(float(aDict["brightness"])/100)
         elif ("A1" in aDict):
             brightnessValue = int(aDict["A1"])
+            Ledstrip.SetBrightness(brightnessValue)
             UpdateBrightness(brightnessValue)
+        elif ("rainbowSpeedSlider" in aDict):
+            waveLengthValue = int(aDict["rainbowSpeedSlider"])
+            Ledstrip.SetwaveLength(waveLengthValue)
+            UpdateBrightness(brightnessValue)
+
 
 def UpdateBrightness(value):
     sockTX.sendto(bytes('{"A1":' + str(value) + '}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))

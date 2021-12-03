@@ -102,7 +102,18 @@ socket.on('FB',function (data) {
   }
 });
 
-function valueChanged(e){
+function rainbowSliderChanged(e){
+  let a = e.value;
+
+  // this updates the brightness slider value
+  var sliderDiv = document.getElementById("rainbowSpeedSlider");
+  sliderDiv.innerHTML = a;
+
+  socket.emit('msg','{"rainbowSpeedSlider":'+a+'}');
+}
+
+function brightnessSliderChanged(e)
+{
   let a = e.value;
 
   // this updates the brightness slider value
@@ -110,9 +121,4 @@ function valueChanged(e){
   sliderDiv.innerHTML = a;
 
   socket.emit('msg','{"A1":'+a+'}');
-}
-
-function valueHexChanged(value)
-{
-  socket.emit('msg','{"HEX":"'+value.value+'"}');
 }
