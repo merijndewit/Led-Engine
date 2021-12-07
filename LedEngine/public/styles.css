@@ -38,13 +38,46 @@ h1{
   cursor: pointer;
 }
 
+.mode-slider {
+  -webkit-appearance: none;
+  width: 20%;
+  height: 5px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+}
+
+.mode-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 25%; 
+  background: #333333;
+  cursor: pointer;
+}
+
+.mode-slider::-moz-range-thumb {
+  width: 15px;
+  height: 5px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+
+.RainbowMode{
+  max-width: 400px;
+  border: 3px solid #5c5c5c;
+  border-radius: 5px;
+  color: #d3d3d3;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: rgb(34, 34, 34);
-    border-radius: 25px;
+    border-radius: 15px;
 }
   
 li {

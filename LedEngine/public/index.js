@@ -94,7 +94,7 @@ socket.on('FB',function (data) {
       var className = document.querySelector('#' + id).className;
       if (className !== null) { // this object as a classname
 	      console.log('id='+id+'; className='+className)+" value="+result;	
-        if (className == 'range-slider') {
+        if (id == 'A1') {
 	        document.getElementById(id).value = result;
 	      }
       }

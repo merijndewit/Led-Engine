@@ -14,20 +14,29 @@
   </ul>
 
 
+<div class="Brightness">
+  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="brightnessSliderChanged(this)">
+</div>
 <div class="Modes">
-  <input type="range" min="0" max="100" value="100" class="range-slider" id="A1" oninput="brightnessSliderChanged(this)">
   <h1>Modes:</h1>
   <br>
-  <input type="range" min="0" max="100" value="100" class="range-slider" id="rainbowSpeedSlider" oninput="rainbowSliderChanged(this)">
+</div>
+<div class="RainbowMode">
+  <strong>Rainbow Mode:</strong>
+  <br><br>
+  <b>Wave Length:</b>
+  <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
   <br>
-  <button id="rainbowButton">Rainbow Mode</button>
+  <b>Speed:</b>
+  <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
+  <br><br>
+  <button id="rainbowButton">Start</button>
   <button id="stopButton">Stop</button>
   <br>
 </div>
 
 
 <script src="/socket.io/socket.io.js"></script>
-
 <script src="Modes.js"></script>
 
 </body>

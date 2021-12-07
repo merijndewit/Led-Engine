@@ -94,31 +94,43 @@ socket.on('FB',function (data) {
       var className = document.querySelector('#' + id).className;
       if (className !== null) { // this object as a classname
 	      console.log('id='+id+'; className='+className)+" value="+result;	
-        if (className == 'range-slider') {
+        if (id == 'rainbowSpeedSlider') {
 	        document.getElementById(id).value = result;
-	      }
+	      } else if (id == 'A1'){
+          document.getElementById(id).value = result;
+        }
       }
     }
   }
 });
 
-function rainbowSliderChanged(e){
-  let a = e.value;
-
+function brightnessSliderChanged(brightnessValue)
+{
   // this updates the brightness slider value
-  var sliderDiv = document.getElementById("rainbowSpeedSlider");
-  sliderDiv.innerHTML = a;
-
-  socket.emit('msg','{"rainbowSpeedSlider":'+a+'}');
+  if (e.value != 0)
+  {
+    var sliderDiv = document.getElementById("A1");
+    sliderDiv.innerHTML = brightnessValue.value;
+    socket.emit('msg','{"A1":'+brightnessValue.value+'}');
+  }
 }
 
-function brightnessSliderChanged(e)
-{
-  let a = e.value;
-
+function WaveLengthInputChanged(e){
   // this updates the brightness slider value
-  var sliderDiv = document.getElementById("A1");
-  sliderDiv.innerHTML = a;
+  if (e.value != 0)
+  {
+    var sliderValue = document.getElementById("WaveLengthInput");
+    sliderValue.innerHTML = e.value;
+    socket.emit('msg','{"WaveLengthInput":'+e.value+'}');
+  }
+}
 
-  socket.emit('msg','{"A1":'+a+'}');
+function SpeedInputChanged(e){
+  // this updates the brightness slider value
+  if (e.value != 0)
+  {
+    var sliderValue = document.getElementById("SpeedInput");
+    sliderValue.innerHTML = e.value;
+    socket.emit('msg','{"SpeedInput":'+e.value+'}');
+  }
 }

@@ -27,8 +27,6 @@ GPIO.setwarnings(False)
 GPIO.setup(21,GPIO.OUT) 
 GPIO.output(21,GPIO.HIGH)
 
-brightnessValue = 0
-
 def newclient():
     if GPIO.input(21):
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
@@ -54,24 +52,17 @@ def CheckInput():
             rainbow.terminate()
             Ledstrip.Clear()
         elif ("A1" in aDict):
-            brightnessValue = int(aDict["A1"])
-            Ledstrip.SetBrightness(brightnessValue)
-            UpdateBrightness(brightnessValue)
-        elif ("rainbowSpeedSlider" in aDict):
-            waveLengthValue = int(aDict["rainbowSpeedSlider"])
-            Ledstrip.SetwaveLength(waveLengthValue)
-            UpdateBrightness(brightnessValue)
-
-
-def UpdateBrightness(value):
-    sockTX.sendto(bytes('{"A1":' + str(value) + '}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-
-            
-#def UpdateClient():
-#     while True:
-#          sockTX.sendto(bytes('{"A1":' + str(brightnessValue) + '}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
-#          sleep(3)
-
+            if (aDict["A1"] != "0"):
+                brightnessValue = int(aDict["A1"])
+                Ledstrip.SetBrightness(brightnessValue)
+        elif ("WaveLengthInput" in aDict):
+            if (aDict["WaveLengthInput"] != "0" and aDict["WaveLengthInput"]):
+                waveLengthValue = int(aDict["WaveLengthInput"])
+                Ledstrip.SetwaveLength(waveLengthValue)
+        elif ("SpeedInput" in aDict):
+            if (aDict["SpeedInput"] != "0"):
+                speedValue = int(aDict["SpeedInput"])
+                Ledstrip.SetSpeedValue(speedValue)
 
 newclient()
 #p1 = Thread(target = UpdateClient)
