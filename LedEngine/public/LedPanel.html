@@ -15,19 +15,16 @@
   </ul>
 
 
-<div class="StaticColor">
-  <input type="range" min="0" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
-  <h1>Static Color</h1>
-  <br>
-  <strong>Set the LED-strip to a static color:</strong>
-  <input type="color" id="colorChoice" oninput="valueHexChanged(this)">
+<div class="Brightness">
+  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="brightnessSliderChanged(this)">
+</div>
+<div>
+  <input type="color" id="PixelColorPicker" oninput="PixelColorChanged(this)">
 </div>
 
 
-
 <script src="/socket.io/socket.io.js"></script>
-
-<script src="index.js"></script>
-
+<script src="LedPanel.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
 </body>
 </html>
