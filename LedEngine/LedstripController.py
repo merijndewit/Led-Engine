@@ -51,4 +51,28 @@ def rainbow_cycle():
         if h == 1:
             h == 0
 
+rowX = []
+rowY = []
+
+def setPixel(x, y, color):
+    print(x, y, color)
+    pixel = int(getPixelNumber(x, y))
+    pixels[pixel] = (int(color[:2], 16) / 70, int(color[2:4], 16) / 70, int(color[4:6], 16) / 70)  
+    pixels.show()
+
+def getPixelNumber(corX, corY):
+    x = 11 #width
+    y = 11 #height
+    for i in range(x):
+        rowY = []
+        for ii in range(y):
+            if (i % 2) == 0:
+                rowY.append((i * y) + ii)
+            else:
+                rowY.insert(0, ((i * y) + ii))
+        rowX.append(rowY)
+        print(rowY)
+    print(rowX[int(corX)][int(corY)])
+    return rowX[int(corY)][int(corX)]
+
 

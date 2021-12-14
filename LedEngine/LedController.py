@@ -4,6 +4,7 @@ import socket
 import RPi.GPIO as GPIO
 import json
 import multiprocessing
+import re
 
 #LedEngine Scripts
 import LedstripController as Ledstrip
@@ -63,7 +64,17 @@ def CheckInput():
             if (aDict["SpeedInput"] != "0"):
                 speedValue = int(aDict["SpeedInput"])
                 Ledstrip.SetSpeedValue(speedValue)
-
+        elif ("a" in aDict):
+            #gets all values after ":"
+            xy = re.findall(r'%s(\d+)' % ":", aDict) 
+            x = xy[0]
+            y = xy[1]
+            #hexcode has letters so the above methode doesnt work
+            #here we get every character after #
+            hexString = (aDict.partition("#")[2]) 
+            color = hexString[:6]
+            print(hexString[:6]) 
+            Ledstrip.setPixel(x, y, color)
 newclient()
 #p1 = Thread(target = UpdateClient)
 p2 = Thread(target = CheckInput)

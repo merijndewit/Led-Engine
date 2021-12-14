@@ -134,10 +134,17 @@ function SpeedInputChanged(e){
   }
 }
 
+
+//part for pixel drawer
 var grid = [];
 const rowX = 11;
 const rowY = 11;
-var col;
+var col = ('#000000');
+
+function PixelColorChanged(e){
+  //updates the value of the pixel to draw
+  col = e.value;
+}
 
 function setup() {
   createCanvas(200, 200);
@@ -145,7 +152,6 @@ function setup() {
   for (let i = 0; i < rowX; i++) {
     grid[i] = row;
   }
-  col = createColorPicker('#000000');
   colorMode(RGB)
   renderBoard();
 }
@@ -153,12 +159,13 @@ function setup() {
 function mousePressed() {
   let spotX = floor(mouseX / (width / rowX));
   let spotY = floor(mouseY / (height / rowY));
-  grid[spotX][spotY] = col.color(RGB)
-  print([spotX],[spotY])
-  print(grid)
-  drawPixel(spotX, spotY)
-  // send changed pixel to python program
-  socket.emit('msg','{"X":'+spotX, "Y:"+spotY, "COLOR"+col.color+'}');
+  if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY){
+    grid[spotY][spotX] = col
+    drawPixel(spotX, spotY)
+    print(grid);
+    // send changed pixel to python program
+    socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+  }
 }
 
 function renderBoard(){
@@ -171,7 +178,6 @@ function renderBoard(){
 }
 
 function drawPixel(spotX, spotY){
-  grid[spotX][spotY]
-  fill(grid[spotX][spotY]);
+  fill(color(grid[spotY][spotX]));
   rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX)
 }
