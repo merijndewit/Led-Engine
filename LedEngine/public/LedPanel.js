@@ -131,10 +131,36 @@ socket.on('FB',function (data) {
         {
           PickColor();
         }
+        else if (id == 'color0')
+        {
+          SetColor('#FFBC42');
+        }
+        else if (id == 'color1')
+        {
+          SetColor('#D81159');
+        }
+        else if (id == 'color2')
+        {
+          SetColor('#8F2D56');
+        }
+        else if (id == 'color3')
+        {
+          SetColor('#218380');
+        }
+        else if (id == 'color4')
+        {
+          SetColor('#73D2DE');
+        }
       }
     }
   }
 });
+
+function SetColor(colorValue)
+{
+  document.getElementById("PixelColorPicker").value = colorValue; //set the color of the color picker
+  col = colorValue //even though the value of the color picker is changed we still need to update it manually
+}
 
 function brightnessSliderChanged(brightnessValue)
 {
@@ -186,11 +212,6 @@ function PixelColorChanged(e)
   col = e.value;
 }
 
-function UpdateColor(value) //updates the color when pixel picker is used
-{
-  col = value
-}
-
 function setup() 
 {
   createCanvas(200, 200);
@@ -223,9 +244,7 @@ function mousePressed()
     if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
     {
       var hex = grid[spotX][spotY];
-      print("pixelColor Hex code:"+hex);
-      document.getElementById("PixelColorPicker").value = hex; //set the color of the color picker
-      UpdateColor(hex); //even though the value of the color picker is changed we still need to update it manually
+      SetColor(hex);
       pickColor = false;
     }
   }

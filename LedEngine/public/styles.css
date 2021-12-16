@@ -25,7 +25,7 @@ h1{
   appearance: none;
   width: 25px;
   height: 25px;
-  border-radius: 25%; 
+  border-radius: 5px;
   background: #333333;
   cursor: pointer;
 }
@@ -33,7 +33,7 @@ h1{
 .range-slider::-moz-range-thumb {
   width: 15px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: 5px;
   background: #04AA6D;
   cursor: pointer;
 }
@@ -51,7 +51,7 @@ h1{
   appearance: none;
   width: 25px;
   height: 25px;
-  border-radius: 25%; 
+  border-radius: 5px;
   background: #333333;
   cursor: pointer;
 }
@@ -59,7 +59,7 @@ h1{
 .mode-slider::-moz-range-thumb {
   width: 15px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: 5px;
   background: #04AA6D;
   cursor: pointer;
 }
@@ -111,10 +111,43 @@ button {
   background-color: rgb(40, 40, 40); 
   color: white;
   border: 1px solid #3d3d3d;
-  border-radius: 25px;
+  border-radius: 5px;
 }
 
 button:hover {
   background-color: #3d3d3d;
   color: white;
 }
+
+.color0 {
+  background-color: #FFBC42;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+.color1 {
+  background-color: #D81159;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+.color2 {
+  background-color: #8F2D56;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+.color3 {
+  background-color: #218380;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+.color4 {
+  background-color: #73D2DE;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+
