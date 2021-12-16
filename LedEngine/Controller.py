@@ -75,6 +75,8 @@ def CheckInput():
             color = hexString[:6]
             print(hexString[:6]) 
             Ledstrip.setPixel(x, y, color)
+        elif ("ClearPixels" in aDict):
+            Ledstrip.Clear()
 newclient()
 #p1 = Thread(target = UpdateClient)
 p2 = Thread(target = CheckInput)

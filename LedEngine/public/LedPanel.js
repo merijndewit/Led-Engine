@@ -151,6 +151,10 @@ socket.on('FB',function (data) {
         {
           SetColor('#73D2DE');
         }
+        else if (id == 'ClearPixels')
+        {
+          Clear();
+        }
       }
     }
   }
@@ -224,6 +228,18 @@ function setup()
   renderBoard();
 }
 
+function Clear()
+{
+  //clear the drawn pixels
+  renderBoard();
+  //clears the pixels from the array
+  var row = new Array(rowY).fill('#000000');
+  for (let i = 0; i < rowX; i++) 
+  {
+    grid[i] = row;
+  }
+}
+
 function mousePressed() 
 {
   if (pickColor == false)
@@ -287,7 +303,7 @@ function drawPixel(spotX, spotY)
 }
 
 //only used for debugging
-//Note: this doesnt show on the led panel
+//Note: this doesnt refresh the led panel
 function refresh()
 {
   for (let x = 0; x < rowX; x++)
@@ -299,3 +315,4 @@ function refresh()
     }
   }
 }
+
