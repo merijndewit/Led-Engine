@@ -51,28 +51,33 @@ def rainbow_cycle():
         if h == 1:
             h == 0
 
-rowX = []
-rowY = []
-
 def setPixel(x, y, color):
     print(x, y, color)
     pixel = int(getPixelNumber(x, y))
     pixels[pixel] = (int(color[:2], 16) / 70, int(color[2:4], 16) / 70, int(color[4:6], 16) / 70)  
     pixels.show()
 
+# converts coordinates to the pixel number on the led panel
+# this function is for an led panel with a zigzag pattern
+# LedStrip:  
+#   _________
+#   _________|
+#  |_________
+#   _________|
+#  |_________
+
 def getPixelNumber(corX, corY):
+    rowX = []
     x = 11 #width
     y = 11 #height
     for i in range(x):
         rowY = []
         for ii in range(y):
-            if (i % 2) == 0:
+            if (i % 2) == 0: #check if number is even
                 rowY.append((i * y) + ii)
             else:
                 rowY.insert(0, ((i * y) + ii))
         rowX.append(rowY)
-        print(rowY)
-    print(rowX[int(corX)][int(corY)])
     return rowX[int(corY)][int(corX)]
 
 

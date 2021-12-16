@@ -1,11 +1,15 @@
 var socket = io(); 
 
-window.addEventListener("load", function(){
-  if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	{
+window.addEventListener("load", function()
+{
+  if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
+  {
     //mobile
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
-  }else{
+  }
+  else
+  {
     //desktop
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
@@ -16,63 +20,81 @@ window.addEventListener("load", function(){
   
 });
 
-function ReportOnClick(e) {
+function ReportOnClick(e) 
+{
   socket.emit('msg','{"'+e.target.id+'":2}');
 }
 
-function ReportOnDblClick(e) {
+function ReportOnDblClick(e) 
+{
   socket.emit('msg','{"'+e.target.id+'":3}');
 }
 
-function ReportOnMouseDown(e) {
+function ReportOnMouseDown(e) 
+{
   socket.emit('msg','{"'+e.target.id+'":1}');
 }
 
-function ReportOnMouseUp(e) {
+function ReportOnMouseUp(e) 
+{
   socket.emit('msg','{"'+e.target.id+'":0}');
 }
 
-function ReportTouchStart(e) {
-	if (e.target.className != "serialtext") { 
+function ReportTouchStart(e) 
+{
+	if (e.target.className != "serialtext") 
+  { 
 		e.preventDefault();
 	}
-	if (e.target.className != 'range-slider') {
+	if (e.target.className != 'range-slider') 
+  {
 		socket.emit('msg','{"'+e.target.id+'":1}');
 	}
 }
 
-function ReportTouchEnd(e) {
-	if (e.target.className != "serialtext") { 
+function ReportTouchEnd(e) 
+{
+	if (e.target.className != "serialtext") 
+  { 
 		e.preventDefault();  
 	}
-	if (e.target.className != 'range-slider') {  
+	if (e.target.className != 'range-slider') 
+  {  
 		socket.emit('msg','{"'+e.target.id+'":0}');	
 	}
 	
 }
 
-function ReportTouchMove(e) {
-	if (e.target.className != "serialtext") {
+function ReportTouchMove(e) 
+{
+	if (e.target.className != "serialtext") 
+  {
 		e.preventDefault();
 	}
 	socket.emit('TouchMove',e.offsetX,e.offsetY);
 }
 
-function ReportMouseDown(e) {
-  if (e.target.className != 'range-slider') {
+function ReportMouseDown(e) 
+{
+  if (e.target.className != 'range-slider') 
+  {
     socket.emit('msg','{"'+e.target.id+'":1}');
   }
 }
 
-function ReportMouseUp(e) {
-  if (e.target.className === 'range-slider') {
+function ReportMouseUp(e) 
+{
+  if (e.target.className === 'range-slider') 
+  {
     console.log("volume class detected");
-  } else {
+  } else 
+  {
       socket.emit('msg','{"'+e.target.id+'":0}');
   }
 }
 
-function ReportMouseMove(e) {
+function ReportMouseMove(e) 
+{
   socket.emit('TouchMove',e.offsetX,e.offsetY); 
 }
 
@@ -82,21 +104,32 @@ socket.on('FB',function (data) {
   console.log('DataFromServer'+data.toString()+'!');
   var obj2 = JSON.parse(data.toString()); // convert to json
   var keys = Object.keys(obj2);
-  var result = Object.keys(obj2).map(function(e) {
+  var result = Object.keys(obj2).map(function(e) 
+  {
     return obj2[e]
   })
   var id = keys[0];
   
-  if (id != null) {
-    if(document.querySelector('#' + id) != null) {
+  if (id != null) 
+  {
+    if(document.querySelector('#' + id) != null) 
+    {
       console.log(document.querySelector('#' + id));
       var className = document.querySelector('#' + id).className;
-      if (className !== null) { // this object as a classname
+      if (className !== null) 
+      { // this object as a classname
 	      console.log('id='+id+'; className='+className)+" value="+result;	
-        if (id == 'rainbowSpeedSlider') {
+        if (id == 'rainbowSpeedSlider') 
+        {
 	        document.getElementById(id).value = result;
-	      } else if (id == 'A1'){
+	      } 
+        else if (id == 'A1')
+        {
           document.getElementById(id).value = result;
+        }
+        else if (id == 'PixelPicker')
+        {
+          PickColor();
         }
       }
     }
@@ -114,7 +147,8 @@ function brightnessSliderChanged(brightnessValue)
   }
 }
 
-function WaveLengthInputChanged(e){
+function WaveLengthInputChanged(e)
+{
   // this updates the brightness slider value
   if (e.value != 0)
   {
@@ -133,7 +167,12 @@ function SpeedInputChanged(e){
     socket.emit('msg','{"SpeedInput":'+e.value+'}');
   }
 }
-
+var pickColor = new Boolean(false);
+function PickColor()
+{
+  pickColor = true;
+  print("set pixel color true")
+}
 
 //part for pixel drawer
 var grid = [];
@@ -141,43 +180,103 @@ const rowX = 11;
 const rowY = 11;
 var col = ('#000000');
 
-function PixelColorChanged(e){
+function PixelColorChanged(e)
+{
   //updates the value of the pixel to draw
   col = e.value;
 }
 
-function setup() {
+function UpdateColor(value) //updates the color when pixel picker is used
+{
+  col = value
+}
+
+function setup() 
+{
   createCanvas(200, 200);
   var row = new Array(rowY).fill('#000000');
-  for (let i = 0; i < rowX; i++) {
+  for (let i = 0; i < rowX; i++) 
+  {
     grid[i] = row;
   }
   colorMode(RGB)
   renderBoard();
 }
 
-function mousePressed() {
-  let spotX = floor(mouseX / (width / rowX));
-  let spotY = floor(mouseY / (height / rowY));
-  if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY){
-    grid[spotY][spotX] = col
-    drawPixel(spotX, spotY)
-    print(grid);
-    // send changed pixel to python program
-    socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+function mousePressed() 
+{
+  if (pickColor == false)
+  {
+    let spotX = floor(mouseX / (width / rowX));
+    let spotY = floor(mouseY / (height / rowY));
+    if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
+    {
+      drawPixel(spotX, spotY);
+      // send changed pixel to python program
+      socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+    }
+  }
+  else
+  {
+    let spotX = floor(mouseX / (width / rowX));
+    let spotY = floor(mouseY / (height / rowY));
+    if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
+    {
+      var hex = grid[spotX][spotY];
+      print("pixelColor Hex code:"+hex);
+      document.getElementById("PixelColorPicker").value = hex; //set the color of the color picker
+      UpdateColor(hex); //even though the value of the color picker is changed we still need to update it manually
+      pickColor = false;
+    }
   }
 }
 
-function renderBoard(){
-  for (let x = 0; x < rowX; x++) {
-   for (let y = 0; y < rowY; y++) {
+function renderBoard()
+{
+  for (let x = 0; x < rowX; x++) 
+  {
+   for (let y = 0; y < rowY; y++) 
+   {
     fill("#000000");
-    rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX)
-   }
+    rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
+  }
  }
 }
 
-function drawPixel(spotX, spotY){
-  fill(color(grid[spotY][spotX]));
-  rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX)
+function drawPixel(spotX, spotY)
+{
+  //add pixel to grid
+  //adding a pixel like this: "grid[spotX][spotY] = col" sets the whole row for some reason
+  //so we just create a array and add the whole array to the grid array
+  //There must be a better way so please improve my code here:
+  gridY = []
+  for (let i = 0; i < rowY; i++)
+  {
+    if (spotY != i)
+    {
+      gridY.push(grid[spotX][i]);
+    }
+    else
+    {
+      gridY.push(col);
+    }
+  }
+  grid[spotX] = gridY;
+  fill(color(grid[spotX][spotY]));
+  rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
+  print(grid);
+}
+
+//only used for debugging
+//Note: this doesnt show on the led panel
+function refresh()
+{
+  for (let x = 0; x < rowX; x++)
+  {
+    for (let y = 0; y < rowY; y++)
+    {
+      fill(color(grid[x][y]));
+      rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
+    }
+  }
 }
