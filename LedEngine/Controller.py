@@ -77,6 +77,12 @@ def CheckInput():
             Ledstrip.setPixel(x, y, color)
         elif ("ClearPixels" in aDict):
             Ledstrip.Clear()
+        elif ("RedCalibration" in aDict):
+            Ledstrip.RedCalibration(int(aDict["RedCalibration"]))
+        elif ("GreenCalibration" in aDict):
+            Ledstrip.GreenCalibration(int(aDict["GreenCalibration"]))
+        elif ("BlueCalibration" in aDict):
+            Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
 newclient()
 #p1 = Thread(target = UpdateClient)
 p2 = Thread(target = CheckInput)

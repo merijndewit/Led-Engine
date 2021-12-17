@@ -10,14 +10,36 @@
   <ul>
     <li><a href="index.html">Static Color</a></li>
     <li><a href="Modes.html">Modes</a></li>
-    <li><a href="LedPanel.html">Modes</a></li>
+    <li><a href="LedPanel.html">Led Panel</a></li>
     <li><a href="Settings.html">Setup</a></li>
   </ul>
 
 
+<div class="Brightness">
+  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+</div>
+<div>
+  <br>
+  <strong>Calibrate Colors:</strong>
+  <br>
+  <button id="color0" class="color0"></button>
+  <button id="color1" class="color1"></button>
+  <button id="color2" class="color2"></button>
+  <button id="color3" class="color3"></button>
+  <button id="color4" class="color4"></button>
+  <br>
+  <strong>Red percentage:</strong>
+  <input type="text" min="1" value="100" id="RedCalibrationPercentage" oninput="RedCalibrationChanged(this)">
+  <br>
+  <strong>Green percentage:</strong>
+  <input type="text" min="1" value="100" id="GreenCalibrationPercentage" oninput="GreenCalibrationChanged(this)">
+  <br>
+  <strong>Blue percentage:</strong>
+  <input type="text" min="1" value="100" id="BlueCalibrationPercentage" oninput="BlueCalibrationChanged(this)">
+</div>
+
+
 <script src="/socket.io/socket.io.js"></script>
-
-<script src="index.js"></script>
-
+<script src="settings.js"></script>
 </body>
 </html>
