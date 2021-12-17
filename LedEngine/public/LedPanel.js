@@ -166,15 +166,14 @@ function SetColor(colorValue)
   col = colorValue //even though the value of the color picker is changed we still need to update it manually
 }
 
-function brightnessSliderChanged(brightnessValue)
-{
+function valueChanged(e){
+  let a = e.value;
+
   // this updates the brightness slider value
-  if (e.value != 0)
-  {
-    var sliderDiv = document.getElementById("A1");
-    sliderDiv.innerHTML = brightnessValue.value;
-    socket.emit('msg','{"A1":'+brightnessValue.value+'}');
-  }
+  var sliderDiv = document.getElementById("A1");
+  sliderDiv.innerHTML = a;
+
+  socket.emit('msg','{"A1":'+a+'}');
 }
 
 function WaveLengthInputChanged(e)

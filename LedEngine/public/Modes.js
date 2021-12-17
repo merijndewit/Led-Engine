@@ -104,15 +104,14 @@ socket.on('FB',function (data) {
   }
 });
 
-function brightnessSliderChanged(brightnessValue)
-{
+function valueChanged(e){
+  let a = e.value;
+
   // this updates the brightness slider value
-  if (e.value != 0)
-  {
-    var sliderDiv = document.getElementById("A1");
-    sliderDiv.innerHTML = brightnessValue.value;
-    socket.emit('msg','{"A1":'+brightnessValue.value+'}');
-  }
+  var sliderDiv = document.getElementById("A1");
+  sliderDiv.innerHTML = a;
+
+  socket.emit('msg','{"A1":'+a+'}');
 }
 
 function WaveLengthInputChanged(e){

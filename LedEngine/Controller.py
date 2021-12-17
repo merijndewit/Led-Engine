@@ -83,6 +83,8 @@ def CheckInput():
             Ledstrip.GreenCalibration(int(aDict["GreenCalibration"]))
         elif ("BlueCalibration" in aDict):
             Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
+        elif ("MakePicture" in aDict):
+            Ledstrip.CreateImage()
 newclient()
 #p1 = Thread(target = UpdateClient)
 p2 = Thread(target = CheckInput)

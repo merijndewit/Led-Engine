@@ -2,13 +2,14 @@ import board
 import neopixel
 import time
 import colorsys
+from PIL import Image
 
 pixelCount = 121
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
 ledBrightness = 100
 #rainbow variables
-waveLength = 10
-rainbowSpeed = 10
+waveLength = 100
+rainbowSpeed = 100
 
 Roffset = 1
 Goffset = 1
@@ -17,6 +18,8 @@ Boffset = 1
 Rpercentage = 100
 Gpercentage = 100
 Bpercentage = 100
+
+pixelArray = []
 
 def Clear():
     pixels.fill((0, 0, 0))
@@ -44,21 +47,21 @@ def SetwaveLength(waveLengthValue):
 def SetSpeedValue(speedValue):
     global rainbowSpeed
     rainbowSpeed = speedValue
-    print("updated wavelengthvalue to: " + str(speedValue))
+    print("updated speed to: " + str(speedValue))
 
 def rainbow_cycle():
+    print("StartRainbow")
     global ledBrightness
     global waveLength
     global rainbowSpeed
     h = 0
     s = 1
-    v = ledBrightness / 5000
     while True:
         for i in range(pixelCount):
             hh = (i / waveLength) + h
             if hh >= 1:
                 hh -= 1
-            rgb = colorsys.hsv_to_rgb(hh, s, v)
+            rgb = colorsys.hsv_to_rgb(hh, s, 1)
             pixels[i] = (((rgb[0] * 255) * Roffset, (rgb[1] * 255) * Goffset, (rgb[2] * 255) * Boffset))
             h += 0.0001
             time.sleep(0.001 / (rainbowSpeed / 100))
@@ -67,6 +70,8 @@ def rainbow_cycle():
             h == 0
 
 def setPixel(x, y, color):
+    global pixelArray
+    pixelArray[int(x)][int(y)] = color
     pixel = int(getPixelNumber(x, y))
     pixels[pixel] = (int(color[:2], 16) * Roffset, int(color[2:4], 16) * Goffset, int(color[4:6], 16) * Boffset)  
     pixels.show()
@@ -111,4 +116,26 @@ def BlueCalibration(percentage):
     Bpercentage = percentage
     Boffset = (percentage / 100)*(ledBrightness / 100)
 
+def NewPixelArray():
+    global pixelArray
+    x = 11 #width
+    y = 11 #height
+    for i in range(x):
+        rowY = []
+        for ii in range(y):
+            rowY.append('#000000')
+        pixelArray.append(rowY)
+NewPixelArray()
+
+def CreateImage():
+    global pixelArray
+    img = Image.new('RGB', [11,11], 255)
+    data = img.load()
+
+    for x in range(img.size[0]):
+        for y in range(img.size[1]):
+            string = str(pixelArray[x][y])
+            data[x,y] = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
+
+    img.save('image.png')
 
