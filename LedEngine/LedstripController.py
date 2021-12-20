@@ -3,6 +3,7 @@ import neopixel
 import time
 import colorsys
 from PIL import Image
+import os
 
 pixelCount = 121
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
@@ -20,6 +21,8 @@ Gpercentage = 100
 Bpercentage = 100
 
 pixelArray = []
+
+imageName = ""
 
 def Clear():
     pixels.fill((0, 0, 0))
@@ -129,6 +132,7 @@ NewPixelArray()
 
 def CreateImage():
     global pixelArray
+    global imageName
     img = Image.new('RGB', [11,11], 255)
     data = img.load()
 
@@ -137,5 +141,9 @@ def CreateImage():
             string = str(pixelArray[x][y])
             data[x,y] = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
 
-    img.save('image.png')
+    img.save('savedImages/'+imageName + '.png')
+
+def SetImageName(value):
+    global imageName
+    imageName = value
 

@@ -215,6 +215,11 @@ function PixelColorChanged(e)
   col = e.value;
 }
 
+function ImageNameChanged(e)
+{
+  socket.emit('msg','{"ImageName":"'+e.value+'"}');
+}
+
 function setup() 
 {
   createCanvas(200, 200);
