@@ -207,8 +207,8 @@ function PickColor()
 
 //part for pixel drawer
 var grid = [];
-const rowX = 11;
-const rowY = 11;
+const rowX = 16;
+const rowY = 16;
 var col = ('#000000');
 
 function PixelColorChanged(e)
@@ -313,6 +313,11 @@ var names = []
 function AddName(name)
 {
   names.push(name);
+  var btn = document.createElement("BUTTON");
+  btn.innerHTML = name;
+  btn.id = name;
+ 
+  document.querySelector('ul2').appendChild(btn);
 }
 
 function ResetNames()

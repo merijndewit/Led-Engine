@@ -91,8 +91,8 @@ def setPixel(x, y, color):
 
 def getPixelNumber(corX, corY):
     rowX = []
-    x = 11 #width
-    y = 11 #height
+    x = 16 #width
+    y = 16 #height
     for i in range(x):
         rowY = []
         for ii in range(y):
@@ -121,8 +121,8 @@ def BlueCalibration(percentage):
 
 def NewPixelArray():
     global pixelArray
-    x = 11 #width
-    y = 11 #height
+    x = 16 #width
+    y = 16 #height
     for i in range(x):
         rowY = []
         for ii in range(y):
