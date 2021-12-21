@@ -87,6 +87,11 @@ def CheckInput():
             Ledstrip.CreateImage()
         elif ("ImageName" in aDict):
             Ledstrip.SetImageName(aDict["ImageName"])
+        elif ("searchImages" in aDict):
+            data = Ledstrip.GetImageNames()
+            for i in range(len(data)):
+                string = '{"ImageName":"'+data[i]+'"}'
+                sockRX.sendto( string.encode('utf-8'), addr)
 newclient()
 #p1 = Thread(target = UpdateClient)
 p2 = Thread(target = CheckInput)

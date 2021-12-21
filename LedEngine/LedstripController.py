@@ -5,7 +5,7 @@ import colorsys
 from PIL import Image
 import os
 
-pixelCount = 121
+pixelCount = 320
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
 ledBrightness = 100
 #rainbow variables
@@ -146,4 +146,14 @@ def CreateImage():
 def SetImageName(value):
     global imageName
     imageName = value
+
+def GetImageNames():
+    imageNames = []
+    for file in os.listdir("savedImages"):
+        if file.endswith(".png"):
+            imageNames.append(file)
+    print(imageNames)
+    return(imageNames)
+
+GetImageNames()
 

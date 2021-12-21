@@ -14,7 +14,6 @@ window.addEventListener("load", function()
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
     document.addEventListener("touchmove", ReportTouchMove, false);
-    document.addEventListener("mouseup", ReportMouseUp, false);
     document.addEventListener("mousedown", ReportMouseDown, false);
   }
   
@@ -33,11 +32,6 @@ function ReportOnDblClick(e)
 function ReportOnMouseDown(e) 
 {
   socket.emit('msg','{"'+e.target.id+'":1}');
-}
-
-function ReportOnMouseUp(e) 
-{
-  socket.emit('msg','{"'+e.target.id+'":0}');
 }
 
 function ReportTouchStart(e) 
@@ -154,6 +148,14 @@ socket.on('FB',function (data) {
         else if (id == 'ClearPixels')
         {
           Clear();
+        }
+        else if (id == 'searchImages')
+        {
+          ResetNames();
+        }
+        else if (id == 'ImageName')
+        {
+          AddName(result);
         }
       }
     }
@@ -306,6 +308,19 @@ function drawPixel(spotX, spotY)
   print(grid);
 }
 
+var names = []
+
+function AddName(name)
+{
+  names.push(name);
+}
+
+function ResetNames()
+{
+  print("removing: " + names);
+  names = [];
+}
+
 //only used for debugging
 //Note: this doesnt refresh the led panel
 function refresh()
@@ -319,4 +334,5 @@ function refresh()
     }
   }
 }
+
 
