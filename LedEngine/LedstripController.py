@@ -82,6 +82,7 @@ def setPixel(x, y, color):
     pixels.show()
     print(pixel)
 
+# get pixel number with lookup table methode
 # converts coordinates to the pixel number on the led panel
 # this function is for an led panel with a zigzag pattern
 # LedStrip:  
@@ -91,19 +92,31 @@ def setPixel(x, y, color):
 #   _________|
 #  |_________
 
+#def getPixelNumber(corX, corY):
+#    rowX = []
+#    x = 16 #width
+#    y = 16 #height
+#    for i in range(x):
+#        rowY = []
+#        for ii in range(y):
+#            if (i % 2) == 0: #check if number is even
+#                rowY.append((i * y) + ii)
+#            else:
+#                rowY.insert(0, ((i * y) + ii))
+#        rowX.append(rowY)
+#    return rowX[int(corY)][int(corX)]¨
+
 def getPixelNumber(corX, corY):
-    rowX = []
-    x = 16 #width
-    y = 16 #height
-    for i in range(x):
-        rowY = []
-        for ii in range(y):
-            if (i % 2) == 0: #check if number is even
-                rowY.append((i * y) + ii)
-            else:
-                rowY.insert(0, ((i * y) + ii))
-        rowX.append(rowY)
-    return rowX[int(corY)][int(corX)]
+    width = 16
+    height = 16
+    index = 0
+    if (int(corY) % 2) == 0:
+        index = (int(corY) * width) + (width - int(corX)) - 1
+    else:
+        index = (int(corY) * width) + int(corX)
+    print(index)
+    return index
+
 
 def RedCalibration(percentage):
     global Roffset
