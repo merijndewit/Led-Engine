@@ -4,6 +4,8 @@ import time
 import colorsys
 from PIL import Image
 import os
+import requests
+from io import BytesIO
 
 pixelCount = 320
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
@@ -133,11 +135,10 @@ NewPixelArray()
 def CreateImage():
     global pixelArray
     global imageName
-    img = Image.new('RGB', [11,11], 255)
+    img = Image.new('RGB', [16,16], 255)
     data = img.load()
-
-    for x in range(img.size[0]):
-        for y in range(img.size[1]):
+    for y in range(img.size[1]):
+        for x in range(img.size[0]):
             string = str(pixelArray[x][y])
             data[x,y] = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
 
@@ -155,5 +156,40 @@ def GetImageNames():
     print(imageNames)
     return(imageNames)
 
-GetImageNames()
+def DownscaleImage(image):
+    width = 16
+    height = 16
+    resized_image = image.resize((width,height))
+    #resized_image.save('savedImages/'+'new'+ '.png')
+    print(resized_image.size) 
+    return(image)
+
+def DisplayImage(imageName):
+    image = Image.open("savedImages/"+imageName)
+    width = 16
+    height = 16
+    if (image.width == width and image.height == height):
+        rgb_im = image.convert('RGB')
+        Clear()
+        for y in range(height):
+            for x in range(width):
+                pixel = int(getPixelNumber(x, y))
+                r, g, b = rgb_im.getpixel((x, y))  
+                pixels[pixel] = (int(r) * 0.01, int(g) * 0.01, int(b) * 0.01)  
+                pixels.show()
+
+url = ""
+
+def UpdateUrl(value):
+    global url
+    url = str(value)
+
+def DisplayUrl():
+    response = requests.get(url)
+    img = Image.open(BytesIO(response.raw))
+    dsImage = DownscaleImage(img)
+    DisplayImage(dsImage)
+
+
+
 

@@ -92,6 +92,13 @@ def CheckInput():
             for i in range(len(data)):
                 string = '{"ImageName":"'+data[i]+'"}'
                 sockRX.sendto( string.encode('utf-8'), addr)
+        elif ("DisplayImage" in aDict):
+            Ledstrip.DisplayImage(aDict["DisplayImage"])
+        elif ("LoadUrl" in aDict):
+            Ledstrip.DisplayUrl()
+        elif ("Url" in aDict):
+            Ledstrip.UpdateUrl(aDict["Url"])
+            
 newclient()
 #p1 = Thread(target = UpdateClient)
 p2 = Thread(target = CheckInput)

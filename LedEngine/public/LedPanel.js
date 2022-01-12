@@ -316,7 +316,9 @@ function AddName(name)
   var btn = document.createElement("BUTTON");
   btn.innerHTML = name;
   btn.id = name;
- 
+  btn.onclick = function(){
+    socket.emit('msg','{"DisplayImage":"'+name+'"}');
+  };
   document.querySelector('ul2').appendChild(btn);
 }
 
@@ -324,6 +326,11 @@ function ResetNames()
 {
   print("removing: " + names);
   names = [];
+}
+
+function urlChanged(value)
+{
+  socket.emit('msg','{"Url":"'+value.value+'"}');
 }
 
 //only used for debugging
