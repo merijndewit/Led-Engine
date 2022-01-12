@@ -93,7 +93,7 @@ def CheckInput():
                 string = '{"ImageName":"'+data[i]+'"}'
                 sockRX.sendto( string.encode('utf-8'), addr)
         elif ("DisplayImage" in aDict):
-            Ledstrip.DisplayImage(aDict["DisplayImage"])
+            Ledstrip.DisplayImageFile(aDict["DisplayImage"])
         elif ("LoadUrl" in aDict):
             Ledstrip.DisplayUrl()
         elif ("Url" in aDict):

@@ -2,3 +2,4 @@ node_modules/*
 __pycache__/
 image.png
 LedEngine/savedImages/*
+tmpImages/*

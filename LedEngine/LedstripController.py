@@ -6,6 +6,7 @@ from PIL import Image
 import os
 import requests
 from io import BytesIO
+import urllib.request
 
 pixelCount = 320
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
@@ -110,7 +111,7 @@ def getPixelNumber(corX, corY):
     width = 16
     height = 16
     index = 0
-    if (int(corY) % 2) == 0:
+    if (int(corY) % 2) == 0: #you can easely mirror the image by changing == to !=
         index = (int(corY) * width) + (width - int(corX)) - 1
     else:
         index = (int(corY) * width) + int(corX)
@@ -169,15 +170,8 @@ def GetImageNames():
     print(imageNames)
     return(imageNames)
 
-def DownscaleImage(image):
-    width = 16
-    height = 16
-    resized_image = image.resize((width,height))
-    #resized_image.save('savedImages/'+'new'+ '.png')
-    print(resized_image.size) 
-    return(image)
 
-def DisplayImage(imageName):
+def DisplayImageFile(imageName):
     image = Image.open("savedImages/"+imageName)
     width = 16
     height = 16
@@ -188,8 +182,16 @@ def DisplayImage(imageName):
             for x in range(width):
                 pixel = int(getPixelNumber(x, y))
                 r, g, b = rgb_im.getpixel((x, y))  
-                pixels[pixel] = (int(r) * 0.01, int(g) * 0.01, int(b) * 0.01)  
+                pixels[pixel] = (r * Roffset, g * Goffset, b * Boffset)  
                 pixels.show()
+
+def DownscaleImage(imagePath, newName):
+    width = 16
+    height = 16
+    image = Image.open(imagePath)
+    resized_image = image.resize((width,height))
+    #resized_image.save('savedImages/'+'new'+ '.png')
+    resized_image.save('savedImages/'+newName)
 
 url = ""
 
@@ -198,10 +200,16 @@ def UpdateUrl(value):
     url = str(value)
 
 def DisplayUrl():
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.raw))
-    dsImage = DownscaleImage(img)
-    DisplayImage(dsImage)
+    global url
+    imageName = "tmp.png"
+    path = "tmpImages/" + imageName
+    try:
+
+        urllib.request.urlretrieve(url, path)
+        dsImage = DownscaleImage(path, "tmp.png")
+        DisplayImageFile(imageName)
+    except:
+        print("Not supported image format or URL")
 
 
 
