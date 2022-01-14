@@ -103,8 +103,7 @@ socket.on('FB',function (data) {
     return obj2[e]
   })
   var id = keys[0];
-  
-  if (id != null) 
+  if (id != null && id != "") 
   {
     if(document.querySelector('#' + id) != null) 
     {
@@ -159,7 +158,19 @@ socket.on('FB',function (data) {
         }
       }
     }
+    else if (id == 'X')
+    {
+      function ColorToHex(color) {
+        var hexadecimal = color.toString(16);
+        return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
+      }
+      function ConvertRGBtoHex(red, green, blue) {
+        return "#" + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
+      }
+      drawPixel(result[0], result[1], ConvertRGBtoHex(result[2], result[3], result[4]));
+    }
   }
+
 });
 
 function SetColor(colorValue)
@@ -202,7 +213,6 @@ var pickColor = new Boolean(false);
 function PickColor()
 {
   pickColor = true;
-  print("set pixel color true")
 }
 
 //part for pixel drawer
@@ -254,7 +264,7 @@ function mousePressed()
     let spotY = floor(mouseY / (height / rowY));
     if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
     {
-      drawPixel(spotX, spotY);
+      drawPixel(spotX, spotY, col);
       // send changed pixel to python program
       socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
     }
@@ -284,7 +294,7 @@ function renderBoard()
  }
 }
 
-function drawPixel(spotX, spotY)
+function drawPixel(spotX, spotY, pickedColor)
 {
   //add pixel to grid
   //adding a pixel like this: "grid[spotX][spotY] = col" sets the whole row for some reason
@@ -299,13 +309,12 @@ function drawPixel(spotX, spotY)
     }
     else
     {
-      gridY.push(col);
+      gridY.push(pickedColor);
     }
   }
   grid[spotX] = gridY;
   fill(color(grid[spotX][spotY]));
   rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
-  print(grid);
 }
 
 var names = []
@@ -324,7 +333,6 @@ function AddName(name)
 
 function ResetNames()
 {
-  print("removing: " + names);
   names = [];
 }
 

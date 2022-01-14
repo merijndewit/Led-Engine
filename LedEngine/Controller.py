@@ -73,7 +73,6 @@ def CheckInput():
             #here we get every character after #
             hexString = (aDict.partition("#")[2]) 
             color = hexString[:6]
-            print(hexString[:6]) 
             Ledstrip.setPixel(x, y, color)
         elif ("ClearPixels" in aDict):
             Ledstrip.Clear()
@@ -95,15 +94,24 @@ def CheckInput():
         elif ("DisplayImage" in aDict):
             Ledstrip.DisplayImageFile(aDict["DisplayImage"])
         elif ("LoadUrl" in aDict):
-            Ledstrip.DisplayUrl()
+            pixelsToSend = []
+            pixelsToSend = Ledstrip.DisplayUrl()
+            try:
+                print("Not supported image format or URL")
+                for i in range(len(pixelsToSend)):
+                    sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+            except:
+                print("Not supported image format or URL")
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
             
-newclient()
-#p1 = Thread(target = UpdateClient)
-p2 = Thread(target = CheckInput)
-#p1.start()
-p2.start()
+
+if __name__ == "__main__":
+    newclient()
+    #p1 = Thread(target = UpdateClient)
+    p2 = Thread(target = CheckInput)
+    #p1.start()
+    p2.start()
 
 while True:
     sleep(10)

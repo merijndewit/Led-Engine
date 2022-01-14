@@ -7,6 +7,8 @@ import os
 import requests
 from io import BytesIO
 import urllib.request
+import json
+
 
 pixelCount = 320
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
@@ -81,7 +83,6 @@ def setPixel(x, y, color):
     pixel = int(getPixelNumber(x, y))
     pixels[pixel] = (int(color[:2], 16) * Roffset, int(color[2:4], 16) * Goffset, int(color[4:6], 16) * Boffset)  
     pixels.show()
-    print(pixel)
 
 # get pixel number with lookup table methode
 # converts coordinates to the pixel number on the led panel
@@ -115,7 +116,6 @@ def getPixelNumber(corX, corY):
         index = (int(corY) * width) + (width - int(corX)) - 1
     else:
         index = (int(corY) * width) + int(corX)
-    print(index)
     return index
 
 
@@ -172,6 +172,8 @@ def GetImageNames():
 
 
 def DisplayImageFile(imageName):
+    pixelList = []
+    PixelData = ()
     image = Image.open("savedImages/"+imageName)
     width = 16
     height = 16
@@ -182,8 +184,11 @@ def DisplayImageFile(imageName):
             for x in range(width):
                 pixel = int(getPixelNumber(x, y))
                 r, g, b = rgb_im.getpixel((x, y))  
-                pixels[pixel] = (r * Roffset, g * Goffset, b * Boffset)  
-                pixels.show()
+                pixels[pixel] = (r * Roffset, g * Goffset, b * Boffset)
+                data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
+                pixelList.append(json.dumps(data_set))
+            pixels.show()
+    return pixelList
 
 def DownscaleImage(imagePath, newName):
     width = 16
@@ -201,16 +206,20 @@ def UpdateUrl(value):
 
 def DisplayUrl():
     global url
-    imageName = "tmp.png"
-    path = "tmpImages/" + imageName
-    try:
-
+    if url != "":
+        imageName = "tmp.png"
+        path = "tmpImages/" + imageName
         urllib.request.urlretrieve(url, path)
-        dsImage = DownscaleImage(path, "tmp.png")
-        DisplayImageFile(imageName)
-    except:
-        print("Not supported image format or URL")
+        DownscaleImage(path, "tmp.png")
+        return DisplayImageFile(imageName)
+    else:
+        print("no url entered")
 
 
+
+
+def sendToClient(message):
+    import Controller
+    Controller.sendToClient(message)
 
 
