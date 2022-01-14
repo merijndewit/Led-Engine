@@ -1,5 +1,4 @@
 node_modules/*
-__pycache__/
-image.png
+LedEngine/__pycache__/
 LedEngine/savedImages/*
-tmpImages/*
+LedEngine/tmpImages/*
