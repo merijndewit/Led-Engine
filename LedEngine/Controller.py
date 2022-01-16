@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import json
 import multiprocessing
 import re
+import os
 
 #LedEngine Scripts
 import LedstripController as Ledstrip
@@ -104,14 +105,19 @@ def CheckInput():
                 print("Not supported image format or URL")
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
-            
 
+def CheckJSON():
+    if(os.path.exists('./config.json') != 1):
+        JSONconfig = open("config.json", "x")
+        JSONconfig.close()
+
+
+#start
 if __name__ == "__main__":
     newclient()
-    #p1 = Thread(target = UpdateClient)
-    p2 = Thread(target = CheckInput)
-    #p1.start()
-    p2.start()
+    CheckJSON()
+    mainProcess = Thread(target = CheckInput)
+    mainProcess.start()
 
 while True:
     sleep(10)
