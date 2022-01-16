@@ -17,10 +17,6 @@ ledBrightness = 100
 waveLength = 100
 rainbowSpeed = 100
 
-Roffset = 1
-Goffset = 1
-Boffset = 1
-
 Rpercentage = 100
 Gpercentage = 100
 Bpercentage = 100
@@ -34,19 +30,12 @@ def Clear():
     pixels.show()
 
 def setColor(R, G, B):
-    pixels.fill((R * Roffset, G * Goffset, B * Boffset))
+    pixels.fill((R * (Rpercentage / 100)*(ledBrightness / 100), G * (Gpercentage / 100)*(ledBrightness / 100), B * (Bpercentage / 100)*(ledBrightness / 100)))
     pixels.show()
 
 def SetBrightness(brightnessValue):
     global ledBrightness
-    global Roffset
-    global Goffset
-    global Boffset
     ledBrightness = brightnessValue
-    Roffset = (Rpercentage / 100)*(ledBrightness / 100)
-    Goffset = (Gpercentage / 100)*(ledBrightness / 100)
-    Boffset = (Bpercentage / 100)*(ledBrightness / 100)
-
 
 def SetwaveLength(waveLengthValue):
     global waveLength
@@ -70,7 +59,7 @@ def rainbow_cycle():
             if hh >= 1:
                 hh -= 1
             rgb = colorsys.hsv_to_rgb(hh, s, 1)
-            pixels[i] = (((rgb[0] * 255) * Roffset, (rgb[1] * 255) * Goffset, (rgb[2] * 255) * Boffset))
+            pixels[i] = (((rgb[0] * 255) * (Rpercentage / 100)*(ledBrightness / 100), (rgb[1] * 255) * (Gpercentage / 100)*(ledBrightness / 100), (rgb[2] * 255) * (Bpercentage / 100)*(ledBrightness / 100)))
             h += 0.0001
             time.sleep(0.001 / (rainbowSpeed / 100))
         pixels.show()
@@ -81,7 +70,7 @@ def setPixel(x, y, color):
     global pixelArray
     pixelArray[int(x)][int(y)] = color
     pixel = int(getPixelNumber(x, y))
-    pixels[pixel] = (int(color[:2], 16) * Roffset, int(color[2:4], 16) * Goffset, int(color[4:6], 16) * Boffset)  
+    pixels[pixel] = (int(color[:2], 16) * (Rpercentage / 100)*(ledBrightness / 100), int(color[2:4], 16) * (Gpercentage / 100)*(ledBrightness / 100), int(color[4:6], 16) * (Bpercentage / 100)*(ledBrightness / 100))  
     pixels.show()
 
 # get pixel number with lookup table methode
@@ -120,20 +109,16 @@ def getPixelNumber(corX, corY):
 
 
 def RedCalibration(percentage):
-    global Roffset
     global Rpercentage
     Rpercentage = percentage
-    Roffset = (percentage / 100)*(ledBrightness / 100)
+
 def GreenCalibration(percentage):
-    global Goffset
     global Gpercentage
     Gpercentage = percentage
-    Goffset = (percentage / 100)*(ledBrightness / 100)
 def BlueCalibration(percentage):
-    global Boffset
     global Bpercentage
     Bpercentage = percentage
-    Boffset = (percentage / 100)*(ledBrightness / 100)
+
 
 def NewPixelArray():
     global pixelArray
@@ -184,7 +169,7 @@ def DisplayImageFile(imageName):
             for x in range(width):
                 pixel = int(getPixelNumber(x, y))
                 r, g, b = rgb_im.getpixel((x, y))  
-                pixels[pixel] = (r * Roffset, g * Goffset, b * Boffset)
+                pixels[pixel] = (r * (Rpercentage / 100)*(ledBrightness / 100), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Rpercentage / 100)*(ledBrightness / 100))
                 data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                 pixelList.append(json.dumps(data_set))
             pixels.show()
@@ -212,11 +197,8 @@ def DisplayUrl():
         urllib.request.urlretrieve(url, path)
         DownscaleImage(path, "tmp.png")
         return DisplayImageFile(imageName)
-    else:
-        print("no url entered")
 
-
-
+    print("no url entered")
 
 def sendToClient(message):
     import Controller
