@@ -186,3 +186,20 @@ function BlueCalibrationChanged(value)
         socket.emit('msg','{"BlueCalibration":"'+value.value+'"}');
     }
 }
+
+function configPanelWidthChanged(value)
+{
+    if (value.value != 0)
+    {
+        socket.emit('msg','{"setConfigPanelWidth":"'+value.value+'"}');
+    }
+}
+
+function configPanelHeightChanged(value)
+{
+    if (value.value != 0)
+    {
+        socket.emit('msg','{"setConfigPanelHeight":"'+value.value+'"}');
+    }
+}
+

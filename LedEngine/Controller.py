@@ -9,6 +9,7 @@ import os
 
 #LedEngine Scripts
 import LedstripController as Ledstrip
+import jsonHelper
 
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
@@ -105,8 +106,14 @@ def CheckInput():
                 print("Not supported image format or URL")
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
+        elif ("setConfigPanelWidth" in aDict):
+            jsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
+        elif ("setConfigPanelHeight" in aDict):
+            jsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
 
-def CheckJSON():
+
+
+def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists('./config.json') != 1):
         JSONconfig = open("config.json", "x")
         JSONconfig.close()

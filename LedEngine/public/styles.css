@@ -7,6 +7,9 @@ body {
 h1{
   color: white;
 }
+strong{
+  color: white;
+}
 
 .StaticColor{
   color: white;
