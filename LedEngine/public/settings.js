@@ -89,7 +89,7 @@ function ReportMouseUp(e)
     console.log("volume class detected");
   } else 
   {
-      socket.emit('msg','{"'+e.target.id+'":0}');
+    socket.emit('msg','{"'+e.target.id+'":0}');
   }
 }
 
@@ -125,23 +125,23 @@ socket.on('FB',function (data) {
         }
         else if (id == 'color0')
         {
-            valueHexChanged('#FFBC42');
+          valueHexChanged('#FFBC42');
         }
         else if (id == 'color1')
         {
-            valueHexChanged('#D81159');
+          valueHexChanged('#D81159');
         }
         else if (id == 'color2')
         {
-            valueHexChanged('#8F2D56');
+          valueHexChanged('#8F2D56');
         }
         else if (id == 'color3')
         {
-            valueHexChanged('#218380');
+          valueHexChanged('#218380');
         }
         else if (id == 'color4')
         {
-            valueHexChanged('#73D2DE');
+          valueHexChanged('#73D2DE');
         }
       }
     }
@@ -160,46 +160,53 @@ function valueChanged(e){
 
 function valueHexChanged(value)
 {
-    socket.emit('msg','{"HEX":"'+value+'"}');
+  socket.emit('msg','{"HEX":"'+value+'"}');
 }
 
 function RedCalibrationChanged(value)
 {
-    if (value.value != 0)
-    {
-        socket.emit('msg','{"RedCalibration":"'+value.value+'"}');
-    }
+  if (value.value != 0)
+  {
+    socket.emit('msg','{"RedCalibration":"'+value.value+'"}');
+  }
 }
 
 function GreenCalibrationChanged(value)
 {
-    if (value.value != 0)
-    {
-        socket.emit('msg','{"GreenCalibration":"'+value.value+'"}');
-    }
+  if (value.value != 0)
+  {
+    socket.emit('msg','{"GreenCalibration":"'+value.value+'"}');
+  }
 }
 
 function BlueCalibrationChanged(value)
 {
-    if (value.value != 0)
-    {
-        socket.emit('msg','{"BlueCalibration":"'+value.value+'"}');
-    }
+  if (value.value != 0)
+  {
+    socket.emit('msg','{"BlueCalibration":"'+value.value+'"}');
+  }
 }
 
 function configPanelWidthChanged(value)
 {
-    if (value.value != 0)
-    {
-        socket.emit('msg','{"setConfigPanelWidth":"'+value.value+'"}');
-    }
+  if (value.value != 0)
+  {
+    socket.emit('msg','{"setConfigPanelWidth":"'+value.value+'"}');
+  }
 }
 
 function configPanelHeightChanged(value)
 {
-    if (value.value != 0)
-    {
-        socket.emit('msg','{"setConfigPanelHeight":"'+value.value+'"}');
-    }
+  if (value.value != 0)
+  {
+    socket.emit('msg','{"setConfigPanelHeight":"'+value.value+'"}');
+  }
 }
+
+function Start()
+{
+  //here we read the json file for the previous settings
+  socket.emit('msg','{"RequestJSONdata":"1"}');
+}
+Start();
 

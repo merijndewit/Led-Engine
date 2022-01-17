@@ -1,8 +1,9 @@
 import json
 import os
 
+jsonFile = "config.json"
+
 def WriteToJsonFile(key, value):
-    jsonFile = "config.json"
     if (os.path.getsize(jsonFile) == 0):
         data = {key:value}
         with open(jsonFile, 'w') as json_file:
@@ -16,3 +17,7 @@ def WriteToJsonFile(key, value):
 
     with open(jsonFile, 'w') as json_file:
         json.dump(json_decoded, json_file)
+
+def GetDecodedJSON():
+    with open(jsonFile) as json_file:
+        return json.load(json_file)
