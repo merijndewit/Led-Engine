@@ -56,8 +56,8 @@ def CheckInput():
             Ledstrip.Clear()
         elif ("A1" in aDict):
             if (aDict["A1"] != "0"):
-                brightnessValue = int(aDict["A1"])
-                Ledstrip.SetBrightness(brightnessValue)
+                Ledstrip.SetBrightness(int(aDict["A1"]))
+                jsonHelper.WriteToJsonFile("brightnessValue", str(aDict["A1"]))
         elif ("WaveLengthInput" in aDict):
             if (aDict["WaveLengthInput"] != "0" and aDict["WaveLengthInput"]):
                 waveLengthValue = int(aDict["WaveLengthInput"])
@@ -80,10 +80,13 @@ def CheckInput():
             Ledstrip.Clear()
         elif ("RedCalibration" in aDict):
             Ledstrip.RedCalibration(int(aDict["RedCalibration"]))
+            jsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
         elif ("GreenCalibration" in aDict):
             Ledstrip.GreenCalibration(int(aDict["GreenCalibration"]))
+            jsonHelper.WriteToJsonFile("greenCalibration", str(aDict["GreenCalibration"]))
         elif ("BlueCalibration" in aDict):
             Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
+            jsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
         elif ("MakePicture" in aDict):
             Ledstrip.CreateImage()
         elif ("ImageName" in aDict):
