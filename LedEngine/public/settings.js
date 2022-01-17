@@ -143,6 +143,30 @@ socket.on('FB',function (data) {
         {
           valueHexChanged('#73D2DE');
         }
+
+      }
+    }
+    else if (id == 'JSONdata')
+    {
+      if (obj2.JSONdata[0].LEDPanelHeight)
+      {
+        document.getElementById("configPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
+      }
+      if (obj2.JSONdata[0].LEDPanelHeight)
+      {
+        document.getElementById("configPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
+      }
+      if (obj2.JSONdata[0].redCalibration)
+      {
+        document.getElementById("RedCalibrationPercentage").value = obj2.JSONdata[0].redCalibration;
+      }
+      if (obj2.JSONdata[0].greenCalibration)
+      {
+        document.getElementById("GreenCalibrationPercentage").value = obj2.JSONdata[0].greenCalibration;
+      }
+      if (obj2.JSONdata[0].blueCalibration)
+      {
+        document.getElementById("BlueCalibrationPercentage").value = obj2.JSONdata[0].blueCalibration;
       }
     }
   }

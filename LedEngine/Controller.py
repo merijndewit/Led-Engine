@@ -115,9 +115,8 @@ def CheckInput():
             jsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
         elif ("RequestJSONdata" in aDict):
             data = jsonHelper.GetDecodedJSON()
-            string = '{"JSONdata":"'+data+'"}'
+            string = json.dumps({'JSONdata':[data]})
             sockRX.sendto( string.encode('utf-8'), addr)
-
 
 
 
