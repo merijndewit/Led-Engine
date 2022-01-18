@@ -152,7 +152,7 @@ socket.on('FB',function (data) {
       {
         document.getElementById("configPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
       }
-      if (obj2.JSONdata[0].LEDPanelHeight)
+      if (obj2.JSONdata[0].LEDPanelWidth)
       {
         document.getElementById("configPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
       }

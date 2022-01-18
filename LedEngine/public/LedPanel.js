@@ -1,5 +1,10 @@
 var socket = io(); 
 
+var rowX = 0;
+var rowY = 0;
+
+Start();
+
 window.addEventListener("load", function()
 {
   if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
@@ -169,8 +174,16 @@ socket.on('FB',function (data) {
       }
       drawPixel(result[0], result[1], ConvertRGBtoHex(result[2], result[3], result[4]));
     }
+    else if (id == 'JSONdata')
+    {
+      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth)
+      {
+        rowX = obj2.JSONdata[0].LEDPanelWidth;
+        rowY = obj2.JSONdata[0].LEDPanelHeight;
+        setup2();
+      }
+    }
   }
-
 });
 
 function SetColor(colorValue)
@@ -217,8 +230,6 @@ function PickColor()
 
 //part for pixel drawer
 var grid = [];
-const rowX = 16;
-const rowY = 16;
 var col = ('#000000');
 
 function PixelColorChanged(e)
@@ -232,16 +243,27 @@ function ImageNameChanged(e)
   socket.emit('msg','{"ImageName":"'+e.value+'"}');
 }
 
-function setup() 
+function setup(){} //p5js setup
+
+function setup2()
 {
-  createCanvas(200, 200);
-  var row = new Array(rowY).fill('#000000');
-  for (let i = 0; i < rowX; i++) 
+  console.log("start setup");
+  Xwidth = waitForElement();
+  if (Xwidth != 0 || rowY != 0)
   {
-    grid[i] = row;
+    createCanvas(200, 200);
+    var row = new Array(rowY).fill('#000000');
+    for (let i = 0; i < Xwidth; i++) 
+    {
+      grid[i] = row;
+    }
+    colorMode(RGB)
+    renderBoard();
   }
-  colorMode(RGB)
-  renderBoard();
+  else
+  {
+    document.getElementById("noSizeSpecified").value = "Please enter LED-Panel size in setup"
+  }
 }
 
 function Clear()
@@ -353,6 +375,25 @@ function refresh()
       rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
     }
   }
+}
+
+function waitForElement()
+{
+  if(typeof rowX !== 0)
+  {
+    console.log(rowX);
+    return rowX
+  }
+  else
+  {
+    setTimeout(waitForElement, 250);
+  }
+}
+
+function Start()
+{
+  //here we read the json file for the previous settings
+  socket.emit('msg','{"RequestJSONdata":"1"}');
 }
 
 
