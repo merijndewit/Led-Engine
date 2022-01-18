@@ -94,7 +94,7 @@ def CheckInput():
         elif ("searchImages" in aDict):
             data = Ledstrip.GetImageNames()
             for i in range(len(data)):
-                string = '{"ImageName":"'+data[i]+'"}'
+                string = '{"LoadableImageName":"'+data[i]+'"}'
                 sockRX.sendto( string.encode('utf-8'), addr)
         elif ("DisplayImage" in aDict):
             Ledstrip.DisplayImageFile(aDict["DisplayImage"])

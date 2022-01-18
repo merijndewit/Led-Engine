@@ -157,10 +157,6 @@ socket.on('FB',function (data) {
         {
           ResetNames();
         }
-        else if (id == 'ImageName')
-        {
-          AddName(result);
-        }
       }
     }
     else if (id == 'X')
@@ -182,6 +178,10 @@ socket.on('FB',function (data) {
         rowY = obj2.JSONdata[0].LEDPanelHeight;
         setup2();
       }
+    }
+    else if (id == 'LoadableImageName')
+    {
+      AddName(result);
     }
   }
 });
