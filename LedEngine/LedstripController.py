@@ -21,6 +21,9 @@ Rpercentage = 100
 Gpercentage = 100
 Bpercentage = 100
 
+ledPanelWidth = 0
+ledPanelHeight = 0
+
 pixelArray = []
 
 imageName = ""
@@ -98,13 +101,12 @@ def setPixel(x, y, color):
 #    return rowX[int(corY)][int(corX)]¨
 
 def getPixelNumber(corX, corY):
-    width = 16
-    height = 16
+    global ledPanelWidth
     index = 0
     if (int(corY) % 2) == 0: #you can easely mirror the image by changing == to !=
-        index = (int(corY) * width) + (width - int(corX)) - 1
+        index = (int(corY) * ledPanelWidth) + (ledPanelWidth - int(corX)) - 1
     else:
-        index = (int(corY) * width) + int(corX)
+        index = (int(corY) * ledPanelWidth) + int(corX)
     return index
 
 
@@ -122,11 +124,11 @@ def BlueCalibration(percentage):
 
 def NewPixelArray():
     global pixelArray
-    x = 16 #width
-    y = 16 #height
-    for i in range(x):
+    global ledPanelWidth
+    global ledPanelHeight
+    for i in range(ledPanelWidth):
         rowY = []
-        for ii in range(y):
+        for ii in range(ledPanelHeight):
             rowY.append('#000000')
         pixelArray.append(rowY)
 NewPixelArray()
@@ -134,7 +136,9 @@ NewPixelArray()
 def CreateImage():
     global pixelArray
     global imageName
-    img = Image.new('RGB', [16,16], 255)
+    global ledPanelWidth
+    global ledPanelHeight
+    img = Image.new('RGB', [ledPanelWidth,ledPanelHeight], 255)
     data = img.load()
     for y in range(img.size[1]):
         for x in range(img.size[0]):
@@ -157,16 +161,16 @@ def GetImageNames():
 
 
 def DisplayImageFile(imageName):
+    global ledPanelWidth
+    global ledPanelHeight
     pixelList = []
     PixelData = ()
     image = Image.open("savedImages/"+imageName)
-    width = 16
-    height = 16
-    if (image.width == width and image.height == height):
+    if (image.width == ledPanelWidth and image.height == ledPanelHeight):
         rgb_im = image.convert('RGB')
         Clear()
-        for y in range(height):
-            for x in range(width):
+        for y in range(ledPanelHeight):
+            for x in range(ledPanelWidth):
                 pixel = int(getPixelNumber(x, y))
                 r, g, b = rgb_im.getpixel((x, y))  
                 pixels[pixel] = (r * (Rpercentage / 100)*(ledBrightness / 100), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Rpercentage / 100)*(ledBrightness / 100))
@@ -203,5 +207,32 @@ def DisplayUrl():
 def sendToClient(message):
     import Controller
     Controller.sendToClient(message)
+
+def LoadJsonValues():
+    jsonFile = "config.json"
+    global Rpercentage
+    global Gpercentage
+    global Bpercentage
+    global ledBrightness
+    with open(jsonFile) as json_file:
+        json_decoded = json.load(json_file)
+
+    if(json_decoded["redCalibration"]):
+        Rpercentage = int(json_decoded["redCalibration"])
+    else:
+        Rpercentage = 100
+    if(json_decoded["greenCalibration"]):
+        Gpercentage = int(json_decoded["greenCalibration"])
+    else:
+        Gpercentage = 100
+    if(json_decoded["blueCalibration"]):
+        Bpercentage = int(json_decoded["blueCalibration"])
+    else:
+        Bpercentage = 100
+    if(json_decoded["brightnessValue"]):
+        ledBrightness = int(json_decoded["brightnessValue"])
+    else:
+        ledBrightness = 100
+
 
 

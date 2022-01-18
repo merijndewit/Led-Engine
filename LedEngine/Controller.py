@@ -123,7 +123,10 @@ def CheckInput():
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists('./config.json') != 1):
         JSONconfig = open("config.json", "x")
+        jsonHelper.WriteToJsonFile("key", "value")
         JSONconfig.close()
+    else: #Load all values that where set previously by the user
+        Ledstrip.LoadJsonValues()
 
 
 #start
