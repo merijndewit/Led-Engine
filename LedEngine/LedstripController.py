@@ -131,7 +131,7 @@ def NewPixelArray():
         for ii in range(ledPanelHeight):
             rowY.append('#000000')
         pixelArray.append(rowY)
-NewPixelArray()
+
 
 def CreateImage():
     global pixelArray
@@ -180,10 +180,10 @@ def DisplayImageFile(imageName):
     return pixelList
 
 def DownscaleImage(imagePath, newName):
-    width = 16
-    height = 16
+    global ledPanelWidth
+    global ledPanelHeight
     image = Image.open(imagePath)
-    resized_image = image.resize((width,height))
+    resized_image = image.resize((ledPanelWidth,ledPanelHeight))
     #resized_image.save('savedImages/'+'new'+ '.png')
     resized_image.save('savedImages/'+newName)
 
@@ -214,6 +214,8 @@ def LoadJsonValues():
     global Gpercentage
     global Bpercentage
     global ledBrightness
+    global ledPanelWidth
+    global ledPanelHeight
     with open(jsonFile) as json_file:
         json_decoded = json.load(json_file)
 
@@ -233,6 +235,13 @@ def LoadJsonValues():
         ledBrightness = int(json_decoded["brightnessValue"])
     else:
         ledBrightness = 100
+    if(json_decoded["LEDPanelWidth"]):
+        ledPanelWidth = int(json_decoded["LEDPanelWidth"])
+    if(json_decoded["LEDPanelHeight"]):
+        ledPanelHeight = int(json_decoded["LEDPanelHeight"])
+
+    NewPixelArray()
+    print("json values loaded")
 
 
 

@@ -101,12 +101,8 @@ def CheckInput():
         elif ("LoadUrl" in aDict):
             pixelsToSend = []
             pixelsToSend = Ledstrip.DisplayUrl()
-            try:
-                print("Not supported image format or URL")
-                for i in range(len(pixelsToSend)):
-                    sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-            except:
-                print("Not supported image format or URL")
+            for i in range(len(pixelsToSend)):
+                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
         elif ("setConfigPanelWidth" in aDict):
