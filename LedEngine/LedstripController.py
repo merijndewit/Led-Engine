@@ -163,8 +163,11 @@ def GetImageNames():
 def DisplayImageFile(imageName):
     global ledPanelWidth
     global ledPanelHeight
+    global Rpercentage
+    global Gpercentage
+    global Bpercentage
+    print(Rpercentage, Gpercentage, Bpercentage)
     pixelList = []
-    PixelData = ()
     image = Image.open("savedImages/"+imageName)
     if (image.width == ledPanelWidth and image.height == ledPanelHeight):
         rgb_im = image.convert('RGB')
@@ -173,7 +176,7 @@ def DisplayImageFile(imageName):
             for x in range(ledPanelWidth):
                 pixel = int(getPixelNumber(x, y))
                 r, g, b = rgb_im.getpixel((x, y))  
-                pixels[pixel] = (r * (Rpercentage / 100)*(ledBrightness / 100), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Rpercentage / 100)*(ledBrightness / 100))
+                pixels[pixel] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
                 data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                 pixelList.append(json.dumps(data_set))
             pixels.show()
