@@ -168,6 +168,10 @@ socket.on('FB',function (data) {
       {
         document.getElementById("BlueCalibrationPercentage").value = obj2.JSONdata[0].blueCalibration;
       }
+      if (obj2.JSONdata[0].brightnessValue)
+      {
+        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+      }
     }
   }
 });

@@ -101,6 +101,13 @@ socket.on('FB',function (data) {
         }
       }
     }
+    else if (id == 'JSONdata')
+    {
+      if (obj2.JSONdata[0].brightnessValue)
+      {
+        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+      }
+    }
   }
 });
 
@@ -133,3 +140,10 @@ function SpeedInputChanged(e){
     socket.emit('msg','{"SpeedInput":'+e.value+'}');
   }
 }
+
+function Start()
+{
+  //here we read the json file for the previous settings
+  socket.emit('msg','{"RequestJSONdata":"1"}');
+}
+Start();

@@ -178,6 +178,10 @@ socket.on('FB',function (data) {
         rowY = obj2.JSONdata[0].LEDPanelHeight;
         setup2();
       }
+      if (obj2.JSONdata[0].brightnessValue)
+      {
+        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+      }
     }
     else if (id == 'LoadableImageName')
     {
@@ -252,6 +256,7 @@ function setup2()
   if (Xwidth != 0 || rowY != 0)
   {
     createCanvas(200, 200);
+    background(120);
     var row = new Array(rowY).fill('#000000');
     for (let i = 0; i < Xwidth; i++) 
     {
@@ -259,6 +264,7 @@ function setup2()
     }
     colorMode(RGB)
     renderBoard();
+    //background(255, 204, 0);
   }
   else
   {
@@ -310,6 +316,8 @@ function renderBoard()
   {
    for (let y = 0; y < rowY; y++) 
    {
+    stroke(50, 50, 50);
+    strokeWeight(1);
     fill("#000000");
     rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
   }
