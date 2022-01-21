@@ -255,7 +255,8 @@ function setup2()
   Xwidth = waitForElement();
   if (Xwidth != 0 || rowY != 0)
   {
-    createCanvas(200, 200);
+    canvas = createCanvas(200, 200);
+    canvas.parent('canvasPanel');
     background(120);
     var row = new Array(rowY).fill('#000000');
     for (let i = 0; i < Xwidth; i++) 
@@ -403,5 +404,3 @@ function Start()
   //here we read the json file for the previous settings
   socket.emit('msg','{"RequestJSONdata":"1"}');
 }
-
-

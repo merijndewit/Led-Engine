@@ -17,8 +17,11 @@
 
 <div class="Brightness">
   <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+  <br>
+  <br>
 </div>
-<div>
+<div class="Panel" id="canvasPanel">
+  <strong>Canvas</strong>
   <br>
   <input type="color" id="PixelColorPicker" oninput="PixelColorChanged(this)" value="#000000">
   <button id="color0" class="color0"></button>
@@ -30,26 +33,33 @@
   <button id="PixelPicker">Pixel Picker</button>
   <button id="ClearPixels">Clear</button>
   <br>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+</div>>
+<div class="Panel">
+  <strong>Save Canvas</strong>
+  <br>
   <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
   <button id="MakePicture" class="createPicture">Save</button>
+</div>>
+
+<div class="Panel">
+  <strong>Load Image</strong>
   <br>
+  <small>Enter Image URL:</small>
   <input type="text" id="url" oninput="urlChanged(this)"> 
   <button id="LoadUrl" class="LoadUrl">Load</button>
   <br>
-  <input type="file" id="fileUpload"/>
-  <button id="Submit" class="Submit">Submit</button>
-  <br>
+  <small>Search for saved images:</small>
   <button id="searchImages" class="searchImages">Search</button>
   <ul2 id="ListImages"></ul2>
   <br>
   <strong id="noSizeSpecified"></strong>>
 
-</div>
-
+</div>>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="LedPanel.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+<script src="webserver.js"></script>
 <script type="text/javascript" href="../webserver.js"></script>
 </body>
 </html>

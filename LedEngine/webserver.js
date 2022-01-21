@@ -171,4 +171,3 @@ function Send2ComLink (data)
 		}
     });   
 }
-

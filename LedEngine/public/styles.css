@@ -10,6 +10,9 @@ h1{
 strong{
   color: white;
 }
+small{
+  color: white;
+}
 
 .StaticColor{
   color: white;
@@ -150,6 +153,12 @@ button:hover {
   background-color: #73D2DE;
   width: 25px;
   height: 25px;
+  border-radius: 5px;
+}
+
+.Panel {
+  background-color: rgb(25, 25, 25);
+  border: 3px solid #5c5c5c;
   border-radius: 5px;
 }
 

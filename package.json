@@ -9,8 +9,19 @@
   "author": "Merijn",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.2",
     "onoff": "^6.0.3",
     "socket.io": "^4.4.0"
-  }
+  },
+  "devDependencies": {
+    "formidable": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/merijndewit/Led-Engine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/merijndewit/Led-Engine/issues"
+  },
+  "homepage": "https://github.com/merijndewit/Led-Engine#readme"
 }
-
