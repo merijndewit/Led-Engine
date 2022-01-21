@@ -227,32 +227,26 @@ def DisplayGIF():
         return path
 
 def PlayGif():
+    global Rpercentage
+    global Gpercentage
+    global Bpercentage
     gif = Image.open("tmpImages/tmp.gif")
     while True:
         for i in range(gif.n_frames):
             gif.seek(i)
             rgb_im = gif.convert('RGB')
-            Clear()
             for y in range(ledPanelHeight):
                 for x in range(ledPanelWidth):
                     pixel = int(getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
                     pixels[pixel] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
             pixels.show()
+            time.sleep(0.2)
 
 
 
 
 def resize_gif(path, save_as=None, resize_to=None):
-    """
-    Resizes the GIF to a given length:
-
-    Args:
-        path: the path to the GIF file
-        save_as (optional): Path of the resized gif. If not set, the original gif will be overwritten.
-        resize_to (optional): new size of the gif. Format: (int, int). If not set, the original GIF will be resized to
-                              half of its size.
-    """
     all_frames = extract_and_resize_frames(path, resize_to)
 
     if not save_as:
@@ -266,11 +260,6 @@ def resize_gif(path, save_as=None, resize_to=None):
 
 
 def analyseImage(path):
-    """
-    Pre-process pass over the image to determine the mode (full or additive).
-    Necessary as assessing single frames isn't reliable. Need to know the mode
-    before processing all frames.
-    """
     im = Image.open(path)
     results = {
         'size': im.size,
@@ -292,12 +281,6 @@ def analyseImage(path):
 
 
 def extract_and_resize_frames(path, resize_to=None):
-    """
-    Iterate the GIF, extracting each frame and resizing them
-
-    Returns:
-        An array of all frames
-    """
     mode = analyseImage(path)['mode']
 
     im = Image.open(path)
@@ -313,21 +296,10 @@ def extract_and_resize_frames(path, resize_to=None):
 
     try:
         while True:
-            # print("saving %s (%s) frame %d, %s %s" % (path, mode, i, im.size, im.tile))
-
-            '''
-            If the GIF uses local colour tables, each frame will have its own palette.
-            If not, we need to apply the global palette to the new frame.
-            '''
             if not im.getpalette():
                 im.putpalette(p)
 
             new_frame = Image.new('RGBA', im.size)
-
-            '''
-            Is this file a "partial"-mode GIF where frames update a region of a different size to the entire image?
-            If so, we need to construct the new frame by pasting it on top of the preceding frames.
-            '''
             if mode == 'partial':
                 new_frame.paste(last_frame)
 
