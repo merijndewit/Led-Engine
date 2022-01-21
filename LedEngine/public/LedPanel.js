@@ -372,6 +372,11 @@ function urlChanged(value)
   socket.emit('msg','{"Url":"'+value.value+'"}');
 }
 
+function gifURLChanged(value)
+{
+  socket.emit('msg','{"gifUrl":"'+value.value+'"}');
+}
+
 //only used for debugging
 //Note: this doesnt refresh the led panel
 function refresh()

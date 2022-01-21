@@ -105,6 +105,12 @@ def CheckInput():
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
+        elif ("LoadgifUrl" in aDict):
+            path = Ledstrip.DisplayGIF()
+            gifProcess = multiprocessing.Process(target=Ledstrip.PlayGif, args=()) #multiprocessing so we can stop the process
+            gifProcess.start()
+        elif ("gifUrl" in aDict):
+            Ledstrip.UpdategifUrl(aDict["gifUrl"])
         elif ("setConfigPanelWidth" in aDict):
             jsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
         elif ("setConfigPanelHeight" in aDict):
