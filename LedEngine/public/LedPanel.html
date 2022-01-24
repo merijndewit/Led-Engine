@@ -40,7 +40,7 @@
   <br>
   <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
   <button id="MakePicture" class="createPicture">Save</button>
-</div>>
+</div>
 
 <div class="Panel">
   <strong>Load Image</strong>
@@ -54,13 +54,18 @@
   <button id="LoadgifUrl" class="LoadgifUrl">Load</button>
   <button id="StopgifUrl" class="StopgifUrl">Stop</button>
   <br>
+  <form action="upload" method="post" enctype="multipart/form-data">
+	  <input type="file" name="filetoupload"><br>
+	  <input type="submit">
+	</form>
+  <br>
   <small>Search for saved images:</small>
   <button id="searchImages" class="searchImages">Search</button>
   <ul2 id="ListImages"></ul2>
   <br>
   <strong id="noSizeSpecified"></strong>>
 
-</div>>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="LedPanel.js"></script>

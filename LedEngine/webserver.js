@@ -1,4 +1,4 @@
-const WebPort = 80;
+const WebPort = 8080;
 
 // set remote address and ports
 const UdpListenPort = 3000;
@@ -12,6 +12,8 @@ var path = require('path');
 var io = require('socket.io','net')(http) 
 var buffer = require('buffer');
 const dgram = require('dgram');
+var formidable = require('formidable');
+
 
 // start webserver
 http.listen(WebPort, function() 
@@ -68,6 +70,26 @@ function handler (req, res)
 		    return res.end(content,'utf8');
 		}
     });
+
+
+	
+	if (req.url == '/upload') {
+		var form = new formidable.IncomingForm();
+		form.parse(req, function (err, fields, files) {
+		  var oldpath = files.filetoupload.filepath;
+		  var newpath = 'uploads/' + files.filetoupload.originalFilename;
+		  fs.rename(oldpath, newpath, function (err) {
+			if (err) throw err;
+			res.write('File uploaded and moved!');
+			res.end();
+		  });
+	 });
+	}
+
+
+
+
+
 }
 
 process.on('SIGINT', function ()  //ctrl-c

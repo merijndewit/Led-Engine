@@ -74,6 +74,10 @@ def setPixel(x, y, color):
     pixelArray[int(x)][int(y)] = color
     pixel = int(getPixelNumber(x, y))
     pixels[pixel] = (int(color[:2], 16) * (Rpercentage / 100)*(ledBrightness / 100), int(color[2:4], 16) * (Gpercentage / 100)*(ledBrightness / 100), int(color[4:6], 16) * (Bpercentage / 100)*(ledBrightness / 100))  
+    print("R:" + str(int(color[:2], 16) * (Rpercentage / 100)*(ledBrightness / 100)))
+    print("G:" + str(int(color[2:4], 16) * (Gpercentage / 100)*(ledBrightness / 100)))
+    print("B:" + str(int(color[4:6], 16) * (Bpercentage / 100)*(ledBrightness / 100)))
+    
     pixels.show()
 
 # get pixel number with lookup table methode
