@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="/img/icon.png">
+    <title>LED-Engine</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+<body>
+  <img src="/img/banner.png" alt="Banner Led Engine" width="12%" height="auto">
+  <ul>
+    <li><a href="index.html">Static Color</a></li>
+    <li><a href="Modes.html">Modes</a></li>
+    <li><a href="LedPanel.html">Led Panel</a></li>
+    <li><a href="Settings.html">Setup</a></li>
+  </ul>
+
+
+<div class="Brightness">
+  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+</div>
+<div>
+<strong>File has been uploaded</strong>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>

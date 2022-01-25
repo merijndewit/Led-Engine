@@ -189,6 +189,7 @@ def DisplayImageFile(imageName):
 def DownscaleImage(imagePath, newName):
     global ledPanelWidth
     global ledPanelHeight
+    print("aaaaaaaaaaaaLoading: "+imagePath)
     image = Image.open(imagePath)
     resized_image = image.resize((ledPanelWidth,ledPanelHeight))
     #resized_image.save('savedImages/'+'new'+ '.png')
@@ -217,30 +218,50 @@ def DisplayUrl():
 
     print("no url entered")
 
+def LoadUploadedFile():
+    path = "uploads"
+    imageName = "tmp.png"
+    files = os.listdir(path)
+
+    if (files == ""):
+        return
+    for f in files:
+        if (f != ""):
+            filePath = path+"/"+str(f)
+            DownscaleImage(filePath, "tmp.png")
+            os.remove(filePath)
+    return DisplayImageFile(imageName)
+
 def sendToClient(message):
     import Controller
     Controller.sendToClient(message)
 
 def DisplayGIF():
+    global ledPanelHeight
+    global ledPanelWidth
     global gifUrl
     if gifUrl != "":
         imageName = "tmp.gif"
         path = "tmpImages/" + imageName
         urllib.request.urlretrieve(gifUrl, path)
-        resize_gif(path, None, (16, 16))
+        resize_gif(path, None, (ledPanelWidth, ledPanelHeight))
         return path
 
 def PlayGif():
+    global ledPanelHeight
+    global ledPanelWidth
     global Rpercentage
     global Gpercentage
     global Bpercentage
     gif = Image.open("tmpImages/tmp.gif")
+    
     while True:
         for i in range(gif.n_frames):
             gif.seek(i)
             rgb_im = gif.convert('RGB')
             for y in range(ledPanelHeight):
                 for x in range(ledPanelWidth):
+                    print(x, y)
                     pixel = int(getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
                     pixels[pixel] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))

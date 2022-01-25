@@ -70,26 +70,20 @@ function handler (req, res)
 		    return res.end(content,'utf8');
 		}
     });
-
-
 	
-	if (req.url == '/upload') {
+	if (req.url == '/FileUploaded.html') 
+	{
 		var form = new formidable.IncomingForm();
-		form.parse(req, function (err, fields, files) {
-		  var oldpath = files.filetoupload.filepath;
-		  var newpath = 'uploads/' + files.filetoupload.originalFilename;
-		  fs.rename(oldpath, newpath, function (err) {
-			if (err) throw err;
-			res.write('File uploaded and moved!');
-			res.end();
-		  });
-	 });
+		form.parse(req, function (err, fields, files) 
+		{
+		  	var oldpath = files.filetoupload.filepath;
+		  	var newpath = 'uploads/' + files.filetoupload.originalFilename;
+		  	fs.rename(oldpath, newpath, function (err) 
+			{
+				if (err) throw err;
+		  	});
+	 	});
 	}
-
-
-
-
-
 }
 
 process.on('SIGINT', function ()  //ctrl-c

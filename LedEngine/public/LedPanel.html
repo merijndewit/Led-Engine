@@ -40,7 +40,7 @@
   <br>
   <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
   <button id="MakePicture" class="createPicture">Save</button>
-</div>
+</div>>
 
 <div class="Panel">
   <strong>Load Image</strong>
@@ -54,10 +54,11 @@
   <button id="LoadgifUrl" class="LoadgifUrl">Load</button>
   <button id="StopgifUrl" class="StopgifUrl">Stop</button>
   <br>
-  <form action="upload" method="post" enctype="multipart/form-data">
-	  <input type="file" name="filetoupload"><br>
+  <form action="FileUploaded.html" method="post" enctype="multipart/form-data">
+	  <input type="file" name="filetoupload">
 	  <input type="submit">
 	</form>
+  <button id="LoadUploadedFile" class="LoadUploadedFile">Load Uploaded Image</button>
   <br>
   <small>Search for saved images:</small>
   <button id="searchImages" class="searchImages">Search</button>

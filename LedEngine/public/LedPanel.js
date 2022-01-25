@@ -409,3 +409,8 @@ function Start()
   //here we read the json file for the previous settings
   socket.emit('msg','{"RequestJSONdata":"1"}');
 }
+
+function awa(e)
+{
+  console.log("AAAAWWWWWDDDDD: "+e)
+}

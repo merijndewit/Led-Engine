@@ -121,6 +121,11 @@ def CheckInput():
             data = jsonHelper.GetDecodedJSON()
             string = json.dumps({'JSONdata':[data]})
             sockRX.sendto( string.encode('utf-8'), addr)
+        elif ("LoadUploadedFile" in aDict):
+            pixelsToSend = []
+            pixelsToSend = Ledstrip.LoadUploadedFile()
+            for i in range(len(pixelsToSend)):
+                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
 
 
 
