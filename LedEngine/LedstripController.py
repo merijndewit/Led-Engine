@@ -189,7 +189,6 @@ def DisplayImageFile(imageName):
 def DownscaleImage(imagePath, newName):
     global ledPanelWidth
     global ledPanelHeight
-    print("aaaaaaaaaaaaLoading: "+imagePath)
     image = Image.open(imagePath)
     resized_image = image.resize((ledPanelWidth,ledPanelHeight))
     #resized_image.save('savedImages/'+'new'+ '.png')
@@ -261,15 +260,11 @@ def PlayGif():
             rgb_im = gif.convert('RGB')
             for y in range(ledPanelHeight):
                 for x in range(ledPanelWidth):
-                    print(x, y)
                     pixel = int(getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
                     pixels[pixel] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
             pixels.show()
             time.sleep(0.2)
-
-
-
 
 def resize_gif(path, save_as=None, resize_to=None):
     all_frames = extract_and_resize_frames(path, resize_to)
@@ -278,63 +273,18 @@ def resize_gif(path, save_as=None, resize_to=None):
         save_as = path
 
     if len(all_frames) == 1:
-        print("Warning: only 1 frame found")
         all_frames[0].save(save_as, optimize=True)
     else:
         all_frames[0].save(save_as, optimize=True, save_all=True, append_images=all_frames[1:], loop=1000)
 
-
-def analyseImage(path):
-    im = Image.open(path)
-    results = {
-        'size': im.size,
-        'mode': 'full',
-    }
-    try:
-        while True:
-            if im.tile:
-                tile = im.tile[0]
-                update_region = tile[1]
-                update_region_dimensions = update_region[2:]
-                if update_region_dimensions != im.size:
-                    results['mode'] = 'partial'
-                    break
-            im.seek(im.tell() + 1)
-    except EOFError:
-        pass
-    return results
-
-
 def extract_and_resize_frames(path, resize_to=None):
-    mode = analyseImage(path)['mode']
-
     im = Image.open(path)
-
-    if not resize_to:
-        resize_to = (im.size[0] // 2, im.size[1] // 2)
-
-    i = 0
-    p = im.getpalette()
-    last_frame = im.convert('RGBA')
-
     all_frames = []
-
     try:
         while True:
-            if not im.getpalette():
-                im.putpalette(p)
-
-            new_frame = Image.new('RGBA', im.size)
-            if mode == 'partial':
-                new_frame.paste(last_frame)
-
-            new_frame.paste(im, (0, 0), im.convert('RGBA'))
-
-            new_frame.thumbnail(resize_to, Image.ANTIALIAS)
+            im.convert('RGB')
+            new_frame = im.resize((16,16))
             all_frames.append(new_frame)
-
-            i += 1
-            last_frame = new_frame
             im.seek(im.tell() + 1)
     except EOFError:
         pass
