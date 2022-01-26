@@ -8,6 +8,7 @@ import requests
 from io import BytesIO
 import urllib.request
 import json
+import random
 
 
 pixelCount = 320
@@ -325,3 +326,73 @@ def LoadJsonValues():
 
     NewPixelArray()
     print("json values loaded")
+
+LoadJsonValues()
+
+def make2DArray(cols, rows):
+    listRow = [0] * cols
+    listCol = []
+    for i in range(cols): 
+        listCol.append(listRow)
+    return listCol
+
+grid = []
+cols = 16
+rows = 16
+
+def setupGameOfLife():
+    global grid
+    global cols
+    global rows
+
+    listRow = [0] * rows
+    listCol = []
+    for i in range(cols): 
+        for j in range(rows):
+            listRow[j] = int(random.randint(0, 1))
+        listCol.append(listRow)
+        listRow = [0] * cols
+    grid = listCol
+
+    draw()
+
+def draw():
+    global grid
+    global cols
+    global rows
+    for i in range(cols):
+        for j in range(rows):
+            pixel = getPixelNumber(j, i)
+            if (grid[i][j] == 1):
+                pixels[pixel] = (0.5, 1, 0.5)
+            else:
+                pixels[pixel] = (0, 0, 0)
+    pixels.show()
+    listCol = []
+    listRow = [0] * rows
+    for i in range(cols):
+        for j in range(rows):
+            state = grid[i][j]
+            neighbors = countNeighbors(grid, i, j)
+            if (state == 0 and neighbors == 3):
+                listRow[j] = 1
+            elif (state == 1 and (neighbors < 2 or neighbors > 3)):
+                listRow[j] = 0
+            else:
+                listRow[j] = state
+        listCol.append(listRow)
+        listRow = [0] * cols
+    grid = listCol
+    draw()
+
+def countNeighbors(grid, x, y):
+    sum = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            col = (x + i + cols) % cols
+            row = (y + j + rows) % rows
+            sum += grid[col][row]
+    sum -= grid[x][y];
+    return sum;
+
+#setupGameOfLife()
