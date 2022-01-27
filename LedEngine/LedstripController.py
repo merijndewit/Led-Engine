@@ -4,12 +4,9 @@ import time
 import colorsys
 from PIL import Image
 import os
-import requests
-from io import BytesIO
 import urllib.request
 import json
 import random
-
 
 pixelCount = 320
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
@@ -333,7 +330,7 @@ def make2DArray(cols, rows):
     listRow = [0] * cols
     listCol = []
     for i in range(cols): 
-        listCol.append(listRow)
+        listCol.append(listRow.copy())
     return listCol
 
 grid = []
@@ -395,3 +392,81 @@ def countNeighbors(grid, x, y):
             sum += grid[col][row]
     sum -= grid[x][y];
     return sum;
+
+antGrid = [];
+x = 0;
+y = 0;
+dir = 0;
+color = (0, 0, 0)
+
+ANTUP = 0;
+ANTRIGHT = 1;
+ANTDOWN = 2;
+ANTLEFT = 3;
+
+def StartAnt():
+    global antGrid, x, y, dir
+    antGrid = make2DArray(ledPanelWidth, ledPanelHeight)
+    x = int(ledPanelWidth / 2)
+    y = int(ledPanelHeight / 2)
+    dir = ANTUP
+    drawAnt()
+
+def turnRight():
+    global dir
+    dir += 1
+    if (dir > ANTLEFT):
+        dir = ANTUP
+  
+def turnLeft():
+    global dir
+    dir -= 1
+    if (dir < ANTUP):
+        dir = ANTLEFT
+
+def moveForward():
+    global x, y, dir, color
+
+    if (dir == ANTUP):
+        color = (2, 0, 1.5)
+        y -= 1 
+    elif (dir == ANTRIGHT):
+        color = (2, 1.5, 0)
+        x += 1
+    elif (dir == ANTDOWN):
+        color = (2, 1.5, 1.5)
+        y += 1
+    elif (dir == ANTLEFT):
+        color = (2, 0, 0)
+        x -= 1
+
+    if (x > ledPanelWidth - 1):
+        x = 0
+    elif (x < 0):
+        x = ledPanelWidth - 1
+    if (y > ledPanelHeight - 1):
+        y = 0
+    elif (y < 0) :
+        y = ledPanelHeight - 1
+
+def drawAnt():
+    global x, y, dir, color
+
+    for n in range(100):
+        state = antGrid[x][y]
+        if (state == 0):
+            turnRight()
+            antGrid[x][y] = 1
+        elif (state == 1):
+            turnLeft()
+            antGrid[x][y] = 0
+        if (antGrid[x][y] == 1):
+            color = (0, 0, 0)
+
+        pixel = getPixelNumber(x, y)
+        pixels[pixel] = (color)
+
+        moveForward()
+        #time.sleep(0.05)
+        pixels.show()
+    drawAnt()

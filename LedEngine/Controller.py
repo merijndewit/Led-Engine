@@ -130,13 +130,18 @@ def CheckInput():
             if (aDict["startGameOfLife"] == 1):
                 gameOfLifeProcess = multiprocessing.Process(target=Ledstrip.startGameOfLife, args=())
                 gameOfLifeProcess.start()
-                print("Started Game of life")
         elif ("stopGameOfLife" in aDict):
             if (aDict["stopGameOfLife"] == 1):
                 gameOfLifeProcess.terminate()
                 Ledstrip.Clear()
+        elif ("startAnt" in aDict):
+            if (aDict["startAnt"] == 1):
+                antProcess = multiprocessing.Process(target=Ledstrip.StartAnt, args=())
+                antProcess.start()
+        elif ("stopAnt" in aDict):
+            antProcess.terminate()
 
-
+        
 
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists('./config.json') != 1):
@@ -146,7 +151,6 @@ def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     else: #Load all values that where set previously by the user
         Ledstrip.LoadJsonValues()
 
-
 #start
 if __name__ == "__main__":
     newclient()
@@ -155,7 +159,7 @@ if __name__ == "__main__":
     mainProcess.start()
 
 while True:
-    sleep(10)
+    sleep(1)
 
 
 
