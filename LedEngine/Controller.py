@@ -126,6 +126,15 @@ def CheckInput():
             pixelsToSend = Ledstrip.LoadUploadedFile()
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+        elif ("startGameOfLife" in aDict):
+            if (aDict["startGameOfLife"] == 1):
+                gameOfLifeProcess = multiprocessing.Process(target=Ledstrip.startGameOfLife, args=())
+                gameOfLifeProcess.start()
+                print("Started Game of life")
+        elif ("stopGameOfLife" in aDict):
+            if (aDict["stopGameOfLife"] == 1):
+                gameOfLifeProcess.terminate()
+                Ledstrip.Clear()
 
 
 

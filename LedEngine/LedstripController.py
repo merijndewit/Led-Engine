@@ -340,7 +340,7 @@ grid = []
 cols = 16
 rows = 16
 
-def setupGameOfLife():
+def startGameOfLife():
     global grid
     global cols
     global rows
@@ -368,6 +368,7 @@ def draw():
             else:
                 pixels[pixel] = (0, 0, 0)
     pixels.show()
+    time.sleep(0.1)
     listCol = []
     listRow = [0] * rows
     for i in range(cols):
@@ -394,5 +395,3 @@ def countNeighbors(grid, x, y):
             sum += grid[col][row]
     sum -= grid[x][y];
     return sum;
-
-#setupGameOfLife()
