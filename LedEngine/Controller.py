@@ -140,6 +140,12 @@ def CheckInput():
                 antProcess.start()
         elif ("stopAnt" in aDict):
             antProcess.terminate()
+        elif ("startBriansBrain" in aDict):
+            if (aDict["startBriansBrain"] == 1):
+                BrainProcess = multiprocessing.Process(target=Ledstrip.startBriansBrain, args=())
+                BrainProcess.start()
+        elif ("stopBriansBrain" in aDict):
+            BrainProcess.terminate()
 
         
 

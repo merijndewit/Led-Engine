@@ -470,3 +470,59 @@ def drawAnt():
         #time.sleep(0.05)
         pixels.show()
     drawAnt()
+
+
+def startBriansBrain():
+    global grid
+    global cols
+    global rows
+
+    listRow = [0] * rows
+    listCol = []
+    for i in range(cols): 
+        for j in range(rows):
+            listRow[j] = int(random.randint(0, 2))
+        listCol.append(listRow)
+        listRow = [0] * cols
+    grid = listCol
+    drawBriansBrain()
+
+def drawBriansBrain():
+    global grid
+    global cols
+    global rows
+    for i in range(cols):
+        for j in range(rows):
+            pixel = getPixelNumber(j, i)
+            if (grid[i][j] == 1):
+                pixels[pixel] = (0, 1, 0)
+            elif(grid[i][j] == 2):
+                pixels[pixel] = (1, 0, 0)
+            else:
+                pixels[pixel] = (0, 0, 0)
+    pixels.show()
+    
+    nextGrid = grid
+    for i in range(cols):
+        for j in range(rows):
+            if (grid[i][j] == 2):
+                nextGrid[i][j] = 1 #set the cell to dying state
+            elif (grid[i][j] == 1):
+                nextGrid[i][j] = 0
+            elif (grid[i][j] == 0):
+                neighbors = countNeighborsBriansBrain(grid, i, j)
+                if (neighbors == 2):
+                    nextGrid[i][j] = 2
+    grid = nextGrid
+    time.sleep(0.5)
+    drawBriansBrain()
+
+def countNeighborsBriansBrain(grid, x, y):
+    sum = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            col = (x + i + cols) % cols
+            row = (y + j + rows) % rows
+            if (grid[col][row] == 2):
+                sum += 1
+    return sum;
