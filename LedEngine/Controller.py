@@ -146,6 +146,19 @@ def CheckInput():
                 BrainProcess.start()
         elif ("stopBriansBrain" in aDict):
             BrainProcess.terminate()
+        elif ("b" in aDict):
+            #gets all values after ":"
+            xy = re.findall(r'%s(\d+)' % ":", aDict) 
+            x = int(xy[0])
+            y = int(xy[1])
+            mode = int(xy[2])
+            Ledstrip.setWireWorldPixel(x, y, mode)
+        elif ("startWireWorld" in aDict):
+            if (aDict["startWireWorld"] == 1):
+                WireWorldProcess = multiprocessing.Process(target=Ledstrip.StartWireWorld, args=())
+                WireWorldProcess.start()
+        elif ("stopWireWorld" in aDict):
+            WireWorldProcess.terminate()
 
         
 

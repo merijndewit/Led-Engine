@@ -324,7 +324,7 @@ def LoadJsonValues():
     NewPixelArray()
     print("json values loaded")
 
-LoadJsonValues()
+
 
 def make2DArray(cols, rows):
     listRow = [0] * cols
@@ -526,3 +526,67 @@ def countNeighborsBriansBrain(grid, x, y):
             if (grid[col][row] == 2):
                 sum += 1
     return sum;
+
+
+wireWorldGrid = [] # 0 = off/nothing, 1 = conductor, 2 = Electron Head, 3 = ElectronTail 
+
+def CreateWireWorld2dArray():
+    global wireWorldGrid
+    wireWorldGrid = make2DArray(ledPanelWidth, ledPanelHeight)
+
+def setWireWorldPixel(x, y, mode):
+    global wireWorldGrid
+    wireWorldGrid[x][y] = mode
+    print(wireWorldGrid)
+
+def StartWireWorld():
+    while True:
+        RunWireWorld()
+
+def RunWireWorld():
+    global wireWorldGrid
+    for j in range(cols):
+        for i in range(rows):
+            pixel = getPixelNumber(j, i)
+            if (wireWorldGrid[j][i] == 0):
+                pixels[pixel] = (0, 0, 0)
+            elif (wireWorldGrid[j][i] == 1):
+                pixels[pixel] = (1, 1, 0)
+            elif (wireWorldGrid[j][i] == 2):
+                pixels[pixel] = (0, 0, 1)
+            elif (wireWorldGrid[j][i] == 3):
+                pixels[pixel] = (1, 0, 0)
+    nextgrid = make2DArray(cols, rows)
+    pixels.show()
+    time.sleep(0.5)
+    
+    for i in range(cols):
+        for j in range(rows):
+            if (wireWorldGrid[i][j] == 1):
+                neighbors = countNeighborsWireWorld(wireWorldGrid, i, j)
+                if (neighbors == 1 or neighbors == 2):
+                    nextgrid[i][j] = 2
+                else:
+                    nextgrid[i][j] = 1
+            elif (wireWorldGrid[i][j] == 2):
+                nextgrid[i][j] = 3
+            elif (wireWorldGrid[i][j] == 3):
+                nextgrid[i][j] = 1
+    wireWorldGrid = nextgrid
+    StartWireWorld()
+
+def countNeighborsWireWorld(wireWorldGrid, x, y):
+    sum = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            col = (x + i + cols) % cols
+            row = (y + j + rows) % rows
+            if (wireWorldGrid[col][row] == 2):
+                sum += 1
+    return sum;
+
+def start():
+    LoadJsonValues()
+    CreateWireWorld2dArray()
+
+start()

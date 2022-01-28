@@ -58,17 +58,18 @@
   <button id="startBriansBrain">Start</button>
   <button id="stopBriansBrain">Stop</button>
 
-</div>
+</div>>
 
-<div class="Panel">
+<div class="Panel" id="canvasPanel">
   <strong>WireWorld:</strong>
   <br><br>
-  <button id="WireWorldEmpty" class="WireWorldEmpty"></button>
-  <button id="WireWorldConductor" class="WireWorldConductor"></button>
-  <button id="WireWorldElectronHead" class="WireWorldElectronHead"></button>
+  <button id="WireWorldEmpty" class="WireWorldEmpty" oninput="WireWorldEmpty()">Empty</button>
+  <button id="WireWorldConductor" class="WireWorldConductor" oninput="WireWorldConductor()">Conductor</button>
+  <button id="WireWorldElectronHead" class="WireWorldElectronHead" oninput="WireWorldElectronHead()">Electron Head</button>
+  <button id="WireWorldElectronTail" class="WireWorldElectronTail" oninput="WireWorldElectronTail()">Electron Tail</button>
   <br>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
-  <br>
+  <br><br>
   <button id="startWireWorld">Start</button>
   <button id="stopWireWorld">Stop</button>
 
