@@ -3,81 +3,61 @@ var socket = io();
 var rowX = 0;
 var rowY = 0;
 
-window.addEventListener("load", function(){
-  if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	{
+window.addEventListener("load", function()
+{
+  if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
+  {
     //mobile
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
-  }else{
+    document.addEventListener("touchdown", ReportMouseDown, false);
+  }
+  else
+  {
     //desktop
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
-    document.addEventListener("touchmove", ReportTouchMove, false);
-    document.addEventListener("mouseup", ReportMouseUp, false);
     document.addEventListener("mousedown", ReportMouseDown, false);
   }
   
 });
 
-function ReportOnClick(e) {
-  socket.emit('msg','{"'+e.target.id+'":2}');
-}
-
-function ReportOnDblClick(e) {
-  socket.emit('msg','{"'+e.target.id+'":3}');
-}
-
-function ReportOnMouseDown(e) {
+function ReportOnMouseDown(e) 
+{
   socket.emit('msg','{"'+e.target.id+'":1}');
 }
 
-function ReportOnMouseUp(e) {
-  socket.emit('msg','{"'+e.target.id+'":0}');
-}
-
-function ReportTouchStart(e) {
-	if (e.target.className != "serialtext") { 
+function ReportTouchStart(e) 
+{
+	if (e.target.className != "serialtext") 
+  { 
 		e.preventDefault();
 	}
-	if (e.target.className != 'range-slider') {
+	if (e.target.className != 'range-slider') 
+  {
 		socket.emit('msg','{"'+e.target.id+'":1}');
 	}
 }
 
-function ReportTouchEnd(e) {
-	if (e.target.className != "serialtext") { 
+function ReportTouchEnd(e) 
+{
+	if (e.target.className != "serialtext") 
+  { 
 		e.preventDefault();  
 	}
-	if (e.target.className != 'range-slider') {  
+	if (e.target.className != 'range-slider') 
+  {  
 		socket.emit('msg','{"'+e.target.id+'":0}');	
 	}
 	
 }
 
-function ReportTouchMove(e) {
-	if (e.target.className != "serialtext") {
-		e.preventDefault();
-	}
-	socket.emit('TouchMove',e.offsetX,e.offsetY);
-}
-
-function ReportMouseDown(e) {
-  if (e.target.className != 'range-slider') {
+function ReportMouseDown(e) 
+{
+  if (e.target.className != 'range-slider') 
+  {
     socket.emit('msg','{"'+e.target.id+'":1}');
   }
-}
-
-
-function ReportMouseUp(e) {
-  if (e.target.className === 'range-slider') {
-    console.log("volume class detected");
-  } else {
-      socket.emit('msg','{"'+e.target.id+'":0}');
-  }
-}
-
-function ReportMouseMove(e) {
-  socket.emit('TouchMove',e.offsetX,e.offsetY); 
 }
 
 var ConsoleText = "";
@@ -140,6 +120,10 @@ socket.on('FB',function (data) {
   }
 });
 
+function valueHexChanged(value)
+{
+  socket.emit('msg','{"HEX":"'+value.value+'"}');
+}
 
 function SetColor(colorValue)
 {
@@ -258,7 +242,9 @@ function mousePressed()
   {
     drawPixel(spotX, spotY, col);
     // send changed pixel to python program
-    socket.emit('msg',JSON.stringify('{"b":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"mode:"+mode+'}]'+'}'));
+    var object = {  setPixelWireWorld: { X: spotX, Y: spotY, mode: mode}}
+
+    socket.emit('msg',JSON.stringify(object));
   }
   
   else
