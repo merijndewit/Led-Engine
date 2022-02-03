@@ -10,7 +10,6 @@ var fs = require('fs');
 var url = require('url');
 var path = require('path');
 var io = require('socket.io','net')(http) 
-var buffer = require('buffer');
 const dgram = require('dgram');
 var formidable = require('formidable');
 

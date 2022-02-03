@@ -7,37 +7,21 @@ window.addEventListener("load", function()
     //mobile
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
+    document.addEventListener("touchdown", ReportMouseDown, false);
   }
   else
   {
     //desktop
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
-    document.addEventListener("touchmove", ReportTouchMove, false);
-    document.addEventListener("mouseup", ReportMouseUp, false);
     document.addEventListener("mousedown", ReportMouseDown, false);
   }
   
 });
 
-function ReportOnClick(e) 
-{
-  socket.emit('msg','{"'+e.target.id+'":2}');
-}
-
-function ReportOnDblClick(e) 
-{
-  socket.emit('msg','{"'+e.target.id+'":3}');
-}
-
 function ReportOnMouseDown(e) 
 {
   socket.emit('msg','{"'+e.target.id+'":1}');
-}
-
-function ReportOnMouseUp(e) 
-{
-  socket.emit('msg','{"'+e.target.id+'":0}');
 }
 
 function ReportTouchStart(e) 
@@ -65,37 +49,12 @@ function ReportTouchEnd(e)
 	
 }
 
-function ReportTouchMove(e) 
-{
-	if (e.target.className != "serialtext") 
-  {
-		e.preventDefault();
-	}
-	socket.emit('TouchMove',e.offsetX,e.offsetY);
-}
-
 function ReportMouseDown(e) 
 {
   if (e.target.className != 'range-slider') 
   {
     socket.emit('msg','{"'+e.target.id+'":1}');
   }
-}
-
-function ReportMouseUp(e) 
-{
-  if (e.target.className === 'range-slider') 
-  {
-    console.log("volume class detected");
-  } else 
-  {
-    socket.emit('msg','{"'+e.target.id+'":0}');
-  }
-}
-
-function ReportMouseMove(e) 
-{
-  socket.emit('TouchMove',e.offsetX,e.offsetY); 
 }
 
 var ConsoleText = "";
@@ -168,6 +127,10 @@ socket.on('FB',function (data) {
       {
         document.getElementById("BlueCalibrationPercentage").value = obj2.JSONdata[0].blueCalibration;
       }
+      if (obj2.JSONdata[0].LedCount)
+      {
+        document.getElementById("configPanelLedCount").value = obj2.JSONdata[0].LedCount;
+      }
       if (obj2.JSONdata[0].brightnessValue)
       {
         document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
@@ -214,6 +177,15 @@ function BlueCalibrationChanged(value)
     socket.emit('msg','{"BlueCalibration":"'+value.value+'"}');
   }
 }
+
+function configPanelLedCountChanged(value)
+{
+  if (value.value != 0)
+  {
+    socket.emit('msg','{"LedCount":"'+value.value+'"}');
+  }
+}
+
 
 function configPanelWidthChanged(value)
 {
