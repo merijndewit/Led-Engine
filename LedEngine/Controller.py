@@ -48,10 +48,10 @@ def CheckInput():
         elif (key in aDict):
             string = str(aDict[key]).lstrip("#")
             Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
-        elif (JsonStr.find('{"rainbowButton":0}') != -1):
+        elif ("rainbowButton" in aDict):
             rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
             rainbow.start()
-        elif (JsonStr.find('{"stopButton":0}') != -1):
+        elif ("stopButton" in aDict):
             rainbow.terminate()
             Ledstrip.Clear()
         elif ("A1" in aDict):
@@ -66,16 +66,12 @@ def CheckInput():
             if (aDict["SpeedInput"] != "0"):
                 speedValue = int(aDict["SpeedInput"])
                 Ledstrip.SetSpeedValue(speedValue)
-        elif ("a" in aDict):
+        elif ("setPixel" in aDict):
             #gets all values after ":"
-            xy = re.findall(r'%s(\d+)' % ":", aDict) 
-            x = xy[0]
-            y = xy[1]
-            #hexcode has letters so the above methode doesnt work
-            #here we get every character after #
-            hexString = (aDict.partition("#")[2]) 
-            color = hexString[:6]
-            Ledstrip.setPixel(x, y, color)
+            x = aDict["setPixel"].get("X")
+            y = aDict["setPixel"].get("Y")
+            hexString = aDict["setPixel"].get("color")
+            Ledstrip.setPixel(x, y, hexString)
         elif ("ClearPixels" in aDict):
             Ledstrip.Clear()
         elif ("RedCalibration" in aDict):
@@ -87,6 +83,9 @@ def CheckInput():
         elif ("BlueCalibration" in aDict):
             Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
             jsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
+        elif ("LedCount" in aDict):
+            Ledstrip.BlueCalibration(int(aDict["LedCount"]))
+            jsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
         elif ("MakePicture" in aDict):
             Ledstrip.CreateImage()
         elif ("ImageName" in aDict):
@@ -146,12 +145,12 @@ def CheckInput():
                 BrainProcess.start()
         elif ("stopBriansBrain" in aDict):
             BrainProcess.terminate()
-        elif ("b" in aDict):
+        elif ("setPixelWireWorld" in aDict):
             #gets all values after ":"
-            xy = re.findall(r'%s(\d+)' % ":", aDict) 
-            x = int(xy[0])
-            y = int(xy[1])
-            mode = int(xy[2])
+            x = aDict["setPixelWireWorld"].get("X")
+            y = aDict["setPixelWireWorld"].get("Y")
+            mode = aDict["setPixelWireWorld"].get("mode")
+            print("setPixel", x, y, mode)
             Ledstrip.setWireWorldPixel(x, y, mode)
         elif ("startWireWorld" in aDict):
             if (aDict["startWireWorld"] == 1):
