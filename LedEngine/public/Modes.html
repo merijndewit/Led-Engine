@@ -8,7 +8,7 @@
 <body>
   <img src="/img/banner.png" alt="Banner Led Engine" width="12%" height="auto">
   <ul>
-    <li><a href="index.html">Static Color</a></li>
+    <li><a href="index.html">Index</a></li>
     <li><a href="Modes.html">Modes</a></li>
     <li><a href="LedPanel.html">Led Panel</a></li>
     <li><a href="Settings.html">Setup</a></li>
@@ -22,57 +22,69 @@
   <h1>Modes:</h1>
   <br>
 </div>
-<div class="RainbowMode">
-  <strong>Rainbow Mode:</strong>
-  <br><br>
-  <b>Wave Length:</b>
-  <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
-  <br>
-  <b>Speed:</b>
-  <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
-  <br><br>
-  <button id="rainbowButton">Start</button>
-  <button id="stopButton">Stop</button>
-  <br>
-</div>>
+<div class="Panel">
+  <strong>LED-Strip:</strong>
+  <div class="Panel">
+    <strong>Static Color</strong>
+    <input type="color" id="colorChoice" oninput="valueHexChanged(this)">
+  </div>
+<br>
+  <div class="Panel">
+    <strong>Rainbow Mode:</strong>
+    <br><br>
+    <b>Wave Length:</b>
+    <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
+    <br>
+    <b>Speed:</b>
+    <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
+    <br><br>
+    <button id="rainbowButton">Start</button>
+    <button id="stopButton">Stop</button>
+    <br>
+  </div>
+</div>
+<br>
 
 <div class="Panel">
-  <strong>Conway's Game of Life:</strong>
-  <br><br>
-  <button id="startGameOfLife">Start</button>
-  <button id="stopGameOfLife">Stop</button>
+  <strong>LED-Panel:</strong>
+  <div class="Panel">
+    <strong>Conway's Game of Life:</strong>
+    <br><br>
+    <button id="startGameOfLife">Start</button>
+    <button id="stopGameOfLife">Stop</button>
+    <br>
+  </div>
   <br>
-</div>>
+  <div class="Panel">
+    <strong>Langton's Ant:</strong>
+    <br><br>
+    <button id="startAnt">Start</button>
+    <button id="stopAnt">Stop</button>
 
-<div class="Panel">
-  <strong>Langton's Ant:</strong>
-  <br><br>
-  <button id="startAnt">Start</button>
-  <button id="stopAnt">Stop</button>
-
-</div>>
-
-<div class="Panel">
-  <strong>Brian's Brain:</strong>
-  <br><br>
-  <button id="startBriansBrain">Start</button>
-  <button id="stopBriansBrain">Stop</button>
-
-</div>>
-
-<div class="Panel" id="canvasPanel">
-  <strong>WireWorld:</strong>
-  <br><br>
-  <button id="WireWorldEmpty" class="WireWorldEmpty" oninput="WireWorldEmpty()">Empty</button>
-  <button id="WireWorldConductor" class="WireWorldConductor" oninput="WireWorldConductor()">Conductor</button>
-  <button id="WireWorldElectronHead" class="WireWorldElectronHead" oninput="WireWorldElectronHead()">Electron Head</button>
-  <button id="WireWorldElectronTail" class="WireWorldElectronTail" oninput="WireWorldElectronTail()">Electron Tail</button>
+  </div>
   <br>
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
-  <br><br>
-  <button id="startWireWorld">Start</button>
-  <button id="stopWireWorld">Stop</button>
+  <div class="Panel">
+    <strong>Brian's Brain:</strong>
+    <br><br>
+    <button id="startBriansBrain">Start</button>
+    <button id="stopBriansBrain">Stop</button>
 
+  </div>
+  <br>
+  <div class="Panel" id="canvasPanel">
+    <strong>WireWorld:</strong>
+    <br><br>
+    <button id="WireWorldEmpty" class="WireWorldEmpty" oninput="WireWorldEmpty()">Empty</button>
+    <button id="WireWorldConductor" class="WireWorldConductor" oninput="WireWorldConductor()">Conductor</button>
+    <button id="WireWorldElectronHead" class="WireWorldElectronHead" oninput="WireWorldElectronHead()">Electron Head</button>
+    <button id="WireWorldElectronTail" class="WireWorldElectronTail" oninput="WireWorldElectronTail()">Electron Tail</button>
+    <br>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+    <br><br>
+    <button id="startWireWorld">Start</button>
+    <button id="stopWireWorld">Stop</button>
+
+  </div>
 </div>
 
 
