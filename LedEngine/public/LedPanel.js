@@ -12,27 +12,17 @@ window.addEventListener("load", function()
     //mobile
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
+    document.addEventListener("touchdown", ReportMouseDown, false);
   }
   else
   {
     //desktop
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
-    document.addEventListener("touchmove", ReportTouchMove, false);
     document.addEventListener("mousedown", ReportMouseDown, false);
   }
   
 });
-
-function ReportOnClick(e) 
-{
-  socket.emit('msg','{"'+e.target.id+'":2}');
-}
-
-function ReportOnDblClick(e) 
-{
-  socket.emit('msg','{"'+e.target.id+'":3}');
-}
 
 function ReportOnMouseDown(e) 
 {
@@ -64,15 +54,6 @@ function ReportTouchEnd(e)
 	
 }
 
-function ReportTouchMove(e) 
-{
-	if (e.target.className != "serialtext") 
-  {
-		e.preventDefault();
-	}
-	socket.emit('TouchMove',e.offsetX,e.offsetY);
-}
-
 function ReportMouseDown(e) 
 {
   if (e.target.className != 'range-slider') 
@@ -81,21 +62,6 @@ function ReportMouseDown(e)
   }
 }
 
-function ReportMouseUp(e) 
-{
-  if (e.target.className === 'range-slider') 
-  {
-    console.log("volume class detected");
-  } else 
-  {
-      socket.emit('msg','{"'+e.target.id+'":0}');
-  }
-}
-
-function ReportMouseMove(e) 
-{
-  socket.emit('TouchMove',e.offsetX,e.offsetY); 
-}
 
 var ConsoleText = "";
 
@@ -295,7 +261,10 @@ function mousePressed()
     {
       drawPixel(spotX, spotY, col);
       // send changed pixel to python program
-      socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+      //socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+      var object = {  setPixel: { X: spotX, Y: spotY, color: col}}
+
+      socket.emit('msg',JSON.stringify(object));
     }
   }
   else
