@@ -8,7 +8,7 @@ import urllib.request
 import json
 import random
 
-pixelCount = 320
+pixelCount = 256
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
 ledBrightness = 100
 #rainbow variables
@@ -23,8 +23,76 @@ ledPanelWidth = 0
 ledPanelHeight = 0
 
 pixelArray = []
+wireWorldGrid = [] # 0 = off/nothing, 1 = conductor, 2 = Electron Head, 3 = ElectronTail 
 
 imageName = ""
+
+def NewPixelArray():
+    global pixelArray
+    global ledPanelWidth
+    global ledPanelHeight
+    for i in range(ledPanelWidth):
+        rowY = []
+        for ii in range(ledPanelHeight):
+            rowY.append('#000000')
+        pixelArray.append(rowY)
+
+def make2DArray(cols, rows):
+    listRow = [0] * cols
+    listCol = []
+    for i in range(cols): 
+        listCol.append(listRow.copy())
+    return listCol
+
+def CreateWireWorld2dArray():
+    global wireWorldGrid
+    wireWorldGrid = make2DArray(ledPanelWidth, ledPanelHeight)
+
+def LoadJsonValues():
+    jsonFile = "config.json"
+    global Rpercentage
+    global Gpercentage
+    global Bpercentage
+    global pixelCount
+    global ledBrightness
+    global ledPanelWidth
+    global ledPanelHeight
+
+    with open(jsonFile) as json_file:
+        json_decoded = json.load(json_file)
+
+    if not (json_decoded.get('redCalibration') is None):
+        Rpercentage = int(json_decoded["redCalibration"])
+    else:
+        Rpercentage = 100
+    if not (json_decoded.get('greenCalibration') is None):
+        Gpercentage = int(json_decoded["greenCalibration"])
+    else:
+        Gpercentage = 100
+    if not (json_decoded.get('blueCalibration') is None):
+        Bpercentage = int(json_decoded["blueCalibration"])
+    else:
+        Bpercentage = 100
+    if not (json_decoded.get('LedCount') is None):
+        pixelCount = int(json_decoded.get('LedCount'))
+    if not (json_decoded.get('brightnessValue') is None):
+        ledBrightness = int(json_decoded["brightnessValue"])
+    else:
+        ledBrightness = 100
+    if not (json_decoded.get('LEDPanelWidth') is None):
+        ledPanelWidth = int(json_decoded["LEDPanelWidth"])
+    if not (json_decoded.get('LEDPanelHeight') is None):
+        ledPanelHeight = int(json_decoded["LEDPanelHeight"])
+
+
+    print("json values loaded")
+
+def start():
+    LoadJsonValues()
+    NewPixelArray()
+    CreateWireWorld2dArray()
+
+start()
 
 def Clear():
     pixels.fill((0, 0, 0))
@@ -71,10 +139,7 @@ def setPixel(x, y, color):
     global pixelArray
     pixelArray[int(x)][int(y)] = color
     pixel = int(getPixelNumber(x, y))
-    pixels[pixel] = (int(color[:2], 16) * (Rpercentage / 100)*(ledBrightness / 100), int(color[2:4], 16) * (Gpercentage / 100)*(ledBrightness / 100), int(color[4:6], 16) * (Bpercentage / 100)*(ledBrightness / 100))  
-    print("R:" + str(int(color[:2], 16) * (Rpercentage / 100)*(ledBrightness / 100)))
-    print("G:" + str(int(color[2:4], 16) * (Gpercentage / 100)*(ledBrightness / 100)))
-    print("B:" + str(int(color[4:6], 16) * (Bpercentage / 100)*(ledBrightness / 100)))
+    pixels[pixel] = (int(color[1:3], 16) * (Rpercentage / 100)*(ledBrightness / 100), int(color[3:5], 16) * (Gpercentage / 100)*(ledBrightness / 100), int(color[5:7], 16) * (Bpercentage / 100)*(ledBrightness / 100))
     
     pixels.show()
 
@@ -115,7 +180,6 @@ def getPixelNumber(corX, corY):
 def RedCalibration(percentage):
     global Rpercentage
     Rpercentage = percentage
-
 def GreenCalibration(percentage):
     global Gpercentage
     Gpercentage = percentage
@@ -123,17 +187,9 @@ def BlueCalibration(percentage):
     global Bpercentage
     Bpercentage = percentage
 
-
-def NewPixelArray():
-    global pixelArray
-    global ledPanelWidth
-    global ledPanelHeight
-    for i in range(ledPanelWidth):
-        rowY = []
-        for ii in range(ledPanelHeight):
-            rowY.append('#000000')
-        pixelArray.append(rowY)
-
+def setLedCount(ledCount):
+    global pixelCount
+    pixelCount = ledCount
 
 def CreateImage():
     global pixelArray
@@ -168,7 +224,6 @@ def DisplayImageFile(imageName):
     global Rpercentage
     global Gpercentage
     global Bpercentage
-    print(Rpercentage, Gpercentage, Bpercentage)
     pixelList = []
     image = Image.open("savedImages/"+imageName)
     if (image.width == ledPanelWidth and image.height == ledPanelHeight):
@@ -276,12 +331,14 @@ def resize_gif(path, save_as=None, resize_to=None):
         all_frames[0].save(save_as, optimize=True, save_all=True, append_images=all_frames[1:], loop=1000)
 
 def extract_and_resize_frames(path, resize_to=None):
+    global ledPanelHeight
+    global ledPanelWidth
     im = Image.open(path)
     all_frames = []
     try:
         while True:
             im.convert('RGB')
-            new_frame = im.resize((16,16))
+            new_frame = im.resize((ledPanelWidth,ledPanelHeight))
             all_frames.append(new_frame)
             im.seek(im.tell() + 1)
     except EOFError:
@@ -289,53 +346,9 @@ def extract_and_resize_frames(path, resize_to=None):
 
     return all_frames
 
-def LoadJsonValues():
-    jsonFile = "config.json"
-    global Rpercentage
-    global Gpercentage
-    global Bpercentage
-    global ledBrightness
-    global ledPanelWidth
-    global ledPanelHeight
-    with open(jsonFile) as json_file:
-        json_decoded = json.load(json_file)
-
-    if(json_decoded["redCalibration"]):
-        Rpercentage = int(json_decoded["redCalibration"])
-    else:
-        Rpercentage = 100
-    if(json_decoded["greenCalibration"]):
-        Gpercentage = int(json_decoded["greenCalibration"])
-    else:
-        Gpercentage = 100
-    if(json_decoded["blueCalibration"]):
-        Bpercentage = int(json_decoded["blueCalibration"])
-    else:
-        Bpercentage = 100
-    if(json_decoded["brightnessValue"]):
-        ledBrightness = int(json_decoded["brightnessValue"])
-    else:
-        ledBrightness = 100
-    if(json_decoded["LEDPanelWidth"]):
-        ledPanelWidth = int(json_decoded["LEDPanelWidth"])
-    if(json_decoded["LEDPanelHeight"]):
-        ledPanelHeight = int(json_decoded["LEDPanelHeight"])
-
-    NewPixelArray()
-    print("json values loaded")
-
-
-
-def make2DArray(cols, rows):
-    listRow = [0] * cols
-    listCol = []
-    for i in range(cols): 
-        listCol.append(listRow.copy())
-    return listCol
-
 grid = []
-cols = 16
-rows = 16
+cols = ledPanelWidth
+rows = ledPanelHeight
 
 def startGameOfLife():
     global grid
@@ -350,8 +363,8 @@ def startGameOfLife():
         listCol.append(listRow)
         listRow = [0] * cols
     grid = listCol
-
-    draw()
+    while True:
+        draw()
 
 def draw():
     global grid
@@ -381,7 +394,6 @@ def draw():
         listCol.append(listRow)
         listRow = [0] * cols
     grid = listCol
-    draw()
 
 def countNeighbors(grid, x, y):
     sum = 0
@@ -410,7 +422,8 @@ def StartAnt():
     x = int(ledPanelWidth / 2)
     y = int(ledPanelHeight / 2)
     dir = ANTUP
-    drawAnt()
+    while True:
+        drawAnt()
 
 def turnRight():
     global dir
@@ -469,8 +482,6 @@ def drawAnt():
         moveForward()
         #time.sleep(0.05)
         pixels.show()
-    drawAnt()
-
 
 def startBriansBrain():
     global grid
@@ -485,7 +496,8 @@ def startBriansBrain():
         listCol.append(listRow)
         listRow = [0] * cols
     grid = listCol
-    drawBriansBrain()
+    while True:
+        drawBriansBrain()
 
 def drawBriansBrain():
     global grid
@@ -515,7 +527,6 @@ def drawBriansBrain():
                     nextGrid[i][j] = 2
     grid = nextGrid
     time.sleep(0.5)
-    drawBriansBrain()
 
 def countNeighborsBriansBrain(grid, x, y):
     sum = 0
@@ -527,17 +538,9 @@ def countNeighborsBriansBrain(grid, x, y):
                 sum += 1
     return sum;
 
-
-wireWorldGrid = [] # 0 = off/nothing, 1 = conductor, 2 = Electron Head, 3 = ElectronTail 
-
-def CreateWireWorld2dArray():
-    global wireWorldGrid
-    wireWorldGrid = make2DArray(ledPanelWidth, ledPanelHeight)
-
 def setWireWorldPixel(x, y, mode):
     global wireWorldGrid
     wireWorldGrid[x][y] = mode
-    print(wireWorldGrid)
 
 def StartWireWorld():
     while True:
@@ -573,7 +576,6 @@ def RunWireWorld():
             elif (wireWorldGrid[i][j] == 3):
                 nextgrid[i][j] = 1
     wireWorldGrid = nextgrid
-    StartWireWorld()
 
 def countNeighborsWireWorld(wireWorldGrid, x, y):
     sum = 0
@@ -585,8 +587,3 @@ def countNeighborsWireWorld(wireWorldGrid, x, y):
                 sum += 1
     return sum;
 
-def start():
-    LoadJsonValues()
-    CreateWireWorld2dArray()
-
-start()
