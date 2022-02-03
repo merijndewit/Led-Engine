@@ -8,7 +8,7 @@
 <body>
   <img src="/img/banner.png" alt="Banner Led Engine" width="12%" height="auto">
   <ul>
-    <li><a href="index.html">Static Color</a></li>
+    <li><a href="index.html">Index</a></li>
     <li><a href="Modes.html">Modes</a></li>
     <li><a href="LedPanel.html">Led Panel</a></li>
     <li><a href="Settings.html">Setup</a></li>
@@ -36,8 +36,11 @@
   <br>
   <strong>Blue percentage:</strong>
   <input type="text" min="1" value="100" id="BlueCalibrationPercentage" oninput="BlueCalibrationChanged(this)">
+  <br>
+  <strong>Led count</strong>>
+  <input type="text" value="0" id="configPanelLedCount" oninput="configPanelLedCountChanged(this)">
   <br><br>
-  <strong>Led Panel Settings</strong>>
+  <strong>LED-Panel Settings</strong>>
   <br>
   <strong>LED-Panel Width</strong>>
   <input type="text" value="16" id="configPanelWidth" oninput="configPanelWidthChanged(this)">
