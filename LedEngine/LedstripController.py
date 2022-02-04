@@ -88,7 +88,8 @@ def LoadJsonValues():
     print("json values loaded")
 
 def start():
-    LoadJsonValues()
+    if(os.path.exists('./config.json')):
+        LoadJsonValues()
     NewPixelArray()
     CreateWireWorld2dArray()
 
