@@ -4,7 +4,6 @@ import socket
 import RPi.GPIO as GPIO
 import json
 import multiprocessing
-import re
 import os
 
 #LedEngine Scripts
@@ -162,7 +161,7 @@ def CheckInput():
         
 
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
-    if(os.path.exists('./config.json') != 1):
+    if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') != 1):
         JSONconfig = open("config.json", "x")
         jsonHelper.WriteToJsonFile("key", "value")
         JSONconfig.close()

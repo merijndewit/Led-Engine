@@ -88,7 +88,7 @@ def LoadJsonValues():
     print("json values loaded")
 
 def start():
-    if(os.path.exists('./config.json')):
+    if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json')):
         LoadJsonValues()
     NewPixelArray()
     CreateWireWorld2dArray()
@@ -204,7 +204,7 @@ def CreateImage():
             string = str(pixelArray[x][y])
             data[x,y] = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
 
-    img.save('savedImages/'+imageName + '.png')
+    img.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+imageName + '.png')
 
 def SetImageName(value):
     global imageName
@@ -212,7 +212,7 @@ def SetImageName(value):
 
 def GetImageNames():
     imageNames = []
-    for file in os.listdir("savedImages"):
+    for file in os.listdir(os.path.dirname(os.path.realpath(__file__))+"/savedImages"):
         if file.endswith(".png"):
             imageNames.append(file)
     print(imageNames)
@@ -226,7 +226,7 @@ def DisplayImageFile(imageName):
     global Gpercentage
     global Bpercentage
     pixelList = []
-    image = Image.open("savedImages/"+imageName)
+    image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/savedImages/"+imageName)
     if (image.width == ledPanelWidth and image.height == ledPanelHeight):
         rgb_im = image.convert('RGB')
         Clear()
@@ -246,7 +246,7 @@ def DownscaleImage(imagePath, newName):
     image = Image.open(imagePath)
     resized_image = image.resize((ledPanelWidth,ledPanelHeight))
     #resized_image.save('savedImages/'+'new'+ '.png')
-    resized_image.save('savedImages/'+newName)
+    resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+newName)
 
 url = ""
 
@@ -264,7 +264,7 @@ def DisplayUrl():
     global url
     if url != "":
         imageName = "tmp.png"
-        path = "tmpImages/" + imageName
+        path = os.path.dirname(os.path.realpath(__file__))+"/tmpImages/" + imageName
         urllib.request.urlretrieve(url, path)
         DownscaleImage(path, "tmp.png")
         return DisplayImageFile(imageName)
@@ -272,7 +272,7 @@ def DisplayUrl():
     print("no url entered")
 
 def LoadUploadedFile():
-    path = "uploads"
+    path = os.path.dirname(os.path.realpath(__file__))+"/uploads"
     imageName = "tmp.png"
     files = os.listdir(path)
 
@@ -295,7 +295,7 @@ def DisplayGIF():
     global gifUrl
     if gifUrl != "":
         imageName = "tmp.gif"
-        path = "tmpImages/" + imageName
+        path = os.path.dirname(os.path.realpath(__file__))+"/tmpImages/" + imageName
         urllib.request.urlretrieve(gifUrl, path)
         resize_gif(path, None, (ledPanelWidth, ledPanelHeight))
         return path
@@ -306,7 +306,7 @@ def PlayGif():
     global Rpercentage
     global Gpercentage
     global Bpercentage
-    gif = Image.open("tmpImages/tmp.gif")
+    gif = Image.open(os.path.dirname(os.path.realpath(__file__))+"/tmpImages/tmp.gif")
     
     while True:
         for i in range(gif.n_frames):

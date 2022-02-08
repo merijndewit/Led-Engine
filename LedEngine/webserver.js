@@ -13,6 +13,7 @@ var io = require('socket.io','net')(http)
 const dgram = require('dgram');
 var formidable = require('formidable');
 
+console.log(__dirname)
 
 // start webserver
 http.listen(WebPort, function() 
