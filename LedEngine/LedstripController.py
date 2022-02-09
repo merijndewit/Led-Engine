@@ -300,7 +300,10 @@ def DisplayGIF():
     if gifUrl != "":
         imageName = "tmp.gif"
         path = os.path.dirname(os.path.realpath(__file__))+"/tmpImages/" + imageName
-        urllib.request.urlretrieve(gifUrl, path)
+        try:
+            urllib.request.urlretrieve(gifUrl, path)
+        except:
+            return ""
         resize_gif(path, None, (ledPanelWidth, ledPanelHeight))
         return path
 
