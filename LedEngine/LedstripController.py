@@ -266,7 +266,10 @@ def DisplayUrl():
     if url != "":
         imageName = "tmp.png"
         path = os.path.dirname(os.path.realpath(__file__))+"/tmpImages/" + imageName
-        urllib.request.urlretrieve(url, path)
+        try:
+            urllib.request.urlretrieve(url, path)
+        except:
+            return
         DownscaleImage(path, "tmp.png")
         return DisplayImageFile(imageName)
 
