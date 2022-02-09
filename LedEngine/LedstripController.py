@@ -269,7 +269,7 @@ def DisplayUrl():
         try:
             urllib.request.urlretrieve(url, path)
         except:
-            return
+            return []
         DownscaleImage(path, "tmp.png")
         return DisplayImageFile(imageName)
 

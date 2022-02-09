@@ -99,8 +99,9 @@ def CheckInput():
         elif ("LoadUrl" in aDict):
             pixelsToSend = []
             pixelsToSend = Ledstrip.DisplayUrl()
-            for i in range(len(pixelsToSend)):
-                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+            if pixelsToSend != []:
+                for i in range(len(pixelsToSend)):
+                    sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
         elif ("LoadgifUrl" in aDict):

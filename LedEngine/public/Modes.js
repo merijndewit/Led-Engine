@@ -10,7 +10,7 @@ window.addEventListener("load", function()
     //mobile
     document.addEventListener("touchstart", ReportTouchStart, false);
     document.addEventListener("touchend", ReportTouchEnd, false);
-    document.addEventListener("touchdown", ReportMouseDown, false);
+    document.addEventListener("mousedown", ReportMouseDown, false);
   }
   else
   {
