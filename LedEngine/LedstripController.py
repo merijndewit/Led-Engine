@@ -31,6 +31,7 @@ def NewPixelArray():
     global pixelArray
     global ledPanelWidth
     global ledPanelHeight
+    pixelArray = []
     for i in range(ledPanelWidth):
         rowY = []
         for ii in range(ledPanelHeight):
@@ -191,6 +192,16 @@ def BlueCalibration(percentage):
 def setLedCount(ledCount):
     global pixelCount
     pixelCount = ledCount
+
+def setConfigPanelWidth(value):
+    global ledPanelWidth
+    ledPanelWidth = value
+    NewPixelArray()
+
+def setConfigPanelHeight(value):
+    global ledPanelHeight
+    ledPanelHeight = value
+    NewPixelArray()
 
 def CreateImage():
     global pixelArray

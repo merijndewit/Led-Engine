@@ -113,8 +113,10 @@ def CheckInput():
         elif ("StopgifUrl" in aDict):
             gifProcess.terminate()
         elif ("setConfigPanelWidth" in aDict):
+            Ledstrip.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
             jsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
         elif ("setConfigPanelHeight" in aDict):
+            Ledstrip.setConfigPanelHeight(int(aDict["setConfigPanelHeight"]))
             jsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
         elif ("RequestJSONdata" in aDict):
             data = jsonHelper.GetDecodedJSON()
