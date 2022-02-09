@@ -1,7 +1,7 @@
 import json
 import os
 
-jsonFile = "config.json"
+jsonFile = os.path.dirname(os.path.realpath(__file__))+'/config.json'
 
 def WriteToJsonFile(key, value):
     if (os.path.getsize(jsonFile) == 0):

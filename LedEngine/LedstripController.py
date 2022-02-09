@@ -49,7 +49,7 @@ def CreateWireWorld2dArray():
     wireWorldGrid = make2DArray(ledPanelWidth, ledPanelHeight)
 
 def LoadJsonValues():
-    jsonFile = "config.json"
+    jsonFile = os.path.dirname(os.path.realpath(__file__))+"/config.json"
     global Rpercentage
     global Gpercentage
     global Bpercentage
@@ -88,7 +88,7 @@ def LoadJsonValues():
     print("json values loaded")
 
 def start():
-    if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json')):
+    if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') == 1):
         LoadJsonValues()
     NewPixelArray()
     CreateWireWorld2dArray()
