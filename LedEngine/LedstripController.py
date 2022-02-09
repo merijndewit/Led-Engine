@@ -197,14 +197,15 @@ def CreateImage():
     global imageName
     global ledPanelWidth
     global ledPanelHeight
-    img = Image.new('RGB', [ledPanelWidth,ledPanelHeight], 255)
-    data = img.load()
-    for y in range(img.size[1]):
-        for x in range(img.size[0]):
-            string = str(pixelArray[x][y])
-            data[x,y] = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
+    if imageName != "":
+        img = Image.new('RGB', [ledPanelWidth,ledPanelHeight], 255)
+        data = img.load()
+        for y in range(img.size[1]):
+            for x in range(img.size[0]):
+                string = str(pixelArray[x][y])
+                data[x,y] = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
 
-    img.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+imageName + '.png')
+        img.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+imageName + '.png')
 
 def SetImageName(value):
     global imageName
