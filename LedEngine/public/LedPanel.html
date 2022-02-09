@@ -5,72 +5,80 @@
     <title>LED-Engine</title>
     <link rel="stylesheet" href="styles.css">
   </head>
-<body>
-  <img src="/img/banner.png" alt="Banner Led Engine" width="12%" height="auto">
-  <ul>
-    <li><a href="index.html">Index</a></li>
-    <li><a href="Modes.html">Modes</a></li>
-    <li><a href="LedPanel.html">Led Panel</a></li>
-    <li><a href="Settings.html">Setup</a></li>
-  </ul>
+  <body>
+    <div>
+      <img src="/img/banner.png" alt="Banner Led Engine" width="12%" height="auto">
+      <ul>
+        <li><a href="index.html">Index</a></li>
+        <li><a href="Modes.html">Modes</a></li>
+        <li><a href="LedPanel.html">Led Panel</a></li>
+        <li><a href="Settings.html">Setup</a></li>
+      </ul>
+    </div>
 
+    <div class="Brightness">
+      <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+      <br>
+      <br>
+    </div>
+    <div class="Panel" id="canvasPanel">
+      <strong>Canvas</strong>
+      <br>
+      <input type="color" id="PixelColorPicker" oninput="PixelColorChanged(this)" value="#000000">
+      <button id="color0" class="color0"></button>
+      <button id="color1" class="color1"></button>
+      <button id="color2" class="color2"></button>
+      <button id="color3" class="color3"></button>
+      <button id="color4" class="color4"></button>
+      <br>
+      <button id="PixelPicker">Pixel Picker</button>
+      <button id="ClearPixels">Clear</button>
+      <br>
+      <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+    </div>
+    <br>
+    <div class="Panel">
+      <strong>Save Canvas</strong>
+      <br>
+      <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
+      <button id="MakePicture" class="createPicture">Save</button>
+    </div>
+    <br>
 
-<div class="Brightness">
-  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
-  <br>
-  <br>
-</div>
-<div class="Panel" id="canvasPanel">
-  <strong>Canvas</strong>
-  <br>
-  <input type="color" id="PixelColorPicker" oninput="PixelColorChanged(this)" value="#000000">
-  <button id="color0" class="color0"></button>
-  <button id="color1" class="color1"></button>
-  <button id="color2" class="color2"></button>
-  <button id="color3" class="color3"></button>
-  <button id="color4" class="color4"></button>
-  <br>
-  <button id="PixelPicker">Pixel Picker</button>
-  <button id="ClearPixels">Clear</button>
-  <br>
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
-</div>>
-<div class="Panel">
-  <strong>Save Canvas</strong>
-  <br>
-  <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
-  <button id="MakePicture" class="createPicture">Save</button>
-</div>>
+    <div class="Panel">
+      <strong>Load Image</strong>
+      <br>
+      <small>Enter Image URL:</small>
+      <input type="text" id="url" oninput="urlChanged(this)"> 
+      <button id="LoadUrl" class="LoadUrl">Load</button>
+    </div>
+    <br>
+    <div class="Panel">
+      <small>Enter .gif URL:</small>
+      <input type="text" id="gif" oninput="gifURLChanged(this)"> 
+      <button id="LoadgifUrl" class="LoadgifUrl">Load</button>
+      <button id="StopgifUrl" class="StopgifUrl">Stop</button>
+    </div>
+    <br>
+    <div class="Panel">
+      <form action="FileUploaded.html" method="post" enctype="multipart/form-data">
+        <input type="file" name="filetoupload">
+        <input type="submit">
+      </form>
+      <button id="LoadUploadedFile" class="LoadUploadedFile">Load Uploaded Image</button>
+    </div>
+    <br>
+    <div class="Panel">
+      <small>Search for saved images:</small>
+      <button id="searchImages" class="searchImages">Search</button>
+      <ul2 id="ListImages"></ul2>
+      <br>
+      <strong id="noSizeSpecified"></strong>
+    </div>
 
-<div class="Panel">
-  <strong>Load Image</strong>
-  <br>
-  <small>Enter Image URL:</small>
-  <input type="text" id="url" oninput="urlChanged(this)"> 
-  <button id="LoadUrl" class="LoadUrl">Load</button>
-  <br>
-  <small>Enter .gif URL:</small>
-  <input type="text" id="gif" oninput="gifURLChanged(this)"> 
-  <button id="LoadgifUrl" class="LoadgifUrl">Load</button>
-  <button id="StopgifUrl" class="StopgifUrl">Stop</button>
-  <br>
-  <form action="FileUploaded.html" method="post" enctype="multipart/form-data">
-	  <input type="file" name="filetoupload">
-	  <input type="submit">
-	</form>
-  <button id="LoadUploadedFile" class="LoadUploadedFile">Load Uploaded Image</button>
-  <br>
-  <small>Search for saved images:</small>
-  <button id="searchImages" class="searchImages">Search</button>
-  <ul2 id="ListImages"></ul2>
-  <br>
-  <strong id="noSizeSpecified"></strong>>
-
-</div>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="LedPanel.js"></script>
-<script src="webserver.js"></script>
-<script type="text/javascript" href="../webserver.js"></script>
-</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="LedPanel.js"></script>
+    <script src="webserver.js"></script>
+    <script type="text/javascript" href="../webserver.js"></script>
+  </body>
 </html>
