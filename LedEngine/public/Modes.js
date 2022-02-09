@@ -41,15 +41,14 @@ function ReportTouchStart(e)
 
 function ReportTouchEnd(e) 
 {
-	if (e.target.className != "serialtext") 
-  { 
-		e.preventDefault();  
-	}
-	if (e.target.className != 'range-slider') 
-  {  
-		socket.emit('msg','{"'+e.target.id+'":0}');	
-	}
-	
+  if (e.target.id == 'A1')
+  {
+    e.preventDefault(); 
+  } 
+  else
+  {
+    socket.emit('msg','{"'+e.target.id+'":0}');
+  }
 }
 
 function ReportMouseDown(e) 
