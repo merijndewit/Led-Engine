@@ -29,6 +29,8 @@ GPIO.setwarnings(False)
 GPIO.setup(21,GPIO.OUT) 
 GPIO.output(21,GPIO.HIGH)
 
+modeProcs = []
+
 def newclient():
     if GPIO.input(21):
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
@@ -48,7 +50,9 @@ def CheckInput():
             string = str(aDict[key]).lstrip("#")
             Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
         elif ("rainbowButton" in aDict):
+            terminateProcesses()
             rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
+            modeProcs.append(rainbow)
             rainbow.start()
         elif ("stopButton" in aDict):
             rainbow.terminate()
@@ -107,6 +111,7 @@ def CheckInput():
         elif ("LoadgifUrl" in aDict):
             path = Ledstrip.DisplayGIF()
             gifProcess = multiprocessing.Process(target=Ledstrip.PlayGif, args=()) #multiprocessing so we can stop the process
+            modeProcs.append(gifProcess)
             gifProcess.start()
         elif ("gifUrl" in aDict):
             Ledstrip.UpdategifUrl(aDict["gifUrl"])
@@ -128,8 +133,10 @@ def CheckInput():
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("startGameOfLife" in aDict):
+            terminateProcesses()
             if (aDict["startGameOfLife"] == 1):
                 gameOfLifeProcess = multiprocessing.Process(target=Ledstrip.startGameOfLife, args=())
+                modeProcs.append(gameOfLifeProcess)
                 gameOfLifeProcess.start()
         elif ("stopGameOfLife" in aDict):
             if (aDict["stopGameOfLife"] == 1):
@@ -137,13 +144,17 @@ def CheckInput():
                 Ledstrip.Clear()
         elif ("startAnt" in aDict):
             if (aDict["startAnt"] == 1):
+                terminateProcesses()
                 antProcess = multiprocessing.Process(target=Ledstrip.StartAnt, args=())
+                modeProcs.append(antProcess)
                 antProcess.start()
         elif ("stopAnt" in aDict):
             antProcess.terminate()
         elif ("startBriansBrain" in aDict):
             if (aDict["startBriansBrain"] == 1):
+                terminateProcesses()
                 BrainProcess = multiprocessing.Process(target=Ledstrip.startBriansBrain, args=())
+                modeProcs.append(BrainProcess)
                 BrainProcess.start()
         elif ("stopBriansBrain" in aDict):
             BrainProcess.terminate()
@@ -156,12 +167,19 @@ def CheckInput():
             Ledstrip.setWireWorldPixel(x, y, mode)
         elif ("startWireWorld" in aDict):
             if (aDict["startWireWorld"] == 1):
+                terminateProcesses()
                 WireWorldProcess = multiprocessing.Process(target=Ledstrip.StartWireWorld, args=())
+                modeProcs.append(WireWorldProcess)
                 WireWorldProcess.start()
         elif ("stopWireWorld" in aDict):
             WireWorldProcess.terminate()
 
         
+def terminateProcesses():
+    for proc in modeProcs:
+        #proc.join(timeout=0)
+        if proc.is_alive():
+            proc.terminate()
 
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') != 1):
