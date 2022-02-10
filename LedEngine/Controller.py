@@ -99,7 +99,7 @@ def CheckInput():
         elif ("LoadUrl" in aDict):
             pixelsToSend = []
             pixelsToSend = Ledstrip.DisplayUrl()
-            if pixelsToSend != []:
+            if pixelsToSend:
                 for i in range(len(pixelsToSend)):
                     sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("Url" in aDict):
@@ -171,8 +171,20 @@ def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     else: #Load all values that where set previously by the user
         Ledstrip.LoadJsonValues()
 
+def CheckDirectories():
+    if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/savedImages'):
+        os.makedirs(os.path.dirname(os.path.realpath(__file__)) + '/savedImages')
+        print("Made directory savedImages")
+    if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/tmpImages'):
+        os.makedirs(os.path.dirname(os.path.realpath(__file__)) + '/tmpImages')
+        print("Made directory tmpImages")
+    if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/uploads'):
+        os.makedirs(os.path.dirname(os.path.realpath(__file__)) + '/uploads')
+        print("Made directory uploads")
+
 #start
 if __name__ == "__main__":
+    CheckDirectories()
     newclient()
     CheckJSON()
     mainProcess = Thread(target = CheckInput)

@@ -85,9 +85,6 @@ def LoadJsonValues():
     if not (json_decoded.get('LEDPanelHeight') is None):
         ledPanelHeight = int(json_decoded["LEDPanelHeight"])
 
-
-    print("json values loaded")
-
 def start():
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') == 1):
         LoadJsonValues()
