@@ -4,7 +4,7 @@ import os
 jsonFile = os.path.dirname(os.path.realpath(__file__))+'/config.json'
 
 def WriteToJsonFile(key, value):
-    if (os.path.getsize(jsonFile) == 0):
+    if (os.path.exists(jsonFile) != 1):
         data = {key:value}
         with open(jsonFile, 'w') as json_file:
             json.dump(data, json_file)
