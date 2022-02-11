@@ -27,7 +27,7 @@ What can you exactly do in LED-Engine:
 |Display images (from image url or upload)|✔ |**X**
 |Display gif (from gif url)|✔ |**X**
  
-### Extra info about some of the different modes:
+## Extra info about some of the different modes:
 
 ### WireWorld 
 With WireWorld you first have to draw your "circuit" on the website. When you click play it will play wireworld with your circuit on the LED-Panel!
@@ -85,6 +85,10 @@ Then simply enter:
 
 	sh /Led-Engine/LedEngine/startLedEngine.sh
 
+>Note:If you get the import error "ImportError: libopenjp2.so.7: cannot open shared object file: No such file or directory" run this command: sudo apt-get install libopenjp2-7
+
+>Note: If you get the import error "ImportError: libtiff5: cannot open shared object file: No such file or directory" run this command: sudo apt install libtiff5
+
 And the program is running!
 #### Enjoy LED-Engine!
 
@@ -126,13 +130,17 @@ Then we just need to run the shell script. The shell script runs the python and 
 
 Now the program is running!
 
+>Note:If you get the import error "ImportError: libopenjp2.so.7: cannot open shared object file: No such file or directory" run this command: sudo apt-get install libopenjp2-7
+
+>Note: If you get the import error "ImportError: libtiff5: cannot open shared object file: No such file or directory" run this command: sudo apt install libtiff5
+
 You can access LED-Engine on any browser by typing the pi's address and default port (8080) for LED-Engine Example: 192.168.x.x:8080
 
 #### Enjoy LED-Engine!
 
 
 
-## Installing LED-Engine from scratch
+# Installing LED-Engine from scratch
 
 This is a step by step guide to get LED-Engine running from a clean install of raspbian os.
 Raspberry Pi OS Lite (bullseye) is reccomended for LED-Engine. The desktop version will also work without any problem but will be a bit slower.
@@ -206,7 +214,7 @@ After we've installed all the python dependencies we can install git and clone t
 Now we are ready to run LED-Engine! Follow the steps at "How to run LED-Engine" to run the program!
 
 
-## How to run LED-Engine
+### Running LED-Engine
 In order to run LED-Engine we need to run 2 programs: **webserver.js** & <span>**Controller**</span>**.py**.
 **webserver** is the frontend and **Controller** is the backend. Both programs need to be running at the same time for everythong to work.
 
@@ -233,5 +241,13 @@ You can access LED-Engine on any browser by typing the pi's address and default 
 
 #### Enjoy LED-Engine!
 
+# Wiring for the LED-Panel or led strip
+
+The wiring is quite easy.
+LED-Engine uses GPIO 21 as default. Feel free to change this in "LedstripController<span>.py</span>"
+
+On the image below we can see how to wire an Led-strip or Led-panel to the raspberry pi. 
+![](https://drive.google.com/uc?export=download&id=1UtZRdzRrpeSM5KbMVe16H3CQBcbshNfd)
+If your led-panel or led strip is small you could try to hook it up directly to the raspberry pi (exactly like on the picture). If you have a bigger led panel (bigger than 8x8) or led strip that has more than 64 led's then i would reccomend using an external power supply.
 
 
