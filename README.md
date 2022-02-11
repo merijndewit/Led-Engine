@@ -1,3 +1,4 @@
+
 ![](https://drive.google.com/uc?export=download&id=1ya2MA8AdjBEed9ltCEVmvmjO0VqLAw5p)
 
 # Welcome to the GitHub page of LED-Engine!
@@ -46,8 +47,50 @@ I hope you will try out LED-Engine. All the info to install/use this program is 
 ### Supported Raspberry Pi's
 All raspberry pi's are supported from the pi 4 to the pi zero w. The pi zero w is reccomended for this project because you dont need more processing power running LED-Engine.
 
-## Installing LED-Engine
-This will guide you installing LED-Engine on a raspberry pi. If you are using another platform or if you dont want to install a custom image on your sd card then please follow the instructions at **"Installing LED-Engine from scratch (the long way)"**. 
+# Installing LED-Engine
+We have multiple ways for installing LED-Engine.
+
+- **Installing LED-Engine with bash script**
+- **Installing LED-Engine with an image**
+- **Installing LED-Engine from scratch**
+### Installing LED-Engine with bash script
+This way is reccomended if you already have an raspberry pi os on your pi. 
+
+### Installing LED-Engine with an image
+This way is reccomended if you dont have an os on your pi.
+
+### Installing LED-Engine from scratch
+this way is reccomended if you had trouble with **Installing LED-Engine with bash script**. 
+
+
+
+## Installing LED-Engine with bash script
+This will guide you installing LED-Engine on a raspberry pi that already has an os installed. To make installing easy for you we have a bash script that you can download to you pi and run. The bash script will detect what pi you are using and will install all the dependencies needed. 
+
+First we need to download the bash script:
+
+	sudo wget https://github.com/merijndewit/Led-Engine/releases/download/v0.1.1/installLedEngine.sh
+
+Then we can execute the script:
+
+	sh installLedEngine.sh
+
+After you see this in the terminal the install was succesfull:
+
+	Successfully installed LED-Engine!
+	Type 'sh /Led-Engine/LedEngine/startLedEngine.sh' to start LED-Engine.
+	Enjoy using LED-Engine!
+
+Then simply enter:
+
+	sh /Led-Engine/LedEngine/startLedEngine.sh
+
+And the program is running!
+#### Enjoy LED-Engine!
+
+
+## Installing LED-Engine with an image
+This will guide you installing LED-Engine on a raspberry pi. If you are using another platform or if you dont want to install a custom image on your sd card then please follow the instructions at **"Installing LED-Engine from scratch"**. 
 
 First we need to create a bootable sd card from a custom image. Go to [releases](https://github.com/merijndewit/Led-Engine/releases) and download LedEngine_Images_vX.X.X .zip. inside that zip file we can find 2 different images. 
 
@@ -69,13 +112,17 @@ If you want to install the os headless (highly recommended) you can add [These f
 Now we are all set!
 Just put the sd card into the raspberry pi and let the pi boot. Now you should be able to access it with an SSH.
 
+The password and username are default.
+- username: pi
+- password: raspberry
+
 To start the program just go into the LED-Engine directory:
 
 	cd /Led-Engine/LedEngine/
 
 Then we just need to run the shell script. The shell script runs the python and webserver program at the same time:
 
-		sh startLedEngine.sh
+	sh startLedEngine.sh
 
 Now the program is running!
 
@@ -85,7 +132,7 @@ You can access LED-Engine on any browser by typing the pi's address and default 
 
 
 
-## Installing LED-Engine from scratch (the long way)
+## Installing LED-Engine from scratch
 
 This is a step by step guide to get LED-Engine running from a clean install of raspbian os.
 Raspberry Pi OS Lite (bullseye) is reccomended for LED-Engine. The desktop version will also work without any problem but will be a bit slower.
@@ -185,3 +232,6 @@ Now the program should be running, and you should be able to open the website on
 You can access LED-Engine on any browser by typing the pi's address and default port for LED-Engine Example: 192.168.x.x:8080
 
 #### Enjoy LED-Engine!
+
+
+
