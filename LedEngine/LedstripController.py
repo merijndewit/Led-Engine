@@ -7,6 +7,7 @@ import os
 import urllib.request
 import json
 import random
+import math
 
 pixelCount = 256
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
@@ -114,25 +115,7 @@ def SetSpeedValue(speedValue):
     rainbowSpeed = speedValue
     print("updated speed to: " + str(speedValue))
 
-def rainbow_cycle():
-    print("StartRainbow")
-    global ledBrightness
-    global waveLength
-    global rainbowSpeed
-    h = 0
-    s = 1
-    while True:
-        for i in range(pixelCount):
-            hh = (i / waveLength) + h
-            if hh >= 1:
-                hh -= 1
-            rgb = colorsys.hsv_to_rgb(hh, s, 1)
-            pixels[i] = (((rgb[0] * 255) * (Rpercentage / 100)*(ledBrightness / 100), (rgb[1] * 255) * (Gpercentage / 100)*(ledBrightness / 100), (rgb[2] * 255) * (Bpercentage / 100)*(ledBrightness / 100)))
-            h += 0.0001
-            time.sleep(0.001 / (rainbowSpeed / 100))
-        pixels.show()
-        if h == 1:
-            h == 0
+
 
 def setPixel(x, y, color):
     global pixelArray
@@ -603,3 +586,38 @@ def countNeighborsWireWorld(wireWorldGrid, x, y):
                 sum += 1
     return sum;
 
+#all modes for LED-Panel and LED-Strip
+
+def rainbow_cycle():
+    print("StartRainbow")
+    global ledBrightness
+    global waveLength
+    global rainbowSpeed
+    h = 0
+    s = 1
+    while True:
+        for i in range(pixelCount):
+            hh = (i / waveLength) + h
+            if hh >= 1:
+                hh -= 1
+            rgb = colorsys.hsv_to_rgb(hh, s, 1)
+            pixels[i] = (((rgb[0] * 255) * (Rpercentage / 100)*(ledBrightness / 100), (rgb[1] * 255) * (Gpercentage / 100)*(ledBrightness / 100), (rgb[2] * 255) * (Bpercentage / 100)*(ledBrightness / 100)))
+            h += 0.0001
+            time.sleep(0.001 / (rainbowSpeed / 100))
+        pixels.show()
+        if h == 1:
+            h == 0
+
+
+
+def sinewave():
+    waveLength = 0.01
+    frequency = 1
+    startTime = time.time()
+    while True:
+        for i in range(pixelCount):
+            result = math.sin(frequency*(time.time() - startTime)+(waveLength * i))
+            pixels[i] = (((((result + 1)/2) * 255) * (Rpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * 255) * (Gpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * 255) * (Bpercentage / 100)*(ledBrightness / 100)))
+        pixels.show()
+        #time.sleep(0.01)
+        
