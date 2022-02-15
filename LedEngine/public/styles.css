@@ -164,9 +164,17 @@ button:hover {
 }
 
 .Panel {
+  max-width: 400px;
   background-color: rgb(25, 25, 25);
-  border: 3px solid #5c5c5c;
+  border: 3px solid rgb(42, 42, 42);
   border-radius: 5px;
+}
+
+.Header-Panel {
+  background-color: rgb(48, 48, 48);
+  padding-bottom: 6px;
+  padding-top: 6px;
+  text-align: center; 
 }
 
 
