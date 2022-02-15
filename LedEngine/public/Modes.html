@@ -30,22 +30,44 @@
     <input type="color" id="colorChoice" oninput="valueHexChanged(this)">
   </div>
 <br>
-  <div class="Panel">
-    <div class="Header-Panel">
-      <strong>Rainbow Mode</strong>
-    </div>
-    
-    <br><br>
-    <b>Wave Length:</b>
-    <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
-    <br>
-    <b>Speed:</b>
-    <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
-    <br><br>
-    <button id="rainbowButton">Start</button>
-    <button id="stopButton">Stop</button>
-    <br>
+<div class="Panel">
+  <div class="Header-Panel">
+    <strong>Rainbow Mode</strong>
   </div>
+  
+  <br><br>
+  <b>Wave Length:</b>
+  <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
+  <br>
+  <b>Speed:</b>
+  <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
+  <br><br>
+  <button id="rainbowButton">Start</button>
+  <button id="stopButton">Stop</button>
+  <br>
+</div>
+<br>
+<div class="Panel">
+  <div class="Header-Panel">
+    <strong>One-color Effects</strong>
+  </div>
+  <br>
+  <b>Color:</b>
+  <br>
+  <input type="color" id="colorChoice" oninput="effecthexChanged(this)">
+  <br>
+  <div class="Header-Panel">
+    <strong>_</strong>
+  </div>
+  <br>
+  <button id="StartSineWave">Start</button>
+  <br>
+  <button id="StartFireEffect">Start</button>
+  <br><br>
+  <button id="StartOneColorMode">Start</button>
+  <button id="StopOneColorMode">Stop</button>
+  <br>
+</div>
 <br>
 <h1>LED-Panel:</h1>
 

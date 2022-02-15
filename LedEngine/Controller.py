@@ -173,6 +173,12 @@ def CheckInput():
                 WireWorldProcess.start()
         elif ("stopWireWorld" in aDict):
             WireWorldProcess.terminate()
+        elif ("effecthexChanged" in aDict):
+            Ledstrip.sethexOneColorEffect(aDict["effecthexChanged"])
+        elif ("StartSineWave" in aDict):
+            Ledstrip.startOneColorMode("StartSineWave")
+        elif ("StartFireEffect" in aDict):
+            Ledstrip.startOneColorMode("StartFireEffect")
 
         
 def terminateProcesses():

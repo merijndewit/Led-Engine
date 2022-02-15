@@ -608,6 +608,18 @@ def rainbow_cycle():
         if h == 1:
             h == 0
 
+oneColorEffectName = ""
+
+def sethexOneColorEffect(value):
+    global oneColorEffectName
+    oneColorEffectName = value
+
+def startOneColorMode(modeName):
+    print(oneColorEffectName)
+    if modeName == "StartSineWave":
+        sinewave()
+    elif modeName == "StartFireEffect":
+        FireEffect()
 
 
 def sinewave():
@@ -617,7 +629,24 @@ def sinewave():
     while True:
         for i in range(pixelCount):
             result = math.sin(frequency*(time.time() - startTime)+(waveLength * i))
-            pixels[i] = (((((result + 1)/2) * 255) * (Rpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * 255) * (Gpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * 255) * (Bpercentage / 100)*(ledBrightness / 100)))
+            pixels[i] = (((((result + 1)/2) * int(oneColorEffectName[1:3], 16)) * (Rpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * int(oneColorEffectName[3:5], 16)) * (Gpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * int(oneColorEffectName[5:7], 16)) * (Bpercentage / 100)*(ledBrightness / 100)))
         pixels.show()
         #time.sleep(0.01)
+
+def FireEffect():
+    global oneColorEffectName
+    pixelList = []
+    for i in range(pixelCount):
+        pixelList.append(int(random.randint(0, 255)))
+    while True:
+        for pixel in range(pixelCount):
+            print(pixelList[pixel] * (Rpercentage / 100)*(ledBrightness / 100))
+            pixels[pixel] = ((int(oneColorEffectName[1:3], 16)*(pixelList[pixel] / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorEffectName[3:5], 16) * (pixelList[pixel] / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorEffectName[5:7], 16) * (pixelList[pixel] / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
+            if pixelList[pixel] == 0:
+                pixelList[pixel] = 255
+            else:
+                pixelList[pixel] -= 1 
+        pixels.show()
+
+
         

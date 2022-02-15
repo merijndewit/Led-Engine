@@ -295,3 +295,9 @@ function drawPixel(spotX, spotY, pickedColor)
   rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
 }
 
+var oneColorEffect
+
+function effecthexChanged(e)
+{
+  socket.emit('msg',JSON.stringify({ effecthexChanged: e.value }));
+}
