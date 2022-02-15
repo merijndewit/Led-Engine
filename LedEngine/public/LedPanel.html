@@ -22,7 +22,9 @@
       <br>
     </div>
     <div class="Panel" id="canvasPanel">
-      <strong>Canvas</strong>
+      <div class="Header-Panel">
+        <strong>Canvas</strong>
+      </div>
       <br>
       <input type="color" id="PixelColorPicker" oninput="PixelColorChanged(this)" value="#000000">
       <button id="color0" class="color0"></button>
@@ -38,7 +40,9 @@
     </div>
     <br>
     <div class="Panel">
-      <strong>Save Canvas</strong>
+      <div class="Header-Panel">
+        <strong>Save Canvas</strong>
+      </div>
       <br>
       <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
       <button id="MakePicture" class="createPicture">Save</button>
@@ -46,7 +50,9 @@
     <br>
 
     <div class="Panel">
-      <strong>Load Image</strong>
+      <div class="Header-Panel">
+        <strong>Load Image</strong>
+      </div>
       <br>
       <small>Enter Image URL:</small>
       <input type="text" id="url" oninput="urlChanged(this)"> 
@@ -54,7 +60,9 @@
     </div>
     <br>
     <div class="Panel">
-      <strong>Load GIF</strong>
+      <div class="Header-Panel">
+        <strong>Load GIF</strong>
+      </div>
       <br>
       <small>Enter .gif URL:</small>
       <input type="text" id="gif" oninput="gifURLChanged(this)"> 
@@ -63,7 +71,9 @@
     </div>
     <br>
     <div class="Panel">
-      <strong>Upload image</strong>
+      <div class="Header-Panel">
+        <strong>Upload image</strong>
+      </div>
       <br>
       <form action="FileUploaded.html" method="post" enctype="multipart/form-data">
         <input type="file" name="filetoupload">
@@ -73,7 +83,9 @@
     </div>
     <br>
     <div class="Panel">
-      <strong>Load a saved image</strong>
+      <div class="Header-Panel">
+        <strong>Load a saved image</strong>
+      </div>
       <br>
       <small>Search for saved images:</small>
       <button id="searchImages" class="searchImages">Search</button>

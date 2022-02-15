@@ -19,18 +19,22 @@
   <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
 </div>
 <div class="Modes">
-  <h1>Modes:</h1>
+  <h1>LED-Strip</h1>
   <br>
 </div>
-<div class="Panel">
-  <strong>LED-Strip:</strong>
   <div class="Panel">
-    <strong>Static Color</strong>
+    <div class="Header-Panel">
+      <strong>Static Color</strong>
+    </div>
+    <br>
     <input type="color" id="colorChoice" oninput="valueHexChanged(this)">
   </div>
 <br>
   <div class="Panel">
-    <strong>Rainbow Mode:</strong>
+    <div class="Header-Panel">
+      <strong>Rainbow Mode</strong>
+    </div>
+    
     <br><br>
     <b>Wave Length:</b>
     <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
@@ -42,13 +46,14 @@
     <button id="stopButton">Stop</button>
     <br>
   </div>
-</div>
 <br>
+<h1>LED-Panel:</h1>
 
-<div class="Panel">
-  <strong>LED-Panel:</strong>
   <div class="Panel">
-    <strong>Conway's Game of Life:</strong>
+    <div class="Header-Panel"> 
+      <strong>Conway's Game of Life:</strong>
+    </div>
+    
     <br><br>
     <button id="startGameOfLife">Start</button>
     <button id="stopGameOfLife">Stop</button>
@@ -56,7 +61,9 @@
   </div>
   <br>
   <div class="Panel">
-    <strong>Langton's Ant:</strong>
+    <div class="Header-Panel"> 
+      <strong>Langton's Ant:</strong>
+    </div>
     <br><br>
     <button id="startAnt">Start</button>
     <button id="stopAnt">Stop</button>
@@ -64,7 +71,9 @@
   </div>
   <br>
   <div class="Panel">
-    <strong>Brian's Brain:</strong>
+    <div class="Header-Panel"> 
+      <strong>Brian's Brain:</strong>
+    </div>
     <br><br>
     <button id="startBriansBrain">Start</button>
     <button id="stopBriansBrain">Stop</button>
@@ -72,7 +81,9 @@
   </div>
   <br>
   <div class="Panel" id="canvasPanel">
-    <strong>WireWorld:</strong>
+    <div class="Header-Panel"> 
+      <strong>WireWorld:</strong>
+      </div>
     <br><br>
     <button id="WireWorldEmpty" class="WireWorldEmpty" oninput="WireWorldEmpty()">Empty</button>
     <button id="WireWorldConductor" class="WireWorldConductor" oninput="WireWorldConductor()">Conductor</button>
@@ -84,7 +95,6 @@
     <button id="startWireWorld">Start</button>
     <button id="stopWireWorld">Stop</button>
 
-  </div>
 </div>
 
 
