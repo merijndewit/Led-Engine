@@ -40,15 +40,11 @@ def CheckInput():
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
         JsonStr = data.decode('utf_8')
-        key = "HEX"
         if JsonStr:
             sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT)) 
             aDict = json.loads(JsonStr)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
-        elif (key in aDict):
-            string = str(aDict[key]).lstrip("#")
-            Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
         elif ("rainbowButton" in aDict):
             terminateProcesses()
             rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
@@ -57,18 +53,6 @@ def CheckInput():
         elif ("stopButton" in aDict):
             rainbow.terminate()
             Ledstrip.Clear()
-        elif ("A1" in aDict):
-            if (aDict["A1"] != "0"):
-                Ledstrip.SetBrightness(int(aDict["A1"]))
-                jsonHelper.WriteToJsonFile("brightnessValue", str(aDict["A1"]))
-        elif ("WaveLengthInput" in aDict):
-            if (aDict["WaveLengthInput"] != "0" and aDict["WaveLengthInput"]):
-                waveLengthValue = int(aDict["WaveLengthInput"])
-                Ledstrip.SetwaveLength(waveLengthValue)
-        elif ("SpeedInput" in aDict):
-            if (aDict["SpeedInput"] != "0"):
-                speedValue = int(aDict["SpeedInput"])
-                Ledstrip.SetSpeedValue(speedValue)
         elif ("setPixel" in aDict):
             #gets all values after ":"
             x = aDict["setPixel"].get("X")
@@ -175,10 +159,37 @@ def CheckInput():
             WireWorldProcess.terminate()
         elif ("effecthexChanged" in aDict):
             Ledstrip.sethexOneColorEffect(aDict["effecthexChanged"])
-        elif ("StartSineWave" in aDict):
-            Ledstrip.startOneColorMode("StartSineWave")
-        elif ("StartFireEffect" in aDict):
-            Ledstrip.startOneColorMode("StartFireEffect")
+        elif ("SineWave" in aDict):
+            Ledstrip.selectOneColorMode("SineWave")
+        elif ("FireEffect" in aDict):
+            Ledstrip.selectOneColorMode("FireEffect")
+        elif ("StartOneColorMode" in aDict):
+            terminateProcesses()
+            oneColorModeProcess = multiprocessing.Process(target=Ledstrip.startOneColorMode, args=())
+            modeProcs.append(oneColorModeProcess)
+            oneColorModeProcess.start()
+        elif ("StopOneColorMode" in aDict):
+            oneColorModeProcess.terminate()
+        elif ("valueChanged" in aDict):
+            objectID = aDict["valueChanged"].get("objectID")
+            objectValue = aDict["valueChanged"].get("objectValue")
+            if (objectID == "effecthexChanged"):
+                print(aDict["valueChanged"].get("objectValue"))
+            elif (objectID == "SpeedInput"):
+                Ledstrip.SetSpeedValue(int(objectValue))
+            elif (objectID == "WaveLengthInput"):
+                Ledstrip.SetwaveLength(int(objectValue))
+            elif (objectID == "HEX"):
+                string = str(objectValue).lstrip("#")
+                Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
+            elif (objectID == "A1"):
+                Ledstrip.SetBrightness(int(objectValue))
+                jsonHelper.WriteToJsonFile("brightnessValue", objectValue)
+            elif (objectID == ""):
+                return
+            elif (objectID == ""):
+                return
+
 
         
 def terminateProcesses():
