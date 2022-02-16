@@ -608,40 +608,54 @@ def rainbow_cycle():
         if h == 1:
             h == 0
 
-oneColorEffectName = ""
+oneColorModeHex = ""
+oneColorModeName = ""
 
 def sethexOneColorEffect(value):
-    global oneColorEffectName
-    oneColorEffectName = value
+    global oneColorModeHex
+    oneColorModeHex = value
 
-def startOneColorMode(modeName):
-    print(oneColorEffectName)
-    if modeName == "StartSineWave":
+def selectOneColorMode(modeName):
+    global oneColorModeName
+    oneColorModeName = modeName
+
+def startOneColorMode():
+    if oneColorModeName == "SineWave":
         sinewave()
-    elif modeName == "StartFireEffect":
+    elif oneColorModeName == "FireEffect":
         FireEffect()
 
+sineWaveFrequency = 1
+sineWaveLength = 1
+
+def setSineWaveFrequency(value):
+    global sineWaveFrequency
+    sineWaveFrequency = value
+
+def setSineWaveLength(value):
+    global sineWaveLength
+    sineWaveLength = value / 100
 
 def sinewave():
-    waveLength = 0.01
-    frequency = 1
+    global sineWaveLength
+    global sineWaveFrequency
+
     startTime = time.time()
     while True:
         for i in range(pixelCount):
-            result = math.sin(frequency*(time.time() - startTime)+(waveLength * i))
-            pixels[i] = (((((result + 1)/2) * int(oneColorEffectName[1:3], 16)) * (Rpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * int(oneColorEffectName[3:5], 16)) * (Gpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * int(oneColorEffectName[5:7], 16)) * (Bpercentage / 100)*(ledBrightness / 100)))
+            result = math.sin(sineWaveFrequency*(time.time() - startTime)+(sineWaveLength * i))
+            pixels[i] = (((((result + 1)/2) * int(oneColorModeHex[1:3], 16)) * (Rpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * int(oneColorModeHex[3:5], 16)) * (Gpercentage / 100)*(ledBrightness / 100), (((result + 1)/2) * int(oneColorModeHex[5:7], 16)) * (Bpercentage / 100)*(ledBrightness / 100)))
         pixels.show()
         #time.sleep(0.01)
 
 def FireEffect():
-    global oneColorEffectName
+    global oneColorModeHex
     pixelList = []
     for i in range(pixelCount):
         pixelList.append(int(random.randint(0, 255)))
     while True:
         for pixel in range(pixelCount):
-            print(pixelList[pixel] * (Rpercentage / 100)*(ledBrightness / 100))
-            pixels[pixel] = ((int(oneColorEffectName[1:3], 16)*(pixelList[pixel] / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorEffectName[3:5], 16) * (pixelList[pixel] / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorEffectName[5:7], 16) * (pixelList[pixel] / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
+            pixels[pixel] = ((int(oneColorModeHex[1:3], 16)*(pixelList[pixel] / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (pixelList[pixel] / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (pixelList[pixel] / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
             if pixelList[pixel] == 0:
                 pixelList[pixel] = 255
             else:

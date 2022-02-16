@@ -157,8 +157,6 @@ def CheckInput():
                 WireWorldProcess.start()
         elif ("stopWireWorld" in aDict):
             WireWorldProcess.terminate()
-        elif ("effecthexChanged" in aDict):
-            Ledstrip.sethexOneColorEffect(aDict["effecthexChanged"])
         elif ("SineWave" in aDict):
             Ledstrip.selectOneColorMode("SineWave")
         elif ("FireEffect" in aDict):
@@ -174,7 +172,7 @@ def CheckInput():
             objectID = aDict["valueChanged"].get("objectID")
             objectValue = aDict["valueChanged"].get("objectValue")
             if (objectID == "effecthexChanged"):
-                print(aDict["valueChanged"].get("objectValue"))
+                Ledstrip.sethexOneColorEffect(objectValue)
             elif (objectID == "SpeedInput"):
                 Ledstrip.SetSpeedValue(int(objectValue))
             elif (objectID == "WaveLengthInput"):
@@ -185,10 +183,10 @@ def CheckInput():
             elif (objectID == "A1"):
                 Ledstrip.SetBrightness(int(objectValue))
                 jsonHelper.WriteToJsonFile("brightnessValue", objectValue)
-            elif (objectID == ""):
-                return
-            elif (objectID == ""):
-                return
+            elif (objectID == "sineWaveFrequency"):
+                Ledstrip.setSineWaveFrequency(int(objectValue))
+            elif (objectID == "sineWaveLength"):
+                Ledstrip.setSineWaveLength(int(objectValue))
 
 
         
