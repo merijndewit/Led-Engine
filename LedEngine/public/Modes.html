@@ -16,7 +16,7 @@
 
 
 <div class="Brightness">
-  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueObjectChanged(this)">
 </div>
 <div class="Modes">
   <h1>LED-Strip</h1>
@@ -27,7 +27,7 @@
       <strong>Static Color</strong>
     </div>
     <br>
-    <input type="color" id="colorChoice" oninput="valueHexChanged(this)">
+    <input type="color" id="HEX" oninput="valueObjectChanged(this)">
   </div>
 <br>
 <div class="Panel">
@@ -36,11 +36,11 @@
   </div>
   
   <br><br>
-  <b>Wave Length:</b>
-  <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
+  <small>Wave Length:</small>
+  <input type="text" min="1" value="100" id="WaveLengthInput" oninput="valueObjectChanged(this)">
   <br>
-  <b>Speed:</b>
-  <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
+  <small>Speed:</small>
+  <input type="text" min="1" value="100" id="SpeedInput" oninput="valueObjectChanged(this)">
   <br><br>
   <button id="rainbowButton">Start</button>
   <button id="stopButton">Stop</button>
@@ -54,15 +54,22 @@
   <br>
   <b>Color:</b>
   <br>
-  <input type="color" id="colorChoice" oninput="effecthexChanged(this)">
+  <input type="color" id="effecthexChanged" oninput="valueObjectChanged(this)">
   <br>
   <div class="Header-Panel">
     <strong>_</strong>
   </div>
   <br>
-  <button id="StartSineWave">Start</button>
+  <button id="SineWave">Sine Wave</button>
+  <div class="dropdown" id="dropdown-container">
+    <small>frequency:</small>
+    <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
+    <br>
+    <small>waveLength:</small>
+    <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
+  </div>
   <br>
-  <button id="StartFireEffect">Start</button>
+  <button id="FireEffect">Fire Effect</button>
   <br><br>
   <button id="StartOneColorMode">Start</button>
   <button id="StopOneColorMode">Stop</button>
