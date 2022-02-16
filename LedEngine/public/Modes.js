@@ -101,6 +101,16 @@ socket.on('FB',function (data) {
           SetColor('#FF0000');
           SetMode(3);
         }
+        else if (id == "SineWave")
+        {
+          var dropdown = document.getElementById("dropdown-container");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+        }
       }
     }
     else if (id == 'JSONdata')
@@ -119,11 +129,6 @@ socket.on('FB',function (data) {
   }
 });
 
-function valueHexChanged(value)
-{
-  socket.emit('msg','{"HEX":"'+value.value+'"}');
-}
-
 function SetColor(colorValue)
 {
   col = colorValue
@@ -132,26 +137,6 @@ function SetColor(colorValue)
 function SetMode(value)
 {
   mode = value
-}
-
-function valueChanged(e){
-  let a = e.value;
-
-  // this updates the brightness slider value
-  var sliderDiv = document.getElementById("A1");
-  sliderDiv.innerHTML = a;
-
-  socket.emit('msg','{"A1":'+a+'}');
-}
-
-function WaveLengthInputChanged(e){
-  // this updates the brightness slider value
-  if (e.value != 0)
-  {
-    var sliderValue = document.getElementById("WaveLengthInput");
-    sliderValue.innerHTML = e.value;
-    socket.emit('msg','{"WaveLengthInput":'+e.value+'}');
-  }
 }
 
 function SpeedInputChanged(e){
@@ -298,6 +283,14 @@ function drawPixel(spotX, spotY, pickedColor)
 var oneColorEffect
 
 function effecthexChanged(e)
-{
+{ 
+  console.log(e.id);
   socket.emit('msg',JSON.stringify({ effecthexChanged: e.value }));
+}
+
+function valueObjectChanged(e)
+{ 
+  var element = document.getElementById(e.id);
+  element.innerHTML = e.value;
+  socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
 }
