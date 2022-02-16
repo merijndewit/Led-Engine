@@ -177,4 +177,7 @@ button:hover {
   text-align: center; 
 }
 
-
+.dropdown {
+  display: none;
+  background-color: #262626;
+}
