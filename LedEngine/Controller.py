@@ -161,6 +161,8 @@ def CheckInput():
             Ledstrip.selectOneColorMode("SineWave")
         elif ("FireEffect" in aDict):
             Ledstrip.selectOneColorMode("FireEffect")
+        elif ("StarsEffect" in aDict):
+            Ledstrip.selectOneColorMode("StarsEffect")
         elif ("StartOneColorMode" in aDict):
             terminateProcesses()
             oneColorModeProcess = multiprocessing.Process(target=Ledstrip.startOneColorMode, args=())
@@ -187,6 +189,8 @@ def CheckInput():
                 Ledstrip.setSineWaveFrequency(int(objectValue))
             elif (objectID == "sineWaveLength"):
                 Ledstrip.setSineWaveLength(int(objectValue))
+            elif (objectID == "starsPerSecond"):
+                Ledstrip.setStarsPerSecond(int(objectValue))
 
 
         

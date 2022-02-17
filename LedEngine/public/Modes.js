@@ -111,6 +111,16 @@ socket.on('FB',function (data) {
             dropdown.style.display = "block";
           } 
         }
+        else if (id == "StarsEffect")
+        {
+          var dropdown = document.getElementById("dropdown-StarsEffect");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+        }
       }
     }
     else if (id == 'JSONdata')

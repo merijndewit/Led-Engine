@@ -608,7 +608,7 @@ def rainbow_cycle():
         if h == 1:
             h == 0
 
-oneColorModeHex = ""
+oneColorModeHex = "#ffffff"
 oneColorModeName = ""
 
 def sethexOneColorEffect(value):
@@ -624,6 +624,9 @@ def startOneColorMode():
         sinewave()
     elif oneColorModeName == "FireEffect":
         FireEffect()
+    elif oneColorModeName == "StarsEffect":
+        StarEffect()
+        
 
 sineWaveFrequency = 1
 sineWaveLength = 1
@@ -656,11 +659,53 @@ def FireEffect():
     while True:
         for pixel in range(pixelCount):
             pixels[pixel] = ((int(oneColorModeHex[1:3], 16)*(pixelList[pixel] / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (pixelList[pixel] / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (pixelList[pixel] / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
-            if pixelList[pixel] == 0:
+            if pixelList[pixel] <= 0:
                 pixelList[pixel] = 255
             else:
                 pixelList[pixel] -= 1 
         pixels.show()
 
+class Star:
+    value = 0
+    declining = False
+    position = 0
 
-        
+starsPerSecond = 1
+
+def setStarsPerSecond(value):
+    global starsPerSecond
+    starsPerSecond = value
+
+def StarEffect():
+    global oneColorModeHex
+    starList = []
+    starsToRemove = []
+    startTime = time.time()
+    while True:
+        if time.time() - startTime >= starsPerSecond:
+            newStar = Star()
+            newStar.position = int(random.randint(0, pixelCount - 1))
+            starList.append(newStar)
+            startTime = time.time()
+
+        for star in range(len(starList)):
+            pixels[starList[star].position] = ((int(oneColorModeHex[1:3], 16)*(starList[star].value / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (starList[star].value / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (starList[star].value / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
+            
+            if starList[star].declining == True:
+                if starList[star].value == 0:
+                    if star not in starsToRemove:
+                        starsToRemove.append(star)
+                else:
+                    starList[star].value -= 1
+            else:
+                if starList[star].value == 255:
+                    starList[star].declining = True
+                else:
+                    starList[star].value += 1
+
+        for i in range(len(starsToRemove)):
+            starList.pop(starsToRemove[i])
+        starsToRemove = []
+
+        pixels.show()
+
