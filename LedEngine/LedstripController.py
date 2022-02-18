@@ -682,7 +682,7 @@ def StarEffect():
     starsToRemove = []
     startTime = time.time()
     while True:
-        if time.time() - startTime >= starsPerSecond:
+        if time.time() - startTime >= starsPerSecond / 100:
             newStar = Star()
             newStar.position = int(random.randint(0, pixelCount - 1))
             starList.append(newStar)
@@ -709,3 +709,52 @@ def StarEffect():
 
         pixels.show()
 
+fade = 1.09
+
+def knightRider():
+    neighbors = []
+    pixelStrength = 100
+    while pixelStrength >= 15:
+        strength = pixelStrength / fade
+        if pixelStrength >= 15:
+            neighbors.append(strength)
+            pixelStrength = pixelStrength / fade
+        else:
+            break
+    print(len(neighbors))
+    if len(neighbors) * 2 >= pixelCount:
+        print("Please increse fade")
+        return
+
+    while True:
+        for position in range(pixelCount):
+            pixels[position] = ((int(oneColorModeHex[1:3], 16) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (Bpercentage / 100)*(ledBrightness / 100)))
+            for neighborPixel in range(len(neighbors)):
+                neighborFront = position + neighborPixel + 1
+                if neighborFront <= 255:
+                    pixels[neighborFront] = ((int(oneColorModeHex[1:3], 16) * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16)  * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
+                neighborRear = position - neighborPixel - 1
+                if neighborRear >= 0:
+                    
+                    pixels[neighborRear] = ((int(oneColorModeHex[1:3], 16) * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16)  * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
+                pixels[neighborRear - len(neighbors)] = ((0, 0, 0))
+            time.sleep(0)
+            pixels.show()
+
+        for pixel in range(pixelCount - 1, 0, -1):
+            pixels[pixel] = ((int(oneColorModeHex[1:3], 16) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (Bpercentage / 100)*(ledBrightness / 100)))
+            #show neighbors
+            for neighborPixel in range(len(neighbors)):
+                neighborFront = pixel + neighborPixel + 1
+                if neighborFront <= 255:
+                    pixels[neighborFront] = ((int(oneColorModeHex[1:3], 16) * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
+                neighborRear = pixel - neighborPixel - 1
+                if neighborRear >= 0:
+                    
+                    pixels[neighborRear] = ((int(oneColorModeHex[1:3], 16) * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
+                if (neighborFront + len(neighbors) <= pixelCount):
+                    pixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
+            time.sleep(0)     
+            pixels.show()
+
+knightRider()
