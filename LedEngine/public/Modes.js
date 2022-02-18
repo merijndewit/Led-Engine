@@ -103,6 +103,7 @@ socket.on('FB',function (data) {
         }
         else if (id == "SineWave")
         {
+          CollapseAllMenus();
           var dropdown = document.getElementById("dropdown-container");
           dropdown.classList.toggle("active");
           if (dropdown.style.display === "block") {
@@ -111,8 +112,13 @@ socket.on('FB',function (data) {
             dropdown.style.display = "block";
           } 
         }
+        else if (id == "FireEffect")
+        {
+          CollapseAllMenus();
+        }
         else if (id == "StarsEffect")
         {
+          CollapseAllMenus();
           var dropdown = document.getElementById("dropdown-StarsEffect");
           dropdown.classList.toggle("active");
           if (dropdown.style.display === "block") {
@@ -138,6 +144,14 @@ socket.on('FB',function (data) {
     }
   }
 });
+
+function CollapseAllMenus()
+{
+  var dropdown0 = document.getElementById("dropdown-container");
+  var dropdown1 = document.getElementById("dropdown-StarsEffect");
+  dropdown0.style.display = "none";
+  dropdown1.style.display = "none";
+}
 
 function SetColor(colorValue)
 {
@@ -300,7 +314,10 @@ function effecthexChanged(e)
 
 function valueObjectChanged(e)
 { 
-  var element = document.getElementById(e.id);
-  element.innerHTML = e.value;
-  socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
+  if (e.value != "")
+  {
+    var element = document.getElementById(e.id);
+    element.innerHTML = e.value;
+    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
+  }
 }

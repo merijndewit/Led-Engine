@@ -191,8 +191,6 @@ def CheckInput():
                 Ledstrip.setSineWaveLength(int(objectValue))
             elif (objectID == "starsPerSecond"):
                 Ledstrip.setStarsPerSecond(int(objectValue))
-
-
         
 def terminateProcesses():
     for proc in modeProcs:

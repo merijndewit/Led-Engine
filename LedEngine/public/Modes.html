@@ -42,8 +42,8 @@
   <small>Speed:</small>
   <input type="text" min="1" value="100" id="SpeedInput" oninput="valueObjectChanged(this)">
   <br><br>
-  <button id="rainbowButton">Start</button>
-  <button id="stopButton">Stop</button>
+  <button id="rainbowButton" class="stopstart">Start</button>
+  <button id="stopButton" class="stopstart">Stop</button>
   <br>
 </div>
 <br>
@@ -73,12 +73,12 @@
   <br>
   <button id="StarsEffect">Stars Effect</button>
   <div class="dropdown" id="dropdown-StarsEffect">
-    <small>stars per second:</small>
+    <small>star-rate:</small>
     <input type="text" min="1" value="1" id="starsPerSecond" oninput="valueObjectChanged(this)">
   </div>
   <br><br>
-  <button id="StartOneColorMode">Start</button>
-  <button id="StopOneColorMode">Stop</button>
+  <button id="StartOneColorMode" class="stopstart">Start</button>
+  <button id="StopOneColorMode" class="stopstart">Stop</button>
   <br>
 </div>
 <br>
@@ -100,8 +100,8 @@
       <strong>Langton's Ant:</strong>
     </div>
     <br><br>
-    <button id="startAnt">Start</button>
-    <button id="stopAnt">Stop</button>
+    <button id="startAnt" class="stopstart">Start</button>
+    <button id="stopAnt" class="stopstart">Stop</button>
 
   </div>
   <br>
@@ -110,8 +110,8 @@
       <strong>Brian's Brain:</strong>
     </div>
     <br><br>
-    <button id="startBriansBrain">Start</button>
-    <button id="stopBriansBrain">Stop</button>
+    <button id="startBriansBrain" class="stopstart">Start</button>
+    <button id="stopBriansBrain" class="stopstart">Stop</button>
 
   </div>
   <br>
@@ -127,8 +127,8 @@
     <br>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
     <br><br>
-    <button id="startWireWorld">Start</button>
-    <button id="stopWireWorld">Stop</button>
+    <button id="startWireWorld" class="stopstart">Start</button>
+    <button id="stopWireWorld" class="stopstart">Stop</button>
 
 </div>
 

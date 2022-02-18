@@ -124,7 +124,8 @@ button {
   background-color: rgb(40, 40, 40); 
   color: white;
   border: 1px solid #3d3d3d;
-  border-radius: 5px;
+  border-radius: 0px;
+  width: 100%;
 }
 
 button:hover {
@@ -168,6 +169,10 @@ button:hover {
   background-color: rgb(25, 25, 25);
   border: 3px solid rgb(42, 42, 42);
   border-radius: 5px;
+}
+
+.stopstart {
+  width: 49%;
 }
 
 .Header-Panel {
