@@ -10,6 +10,7 @@ import random
 import math
 
 pixelCount = 256
+
 pixels = neopixel.NeoPixel(board.D21, pixelCount, auto_write=False)
 ledBrightness = 100
 #rainbow variables
@@ -626,6 +627,8 @@ def startOneColorMode():
         FireEffect()
     elif oneColorModeName == "StarsEffect":
         StarEffect()
+    elif oneColorModeName == "KnightRider":
+        knightRider()
         
 
 sineWaveFrequency = 1
@@ -709,19 +712,28 @@ def StarEffect():
 
         pixels.show()
 
-fade = 1.09
+knightRiderFade = 100
+knightRiderSpeed = 1
+
+def setKnightRiderFade(value):
+    global knightRiderFade
+    knightRiderFade = value
+
+def setKnightRiderSpeed(value):
+    global knightRiderSpeed
+    knightRiderSpeed = value
 
 def knightRider():
+    global knightRiderSpeed
     neighbors = []
     pixelStrength = 100
     while pixelStrength >= 15:
-        strength = pixelStrength / fade
+        strength = pixelStrength / (1 + (knightRiderFade * 0.001))
         if pixelStrength >= 15:
             neighbors.append(strength)
-            pixelStrength = pixelStrength / fade
+            pixelStrength = pixelStrength / (1 + (knightRiderFade * 0.001))
         else:
             break
-    print(len(neighbors))
     if len(neighbors) * 2 >= pixelCount:
         print("Please increse fade")
         return
@@ -738,7 +750,7 @@ def knightRider():
                     
                     pixels[neighborRear] = ((int(oneColorModeHex[1:3], 16) * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16)  * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
                 pixels[neighborRear - len(neighbors)] = ((0, 0, 0))
-            time.sleep(0)
+            time.sleep(knightRiderSpeed * 0.001)
             pixels.show()
 
         for pixel in range(pixelCount - 1, 0, -1):
@@ -754,7 +766,5 @@ def knightRider():
                     pixels[neighborRear] = ((int(oneColorModeHex[1:3], 16) * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
                 if (neighborFront + len(neighbors) <= pixelCount):
                     pixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
-            time.sleep(0)     
+            time.sleep(knightRiderSpeed * 0.001)     
             pixels.show()
-
-knightRider()
