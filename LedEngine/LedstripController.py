@@ -770,10 +770,13 @@ def knightRider():
             pixels.show()
 
 textToDisplay = ""
+textSpeed = 10
 
 def DisplayText():
+    global ledPanelWidth
+    global ledPanelHeight
     font = ImageFont.truetype('font/PixeloidSans.ttf', 9)
-    text = """Hi this is just a test. wewewewe"""
+    text = """Hi this is a test for the text feature of LED-Engine"""
     print("length", font.getsize(text))
     img = Image.new(mode="RGB", size=font.getsize(text))
     
@@ -782,8 +785,16 @@ def DisplayText():
     
 
     draw.text(xy=(0, 0), text=text, font=font, fill='#ffffff')
+    for widthPos in range(img.width - ledPanelWidth):
+        #Clear()
+        for width in range(0, 16):
+            for height in range(img.height):
+                r, g, b = img.getpixel((width + widthPos, height))  
+                pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
+        
+        pixels.show()
+        
+        time.sleep(textSpeed / 100)
+        
 
-    img.save("awdawda.png")
-
-
-DisplayText()
+#DisplayText()
