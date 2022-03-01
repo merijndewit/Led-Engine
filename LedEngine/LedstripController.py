@@ -2,7 +2,7 @@ import board
 import neopixel
 import time
 import colorsys
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 import os
 import urllib.request
 import json
@@ -768,3 +768,22 @@ def knightRider():
                     pixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
             time.sleep(knightRiderSpeed * 0.001)     
             pixels.show()
+
+textToDisplay = ""
+
+def DisplayText():
+    font = ImageFont.truetype('font/PixeloidSans.ttf', 9)
+    text = """Hi this is just a test. wewewewe"""
+    print("length", font.getsize(text))
+    img = Image.new(mode="RGB", size=font.getsize(text))
+    
+    draw = ImageDraw.Draw(im=img)
+    
+    
+
+    draw.text(xy=(0, 0), text=text, font=font, fill='#ffffff')
+
+    img.save("awdawda.png")
+
+
+DisplayText()
