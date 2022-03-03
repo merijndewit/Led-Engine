@@ -201,6 +201,12 @@ def CheckInput():
                 Ledstrip.setKnightRiderSpeed(int(objectValue))
             elif (objectID == "displayTextText"):
                 Ledstrip.SetDisplayText(str(objectValue))
+            elif (objectID == "textSpeed"):
+                Ledstrip.SetTextSpeed(int(objectValue))
+            elif (objectID == "removeTopPixels"):
+                Ledstrip.SetRemoveTopPixels(int(objectValue))
+            elif (objectID == "textFontSize"):
+                Ledstrip.SetTextFontSize(int(objectValue))
         
 def terminateProcesses():
     for proc in modeProcs:

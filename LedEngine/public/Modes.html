@@ -90,6 +90,15 @@
   <div class="dropdown" id="dropdown-DisplayText">
     <small>Text to display:</small>
     <input type="text" value="" id="displayTextText" oninput="valueObjectChanged(this)">
+    <br>
+    <small>Font size:</small>
+    <input type="text" value="9" id="textFontSize" oninput="valueObjectChanged(this)">
+    <br>
+    <small>Text speed(ms):</small>
+    <input type="text" value="300" id="textSpeed" oninput="valueObjectChanged(this)">
+    <br>
+    <small>Remove top pixels:</small>
+    <input type="text" value="0" id="removeTopPixels" oninput="valueObjectChanged(this)">
   </div>
   <br><br>
   <button id="StartOneColorMode" class="stopstart">Start</button>
