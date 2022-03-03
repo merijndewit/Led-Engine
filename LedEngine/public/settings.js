@@ -114,6 +114,14 @@ socket.on('FB',function (data) {
       {
         document.getElementById("configPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
       }
+      if (obj2.JSONdata[0].amountOfPanelsInWidth)
+      {
+        document.getElementById("amountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
+      }
+      if (obj2.JSONdata[0].amountOfPanelsInHeight)
+      {
+        document.getElementById("amountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
+      }
       if (obj2.JSONdata[0].redCalibration)
       {
         document.getElementById("RedCalibrationPercentage").value = obj2.JSONdata[0].redCalibration;
@@ -199,6 +207,16 @@ function configPanelHeightChanged(value)
   if (value.value != 0)
   {
     socket.emit('msg','{"setConfigPanelHeight":"'+value.value+'"}');
+  }
+}
+
+function valueObjectChanged(e)
+{ 
+  if (e.value != "")
+  {
+    var element = document.getElementById(e.id);
+    element.innerHTML = e.value;
+    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
   }
 }
 
