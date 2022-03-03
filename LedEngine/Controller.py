@@ -207,6 +207,12 @@ def CheckInput():
                 Ledstrip.SetRemoveTopPixels(int(objectValue))
             elif (objectID == "textFontSize"):
                 Ledstrip.SetTextFontSize(int(objectValue))
+            elif (objectID == "amountOfPanelsInWidth"):
+                Ledstrip.SetAmountOfPanelsInWidth(int(objectValue))
+                jsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(objectValue))
+            elif (objectID == "amountOfPanelsInHeight"):
+                Ledstrip.SetAmountOfPanelsInHeight(int(objectValue))
+                jsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(objectValue))
         
 def terminateProcesses():
     for proc in modeProcs:
