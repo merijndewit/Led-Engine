@@ -772,25 +772,39 @@ def knightRider():
             pixels.show()
 
 textToDisplay = ""
-textSpeed = 10
-
+textSpeed = 300
+textFontSize = 9
 removeTopPixels = 0
 
 def SetDisplayText(value):
     global textToDisplay
     textToDisplay = value
 
+def SetTextSpeed(value):
+    global textSpeed
+    textSpeed = value
+
+def SetTextFontSize(value):
+    global textFontSize
+    textFontSize = value
+
+def SetRemoveTopPixels(value):
+    global removeTopPixels
+    removeTopPixels = value
+
 def DisplayText():
     global ledPanelWidth
     global ledPanelHeight
     global textToDisplay
-    font = ImageFont.truetype('font/PixeloidSans.ttf', 9)
+    font = ImageFont.truetype('font/PixeloidSans.ttf', textFontSize)
     print("length", font.getsize(textToDisplay))
     img = Image.new(mode="RGB", size=font.getsize(textToDisplay))
     
     draw = ImageDraw.Draw(im=img)
 
     draw.text(xy=(0, 0), text=textToDisplay, font=font, fill='#ffffff')
+
+    waitExtraSec = 1.25
     while True:
         if img.width < ledPanelWidth:
             for width in range(min( img.width, ledPanelWidth)):
@@ -799,16 +813,18 @@ def DisplayText():
                     pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
             
             pixels.show()
-            time.sleep(textSpeed / 100)
+            return
         else: #scroll function if thext doesnt fit in the led panel completely
             for widthPos in range(img.width - ledPanelWidth):
                 for width in range(min( img.width, ledPanelWidth)):
                     for height in range(min(img.height - removeTopPixels, ledPanelHeight)):
                         r, g, b = img.getpixel((width + widthPos, height + removeTopPixels))  
                         pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
-                
                 pixels.show()
-                time.sleep(textSpeed / 100)
+                time.sleep((textSpeed / 1000) + waitExtraSec)
+                waitExtraSec = 0
+        waitExtraSec = 0.75
+        time.sleep(waitExtraSec)
         
 
 #DisplayText()
