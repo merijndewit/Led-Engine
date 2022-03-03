@@ -138,10 +138,10 @@ socket.on('FB',function (data) {
     }
     else if (id == 'JSONdata')
     {
-      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth)
+      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth && obj2.JSONdata[0].amountOfPanelsInWidth && obj2.JSONdata[0].amountOfPanelsInHeight)
       {
-        rowX = obj2.JSONdata[0].LEDPanelWidth;
-        rowY = obj2.JSONdata[0].LEDPanelHeight;
+        rowX = obj2.JSONdata[0].LEDPanelWidth * obj2.JSONdata[0].amountOfPanelsInWidth;
+        rowY = obj2.JSONdata[0].LEDPanelHeight * obj2.JSONdata[0].amountOfPanelsInHeight;
         setup2();
       }
       if (obj2.JSONdata[0].brightnessValue)
