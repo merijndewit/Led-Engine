@@ -138,6 +138,17 @@ socket.on('FB',function (data) {
             dropdown.style.display = "block";
           } 
         }
+        else if (id == "DisplayText")
+        {
+          CollapseAllMenus();
+          var dropdown = document.getElementById("dropdown-DisplayText");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+        }
       }
     }
     else if (id == 'JSONdata')
@@ -161,9 +172,11 @@ function CollapseAllMenus()
   var dropdown0 = document.getElementById("dropdown-container");
   var dropdown1 = document.getElementById("dropdown-StarsEffect");
   var dropdown2 = document.getElementById("dropdown-KnightRider");
+  var dropdown3 = document.getElementById("dropdown-DisplayText");
   dropdown0.style.display = "none";
   dropdown1.style.display = "none";
   dropdown2.style.display = "none";
+  dropdown3.style.display = "none";
 }
 
 function SetColor(colorValue)

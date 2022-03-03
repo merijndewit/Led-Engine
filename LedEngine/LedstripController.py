@@ -629,6 +629,8 @@ def startOneColorMode():
         StarEffect()
     elif oneColorModeName == "KnightRider":
         knightRider()
+    elif oneColorModeName == "DisplayText":
+        DisplayText()
         
 
 sineWaveFrequency = 1
@@ -774,35 +776,39 @@ textSpeed = 10
 
 removeTopPixels = 0
 
+def SetDisplayText(value):
+    global textToDisplay
+    textToDisplay = value
 
 def DisplayText():
     global ledPanelWidth
     global ledPanelHeight
+    global textToDisplay
     font = ImageFont.truetype('font/PixeloidSans.ttf', 9)
-    text = """This is a test for the text feature of LED-Engine"""
-    print("length", font.getsize(text))
-    img = Image.new(mode="RGB", size=font.getsize(text))
+    print("length", font.getsize(textToDisplay))
+    img = Image.new(mode="RGB", size=font.getsize(textToDisplay))
     
     draw = ImageDraw.Draw(im=img)
 
-    draw.text(xy=(0, 0), text=text, font=font, fill='#ffffff')
-    if img.width < ledPanelWidth:
-        for width in range(min( img.width, ledPanelWidth)):
-            for height in range(min(img.height - removeTopPixels, ledPanelHeight)):
-                r, g, b = img.getpixel((width, height + removeTopPixels))  
-                pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
-        
-        pixels.show()
-        time.sleep(textSpeed / 100)
-    else: #scroll function
-        for widthPos in range(img.width - ledPanelWidth):
+    draw.text(xy=(0, 0), text=textToDisplay, font=font, fill='#ffffff')
+    while True:
+        if img.width < ledPanelWidth:
             for width in range(min( img.width, ledPanelWidth)):
                 for height in range(min(img.height - removeTopPixels, ledPanelHeight)):
-                    r, g, b = img.getpixel((width + widthPos, height + removeTopPixels))  
+                    r, g, b = img.getpixel((width, height + removeTopPixels))  
                     pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
             
             pixels.show()
             time.sleep(textSpeed / 100)
+        else: #scroll function if thext doesnt fit in the led panel completely
+            for widthPos in range(img.width - ledPanelWidth):
+                for width in range(min( img.width, ledPanelWidth)):
+                    for height in range(min(img.height - removeTopPixels, ledPanelHeight)):
+                        r, g, b = img.getpixel((width + widthPos, height + removeTopPixels))  
+                        pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
+                
+                pixels.show()
+                time.sleep(textSpeed / 100)
         
 
 #DisplayText()
