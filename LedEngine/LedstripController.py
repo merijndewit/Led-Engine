@@ -24,19 +24,27 @@ Bpercentage = 100
 ledPanelWidth = 0
 ledPanelHeight = 0
 
+#the total amount of pixels in one row with all the panels combined in the width/height
+ledPanelsPixelWidth = 0
+ledPanelsPixelHeight = 0
+
 pixelArray = []
 wireWorldGrid = [] # 0 = off/nothing, 1 = conductor, 2 = Electron Head, 3 = ElectronTail 
+panels2DArray = []
+
+amountOfPanelsInWidth = 0
+amountOfPanelsInHeight = 0
 
 imageName = ""
 
 def NewPixelArray():
     global pixelArray
-    global ledPanelWidth
-    global ledPanelHeight
+    global ledPanelsPixelWidth
+    global ledPanelsPixelHeight
     pixelArray = []
-    for i in range(ledPanelWidth):
+    for i in range(ledPanelsPixelWidth):
         rowY = []
-        for ii in range(ledPanelHeight):
+        for ii in range(ledPanelsPixelHeight):
             rowY.append('#000000')
         pixelArray.append(rowY)
 
@@ -49,7 +57,7 @@ def make2DArray(cols, rows):
 
 def CreateWireWorld2dArray():
     global wireWorldGrid
-    wireWorldGrid = make2DArray(ledPanelWidth, ledPanelHeight)
+    wireWorldGrid = make2DArray(ledPanelsPixelWidth, ledPanelsPixelHeight)
 
 def LoadJsonValues():
     jsonFile = os.path.dirname(os.path.realpath(__file__))+"/config.json"
@@ -60,6 +68,8 @@ def LoadJsonValues():
     global ledBrightness
     global ledPanelWidth
     global ledPanelHeight
+    global amountOfPanelsInWidth
+    global amountOfPanelsInHeight
 
     with open(jsonFile) as json_file:
         json_decoded = json.load(json_file)
@@ -82,14 +92,32 @@ def LoadJsonValues():
         ledBrightness = int(json_decoded["brightnessValue"])
     else:
         ledBrightness = 100
+    if not (json_decoded.get('amountOfPanelsInWidth') is None):
+        amountOfPanelsInWidth = int(json_decoded["amountOfPanelsInWidth"])
+    if not (json_decoded.get('amountOfPanelsInHeight') is None):
+        amountOfPanelsInHeight = int(json_decoded["amountOfPanelsInHeight"])
     if not (json_decoded.get('LEDPanelWidth') is None):
         ledPanelWidth = int(json_decoded["LEDPanelWidth"])
     if not (json_decoded.get('LEDPanelHeight') is None):
         ledPanelHeight = int(json_decoded["LEDPanelHeight"])
 
 def start():
+    global ledPanelsPixelWidth
+    global ledPanelsPixelHeight
+    global panels2DArray
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') == 1):
         LoadJsonValues()
+        ledPanelsPixelWidth = ledPanelWidth * amountOfPanelsInWidth
+        ledPanelsPixelHeight = ledPanelHeight * amountOfPanelsInHeight
+        print('total amount of pixels in width/height', ledPanelsPixelWidth, ledPanelsPixelHeight, 'width/height of one panel', ledPanelWidth, ledPanelsPixelHeight, 'amount of panels width/height', amountOfPanelsInWidth, amountOfPanelsInHeight )
+    panels2DArray = make2DArray(2, 2)
+
+    #this is a test grid
+    panels2DArray[0][0] = 0
+    panels2DArray[0][1] = 1
+    panels2DArray[1][0] = 2
+    panels2DArray[1][1] = 3
+
     NewPixelArray()
     CreateWireWorld2dArray()
 
@@ -151,14 +179,28 @@ def setPixel(x, y, color):
 #    return rowX[int(corY)][int(corX)]¨
 
 def getPixelNumber(corX, corY):
+    global ledPanelsPixelWidth
     global ledPanelWidth
-    index = 0
-    if (int(corY) % 2) == 0: #you can easely mirror the image by changing == to !=
-        index = (int(corY) * ledPanelWidth) + (ledPanelWidth - int(corX)) - 1
-    else:
-        index = (int(corY) * ledPanelWidth) + int(corX)
-    return index
+    global ledPanelHeight
 
+    index = 0
+
+    #these calculations calculates what part of the grid the pixel is 
+    panelX = int(corX / ledPanelWidth) 
+    panelY = int(corY / ledPanelHeight)
+
+    #these calculations calculate the pixel number of the ledpanel
+    panelPixelX = corX - (panelX * ledPanelWidth)
+    panelPixelY = corY - (panelY * ledPanelHeight)
+    print(panels2DArray[panelX][panelY], panels2DArray)
+  
+    if (int(panelPixelY) % 2) == 0: #you can easely mirror the image by changing == to !=
+        index = (int(panelPixelY) * ledPanelWidth) + (ledPanelWidth - int(panelPixelX)) - 1
+    else:
+        index = (int(panelPixelY) * ledPanelWidth) + int(panelPixelX)
+    
+    index += panels2DArray[panelX][panelY] * (ledPanelWidth * ledPanelHeight)
+    return index
 
 def RedCalibration(percentage):
     global Rpercentage
@@ -175,22 +217,32 @@ def setLedCount(ledCount):
     pixelCount = ledCount
 
 def setConfigPanelWidth(value):
-    global ledPanelWidth
-    ledPanelWidth = value
+    global ledPanelsPixelWidth
+    ledPanelsPixelWidth = value
     NewPixelArray()
 
 def setConfigPanelHeight(value):
-    global ledPanelHeight
-    ledPanelHeight = value
+    global ledPanelsPixelHeight
+    ledPanelsPixelHeight = value
+    NewPixelArray()
+
+def SetAmountOfPanelsInWidth(value):
+    global ledPanelsPixelWidth
+    ledPanelsPixelWidth = value
+    NewPixelArray()
+
+def SetAmountOfPanelsInHeight(value):
+    global ledPanelsPixelHeight
+    ledPanelsPixelHeight = value
     NewPixelArray()
 
 def CreateImage():
     global pixelArray
     global imageName
-    global ledPanelWidth
-    global ledPanelHeight
+    global ledPanelsPixelWidth
+    global ledPanelsPixelHeight
     if imageName != "":
-        img = Image.new('RGB', [ledPanelWidth,ledPanelHeight], 255)
+        img = Image.new('RGB', [ledPanelsPixelWidth,ledPanelsPixelHeight], 255)
         data = img.load()
         for y in range(img.size[1]):
             for x in range(img.size[0]):
@@ -213,18 +265,18 @@ def GetImageNames():
 
 
 def DisplayImageFile(imageName):
-    global ledPanelWidth
-    global ledPanelHeight
+    global ledPanelsPixelWidth
+    global ledPanelsPixelHeight
     global Rpercentage
     global Gpercentage
     global Bpercentage
     pixelList = []
     image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/savedImages/"+imageName)
-    if (image.width == ledPanelWidth and image.height == ledPanelHeight):
+    if (image.width == ledPanelsPixelWidth and image.height == ledPanelsPixelHeight):
         rgb_im = image.convert('RGB')
         Clear()
-        for y in range(ledPanelHeight):
-            for x in range(ledPanelWidth):
+        for y in range(ledPanelsPixelHeight):
+            for x in range(ledPanelsPixelWidth):
                 pixel = int(getPixelNumber(x, y))
                 r, g, b = rgb_im.getpixel((x, y))  
                 pixels[pixel] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
@@ -234,10 +286,10 @@ def DisplayImageFile(imageName):
     return pixelList
 
 def DownscaleImage(imagePath, newName):
-    global ledPanelWidth
-    global ledPanelHeight
+    global ledPanelsPixelWidth
+    global ledPanelsPixelHeight
     image = Image.open(imagePath)
-    resized_image = image.resize((ledPanelWidth,ledPanelHeight))
+    resized_image = image.resize((ledPanelsPixelWidth,ledPanelsPixelHeight))
     #resized_image.save('savedImages/'+'new'+ '.png')
     resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+newName)
 
@@ -286,8 +338,8 @@ def sendToClient(message):
     Controller.sendToClient(message)
 
 def DisplayGIF():
-    global ledPanelHeight
-    global ledPanelWidth
+    global ledPanelsPixelHeight
+    global ledPanelsPixelWidth
     global gifUrl
     if gifUrl != "":
         imageName = "tmp.gif"
@@ -296,12 +348,12 @@ def DisplayGIF():
             urllib.request.urlretrieve(gifUrl, path)
         except:
             return ""
-        resize_gif(path, None, (ledPanelWidth, ledPanelHeight))
+        resize_gif(path, None, (ledPanelsPixelWidth, ledPanelsPixelHeight))
         return path
 
 def PlayGif():
-    global ledPanelHeight
-    global ledPanelWidth
+    global ledPanelsPixelHeight
+    global ledPanelsPixelWidth
     global Rpercentage
     global Gpercentage
     global Bpercentage
@@ -311,8 +363,8 @@ def PlayGif():
         for i in range(gif.n_frames):
             gif.seek(i)
             rgb_im = gif.convert('RGB')
-            for y in range(ledPanelHeight):
-                for x in range(ledPanelWidth):
+            for y in range(ledPanelsPixelHeight):
+                for x in range(ledPanelsPixelWidth):
                     pixel = int(getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
                     pixels[pixel] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
@@ -331,14 +383,14 @@ def resize_gif(path, save_as=None, resize_to=None):
         all_frames[0].save(save_as, optimize=True, save_all=True, append_images=all_frames[1:], loop=1000)
 
 def extract_and_resize_frames(path, resize_to=None):
-    global ledPanelHeight
-    global ledPanelWidth
+    global ledPanelsPixelHeight
+    global ledPanelsPixelWidth
     im = Image.open(path)
     all_frames = []
     try:
         while True:
             im.convert('RGB')
-            new_frame = im.resize((ledPanelWidth,ledPanelHeight))
+            new_frame = im.resize((ledPanelsPixelWidth,ledPanelsPixelHeight))
             all_frames.append(new_frame)
             im.seek(im.tell() + 1)
     except EOFError:
@@ -347,8 +399,8 @@ def extract_and_resize_frames(path, resize_to=None):
     return all_frames
 
 grid = []
-cols = ledPanelWidth
-rows = ledPanelHeight
+cols = ledPanelsPixelWidth
+rows = ledPanelsPixelHeight
 
 def startGameOfLife():
     global grid
@@ -418,9 +470,9 @@ ANTLEFT = 3;
 
 def StartAnt():
     global antGrid, x, y, dir
-    antGrid = make2DArray(ledPanelWidth, ledPanelHeight)
-    x = int(ledPanelWidth / 2)
-    y = int(ledPanelHeight / 2)
+    antGrid = make2DArray(ledPanelsPixelWidth, ledPanelsPixelHeight)
+    x = int(ledPanelsPixelWidth / 2)
+    y = int(ledPanelsPixelHeight / 2)
     dir = ANTUP
     while True:
         drawAnt()
@@ -453,14 +505,14 @@ def moveForward():
         color = (2, 0, 0)
         x -= 1
 
-    if (x > ledPanelWidth - 1):
+    if (x > ledPanelsPixelWidth - 1):
         x = 0
     elif (x < 0):
-        x = ledPanelWidth - 1
-    if (y > ledPanelHeight - 1):
+        x = ledPanelsPixelWidth - 1
+    if (y > ledPanelsPixelHeight - 1):
         y = 0
     elif (y < 0) :
-        y = ledPanelHeight - 1
+        y = ledPanelsPixelHeight - 1
 
 def drawAnt():
     global x, y, dir, color
@@ -793,8 +845,8 @@ def SetRemoveTopPixels(value):
     removeTopPixels = value
 
 def DisplayText():
-    global ledPanelWidth
-    global ledPanelHeight
+    global ledPanelsPixelWidth
+    global ledPanelsPixelHeight
     global textToDisplay
     font = ImageFont.truetype('font/PixeloidSans.ttf', textFontSize)
     print("length", font.getsize(textToDisplay))
@@ -806,18 +858,18 @@ def DisplayText():
 
     waitExtraSec = 1.25
     while True:
-        if img.width < ledPanelWidth:
-            for width in range(min( img.width, ledPanelWidth)):
-                for height in range(min(img.height - removeTopPixels, ledPanelHeight)):
+        if img.width < ledPanelsPixelWidth:
+            for width in range(min( img.width, ledPanelsPixelWidth)):
+                for height in range(min(img.height - removeTopPixels, ledPanelsPixelHeight)):
                     r, g, b = img.getpixel((width, height + removeTopPixels))  
                     pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
             
             pixels.show()
             return
         else: #scroll function if thext doesnt fit in the led panel completely
-            for widthPos in range(img.width - ledPanelWidth):
-                for width in range(min( img.width, ledPanelWidth)):
-                    for height in range(min(img.height - removeTopPixels, ledPanelHeight)):
+            for widthPos in range(img.width - ledPanelsPixelWidth):
+                for width in range(min( img.width, ledPanelsPixelWidth)):
+                    for height in range(min(img.height - removeTopPixels, ledPanelsPixelHeight)):
                         r, g, b = img.getpixel((width + widthPos, height + removeTopPixels))  
                         pixels[getPixelNumber(width, height)] = (r * ((Rpercentage / 100)*(ledBrightness / 100)), g * (Gpercentage / 100)*(ledBrightness / 100), b * (Bpercentage / 100)*(ledBrightness / 100))
                 pixels.show()
@@ -825,6 +877,3 @@ def DisplayText():
                 waitExtraSec = 0
         waitExtraSec = 0.75
         time.sleep(waitExtraSec)
-        
-
-#DisplayText()
