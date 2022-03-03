@@ -186,3 +186,7 @@ button:hover {
   display: none;
   background-color: #262626;
 }
+
+.smallTextBox {
+  width: 50px;
+}
