@@ -51,7 +51,7 @@ def NewPixelArray():
 def make2DArray(cols, rows):
     listRow = [0] * cols
     listCol = []
-    for i in range(cols): 
+    for i in range(rows): 
         listCol.append(listRow.copy())
     return listCol
 
@@ -113,15 +113,20 @@ def start():
     panels2DArray = make2DArray(2, 2)
 
     #this is a test grid
-    panels2DArray[0][0] = 0
-    panels2DArray[0][1] = 1
-    panels2DArray[1][0] = 2
-    panels2DArray[1][1] = 3
+    #panels2DArray[0][0] = 0
+    #panels2DArray[0][1] = 1
+    #panels2DArray[1][0] = 2
+    #panels2DArray[1][1] = 3
 
     NewPixelArray()
     CreateWireWorld2dArray()
 
 start()
+
+def setPanelArray(x, y, value):
+    global panels2DArray
+    panels2DArray[x][y] = value
+
 
 def Clear():
     pixels.fill((0, 0, 0))
@@ -192,14 +197,13 @@ def getPixelNumber(corX, corY):
     #these calculations calculate the pixel number of the ledpanel
     panelPixelX = corX - (panelX * ledPanelWidth)
     panelPixelY = corY - (panelY * ledPanelHeight)
-    print(panels2DArray[panelX][panelY], panels2DArray)
   
     if (int(panelPixelY) % 2) == 0: #you can easely mirror the image by changing == to !=
         index = (int(panelPixelY) * ledPanelWidth) + (ledPanelWidth - int(panelPixelX)) - 1
     else:
         index = (int(panelPixelY) * ledPanelWidth) + int(panelPixelX)
     
-    index += panels2DArray[panelX][panelY] * (ledPanelWidth * ledPanelHeight)
+    index += panels2DArray[panelY][panelX] * (ledPanelWidth * ledPanelHeight)
     return index
 
 def RedCalibration(percentage):
@@ -397,6 +401,8 @@ def extract_and_resize_frames(path, resize_to=None):
         pass
 
     return all_frames
+
+
 
 grid = []
 cols = ledPanelsPixelWidth
