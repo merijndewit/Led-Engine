@@ -1,5 +1,8 @@
 var socket = io(); 
 
+ledPanelsWidth = 0
+ledPanelsHeight = 0
+
 window.addEventListener("load", function()
 {
   if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
@@ -117,10 +120,14 @@ socket.on('FB',function (data) {
       if (obj2.JSONdata[0].amountOfPanelsInWidth)
       {
         document.getElementById("amountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
+        ledPanelsWidth = obj2.JSONdata[0].amountOfPanelsInWidth;
+        displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].amountOfPanelsInHeight)
       {
         document.getElementById("amountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
+        ledPanelsHeight = obj2.JSONdata[0].amountOfPanelsInHeight;
+        displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].redCalibration)
       {
@@ -137,10 +144,6 @@ socket.on('FB',function (data) {
       if (obj2.JSONdata[0].LedCount)
       {
         document.getElementById("configPanelLedCount").value = obj2.JSONdata[0].LedCount;
-      }
-      if (obj2.JSONdata[0].brightnessValue)
-      {
-        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }
@@ -220,10 +223,94 @@ function valueObjectChanged(e)
   }
 }
 
+function valuePanelChanged(e)
+{ 
+  if (e.value != "")
+  {
+    var element = document.getElementById(e.id);
+    var xPosition = e.id.substring(
+      e.id.indexOf("F") + 1, 
+      e.id.lastIndexOf("f")
+    );
+    var yPosition = e.id.substring(
+      e.id.indexOf("L") + 1, 
+      e.id.lastIndexOf("l")
+    );
+    console.log("xpos", xPosition, "ypos", yPosition)
+    element.innerHTML = e.value;
+    socket.emit('msg',JSON.stringify({ valuePanelChanged: {value : e.value, x : xPosition, y : yPosition} }));
+  }
+}
+
+function make2DArray(cols, rows)
+{
+  var listRow = []
+  for (let i = 0; i < cols; i++) 
+  {
+    listRow.push(0)
+  }  
+  
+  listCol = []
+  for (let i = 0; i < rows; i++) 
+  {
+    listCol[i] = listRow.slice()
+  }  
+  return listCol
+}
+
+
+function amountOfLedPanelsChanged(value)
+{
+  if (value.id == "amountOfPanelsInWidth" && value.value != "")
+  {
+    var element = document.getElementById(value.id);
+    element.innerHTML = value.value;
+    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : value.id, objectValue : value.value} }));
+    ledPanelsWidth = value.value;
+    displayLedPanelGrid();
+
+  }
+  else if (value.id == "amountOfPanelsInHeight" && value.value != "")
+  {
+    var element = document.getElementById(value.id);
+    element.innerHTML = value.value;
+    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : value.id, objectValue : value.value} }));
+    ledPanelsHeight = value.value;
+    createLedPanelGrid();
+  }
+}
+function displayLedPanelGrid()
+{
+  var ledPanelArray = make2DArray(ledPanelsWidth, ledPanelsHeight);
+  var gridContainer = document.getElementById("grid-container");
+  while (gridContainer.firstChild) {
+    gridContainer.removeChild(gridContainer.lastChild);
+  }
+  
+  console.log("awdawdawd"+ledPanelsWidth);
+  gridContainer.style.gridTemplateColumns = "repeat("+ledPanelsWidth+", 1fr)" //this is to set the amount of colums on the x position
+  //var ledPanelPanel = document.createElement("INPUT");
+
+    for (let x = 0; x < ledPanelArray.length; x++) 
+    {
+      for (let y = 0; y < ledPanelArray[x].length; y++) 
+      {
+        var gridPanel = document.createElement("INPUT");
+        gridPanel.type = "text";
+        gridPanel.value = 0;
+        gridPanel.className = "grid-item";
+        gridPanel.oninput = function(){valuePanelChanged(this)};
+        gridPanel.id = "gridPan"+"F"+x+"f"+"L"+y+"l";
+        document.getElementById('grid-container').appendChild(gridPanel);
+      }
+    }  
+}
+
 function Start()
 {
   //here we read the json file for the previous settings
   socket.emit('msg','{"RequestJSONdata":"1"}');
+  displayLedPanelGrid();
 }
 Start();
 
