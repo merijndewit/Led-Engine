@@ -174,6 +174,8 @@ def CheckInput():
             oneColorModeProcess.start()
         elif ("StopOneColorMode" in aDict):
             oneColorModeProcess.terminate()
+        elif ("valuePanelChanged" in aDict):
+            Ledstrip.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
         elif ("valueChanged" in aDict):
             objectID = aDict["valueChanged"].get("objectID")
             objectValue = aDict["valueChanged"].get("objectValue")
