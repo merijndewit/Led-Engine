@@ -221,7 +221,7 @@ function setup2()
   Xwidth = waitForElement();
   if (Xwidth != 0 || rowY != 0)
   {
-    canvas = createCanvas(200, 200);
+    canvas = createCanvas(8 * rowX, 8 * rowY);
     canvas.parent('canvasPanel');
     background(120);
     var row = new Array(rowY).fill('#000000');
@@ -247,7 +247,7 @@ function Clear()
   var row = new Array(rowY).fill('#000000');
   for (let i = 0; i < rowX; i++) 
   {
-    grid[i] = row;
+    grid[i] = row.slice();
   }
 }
 
@@ -289,7 +289,7 @@ function renderBoard()
     stroke(50, 50, 50);
     strokeWeight(1);
     fill("#000000");
-    rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
+    rect(x*(width / rowX),y*(height / rowY), width / rowX, height / rowY);
   }
  }
 }
@@ -314,7 +314,7 @@ function drawPixel(spotX, spotY, pickedColor)
   }
   grid[spotX] = gridY;
   fill(color(grid[spotX][spotY]));
-  rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
+  rect(spotX*(width / rowX),spotY*(height / rowY), width / rowX, height / rowY);
 }
 
 var names = []
