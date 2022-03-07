@@ -153,10 +153,10 @@ socket.on('FB',function (data) {
     }
     else if (id == 'JSONdata')
     {
-      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth)
+      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth && obj2.JSONdata[0].amountOfPanelsInWidth && obj2.JSONdata[0].amountOfPanelsInHeight)
       {
-        rowX = obj2.JSONdata[0].LEDPanelWidth;
-        rowY = obj2.JSONdata[0].LEDPanelHeight;
+        rowX = obj2.JSONdata[0].LEDPanelWidth * obj2.JSONdata[0].amountOfPanelsInWidth;
+        rowY = obj2.JSONdata[0].LEDPanelHeight * obj2.JSONdata[0].amountOfPanelsInHeight;
         setup2();
       }
       if (obj2.JSONdata[0].brightnessValue)
@@ -237,7 +237,7 @@ function setup2()
   Xwidth = waitForElement();
   if (Xwidth != 0 || rowY != 0)
   {
-    canvas = createCanvas(200, 200);
+    canvas = createCanvas(8 * rowX, 8 * rowY);
     canvas.parent('canvasPanel');
     background(120);
     var row = new Array(rowY).fill('#000000');
@@ -302,7 +302,7 @@ function renderBoard()
     stroke(50, 50, 50);
     strokeWeight(1);
     fill("#000000");
-    rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
+    rect(x*(width / rowX),y*(height / rowY), width / rowX, height / rowY);
   }
  }
 }
@@ -327,7 +327,7 @@ function drawPixel(spotX, spotY, pickedColor)
   }
   grid[spotX] = gridY;
   fill(color(grid[spotX][spotY]));
-  rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
+  rect(spotX*(width / rowX),spotY*(height / rowY), width / rowX, height / rowY);
 }
 
 var oneColorEffect
