@@ -199,8 +199,8 @@ button:hover {
 }
 
 .grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  background-color: rgb(48, 48, 48);
+  border: 3px solid rgb(57, 57, 57);
   padding: 20px;
   font-size: 30px;
   text-align: center;
