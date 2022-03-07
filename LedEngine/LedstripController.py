@@ -105,12 +105,14 @@ def start():
     global ledPanelsPixelWidth
     global ledPanelsPixelHeight
     global panels2DArray
+    global amountOfPanelsInWidth
+    global amountOfPanelsInHeight
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') == 1):
         LoadJsonValues()
         ledPanelsPixelWidth = ledPanelWidth * amountOfPanelsInWidth
         ledPanelsPixelHeight = ledPanelHeight * amountOfPanelsInHeight
         print('total amount of pixels in width/height', ledPanelsPixelWidth, ledPanelsPixelHeight, 'width/height of one panel', ledPanelWidth, ledPanelsPixelHeight, 'amount of panels width/height', amountOfPanelsInWidth, amountOfPanelsInHeight )
-    panels2DArray = make2DArray(2, 2)
+    panels2DArray = make2DArray(amountOfPanelsInWidth, amountOfPanelsInHeight)
 
     #this is a test grid
     #panels2DArray[0][0] = 0
@@ -231,14 +233,16 @@ def setConfigPanelHeight(value):
     NewPixelArray()
 
 def SetAmountOfPanelsInWidth(value):
-    global ledPanelsPixelWidth
-    ledPanelsPixelWidth = value
-    NewPixelArray()
+    global amountOfPanelsInWidth
+    global panels2DArray
+    amountOfPanelsInWidth = value
+    panels2DArray = make2DArray(amountOfPanelsInWidth, amountOfPanelsInHeight)
 
 def SetAmountOfPanelsInHeight(value):
-    global ledPanelsPixelHeight
-    ledPanelsPixelHeight = value
-    NewPixelArray()
+    global amountOfPanelsInHeight
+    global panels2DArray
+    amountOfPanelsInHeight = value
+    panels2DArray = make2DArray(amountOfPanelsInWidth, amountOfPanelsInHeight)
 
 def CreateImage():
     global pixelArray
