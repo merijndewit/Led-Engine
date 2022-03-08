@@ -739,6 +739,18 @@ class Star:
         self.position = 0
         self.maxValue = random.randint(20, 255)
 
+    def nextBrightness(self):
+        if self.declining == True:
+            if self.value == 0:
+                del self
+            else:
+                self.value -= 1
+        else:
+            if self.value == self.maxValue:
+                self.declining = True
+            else:
+                self.value += 1
+
 starsPerSecond = 1
 
 def setStarsPerSecond(value):
@@ -760,17 +772,6 @@ def StarEffect():
         for star in range(len(starList)):
             pixels[starList[star].position] = ((int(oneColorModeHex[1:3], 16)*(starList[star].value / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (starList[star].value / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (starList[star].value / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
             
-            if starList[star].declining == True:
-                if starList[star].value == 0:
-                    if star not in starsToRemove:
-                        starsToRemove.append(star)
-                else:
-                    starList[star].value -= 1
-            else:
-                if starList[star].value == starList[star].maxValue:
-                    starList[star].declining = True
-                else:
-                    starList[star].value += 1
         time.sleep(0.1)
 
         for i in range(len(starsToRemove)):
@@ -778,7 +779,7 @@ def StarEffect():
         starsToRemove = []
 
         pixels.show()
-        
+
 knightRiderFade = 100
 knightRiderSpeed = 1
 
