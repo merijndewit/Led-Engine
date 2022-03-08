@@ -739,11 +739,9 @@ class Star:
         self.position = 0
         self.maxValue = random.randint(20, 255)
 
-    def nextBrightness(self):
+    def nextStep(self):
         if self.declining == True:
-            if self.value == 0:
-                del self
-            else:
+            if self.value != 0:
                 self.value -= 1
         else:
             if self.value == self.maxValue:
@@ -760,7 +758,6 @@ def setStarsPerSecond(value):
 def StarEffect():
     global oneColorModeHex
     starList = []
-    starsToRemove = []
     startTime = time.time()
     while True:
         if time.time() - startTime >= 1 / starsPerSecond:
@@ -771,12 +768,14 @@ def StarEffect():
 
         for star in range(len(starList)):
             pixels[starList[star].position] = ((int(oneColorModeHex[1:3], 16)*(starList[star].value / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (starList[star].value / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (starList[star].value / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
-            
-        time.sleep(0.1)
 
-        for i in range(len(starsToRemove)):
-            starList.pop(starsToRemove[i])
-        starsToRemove = []
+            starList[star].nextStep()
+        time.sleep(0.08)
+        newList = starList.copy()
+        for i in range(len(starList)):
+            if starList[i].value == 0 and starList[i].declining == True:
+                del newList[i]
+        starList = newList.copy()
 
         pixels.show()
 
