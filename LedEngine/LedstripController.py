@@ -733,9 +733,11 @@ def FireEffect():
         pixels.show()
 
 class Star:
-    value = 0
-    declining = False
-    position = 0
+    def __init__(self): #constructor
+        self.value = 0
+        self.declining = False
+        self.position = 0
+        self.maxValue = random.randint(20, 255)
 
 starsPerSecond = 1
 
@@ -749,7 +751,7 @@ def StarEffect():
     starsToRemove = []
     startTime = time.time()
     while True:
-        if time.time() - startTime >= starsPerSecond / 100:
+        if time.time() - startTime >= 1 / starsPerSecond:
             newStar = Star()
             newStar.position = int(random.randint(0, pixelCount - 1))
             starList.append(newStar)
@@ -765,17 +767,18 @@ def StarEffect():
                 else:
                     starList[star].value -= 1
             else:
-                if starList[star].value == 255:
+                if starList[star].value == starList[star].maxValue:
                     starList[star].declining = True
                 else:
                     starList[star].value += 1
+        time.sleep(0.1)
 
         for i in range(len(starsToRemove)):
             starList.pop(starsToRemove[i])
         starsToRemove = []
 
         pixels.show()
-
+        
 knightRiderFade = 100
 knightRiderSpeed = 1
 
