@@ -733,6 +733,7 @@ def FireEffect():
         pixels.show()
 
 class Star:
+    step = 1
     def __init__(self): #constructor
         self.value = 0
         self.declining = False
@@ -742,12 +743,28 @@ class Star:
     def nextStep(self):
         if self.declining == True:
             if self.value != 0:
-                self.value -= 1
+                self.value -= Star.step
         else:
             if self.value == self.maxValue:
                 self.declining = True
             else:
-                self.value += 1
+                self.value += Star.step
+
+class TwingklingStar(Star):
+    originalValue = 0
+    def nextStep(self):
+        self.value = self.originalValue
+        if self.declining == True:
+            if self.originalValue != 0:
+                self.originalValue -= Star.step
+        else:
+            if self.originalValue == self.maxValue:
+                self.declining = True
+            else:
+                self.originalValue += Star.step
+        if self.originalValue >= 5 and self.value <= self.maxValue:
+            self.value = random.randint(-5, 5)
+            self.value += self.originalValue
 
 starsPerSecond = 1
 
@@ -761,7 +778,11 @@ def StarEffect():
     startTime = time.time()
     while True:
         if time.time() - startTime >= 1 / starsPerSecond:
-            newStar = Star()
+            randomNumber = int(random.randint(0, 3))
+            if randomNumber == 0:
+                newStar = TwingklingStar()
+            else:
+                newStar = Star()
             newStar.position = int(random.randint(0, pixelCount - 1))
             starList.append(newStar)
             startTime = time.time()
@@ -770,7 +791,7 @@ def StarEffect():
             pixels[starList[star].position] = ((int(oneColorModeHex[1:3], 16)*(starList[star].value / 255) * (Rpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[3:5], 16) * (starList[star].value / 255) * (Gpercentage / 100)*(ledBrightness / 100), int(oneColorModeHex[5:7], 16) * (starList[star].value / 255) * (Bpercentage / 100)*(ledBrightness / 100)))
 
             starList[star].nextStep()
-        time.sleep(0.08)
+        #time.sleep(0.08)
         newList = starList.copy()
         for i in range(len(starList)):
             if starList[i].value == 0 and starList[i].declining == True:
