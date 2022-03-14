@@ -49,6 +49,7 @@ def CheckInput():
     from DisplayText import DisplayText
     from GameOfLife import GameOfLife
     from LangtonsAnt import LangtonsAnt
+    from BriansBrain import BriansBrain
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -155,11 +156,13 @@ def CheckInput():
         elif ("startBriansBrain" in aDict):
             if (aDict["startBriansBrain"] == 1):
                 terminateProcesses()
-                BrainProcess = multiprocessing.Process(target=Ledstrip.startBriansBrain, args=())
-                modeProcs.append(BrainProcess)
-                BrainProcess.start()
+                briansBrain = BriansBrain()
+                briansBrainProcess = multiprocessing.Process(target=briansBrain.Start, args=())
+                modeProcs.append(briansBrainProcess)
+                briansBrainProcess.start()
         elif ("stopBriansBrain" in aDict):
-            BrainProcess.terminate()
+                briansBrainProcess.terminate()
+                LedController.Clear()
         elif ("setPixelWireWorld" in aDict):
             #gets all values after ":"
             x = aDict["setPixelWireWorld"].get("X")
