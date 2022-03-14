@@ -48,6 +48,7 @@ def CheckInput():
     from KnightRider import KnightRider
     from DisplayText import DisplayText
     from GameOfLife import GameOfLife
+    from LangtonsAnt import LangtonsAnt
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -144,11 +145,13 @@ def CheckInput():
         elif ("startAnt" in aDict):
             if (aDict["startAnt"] == 1):
                 terminateProcesses()
-                antProcess = multiprocessing.Process(target=Ledstrip.StartAnt, args=())
+                langtonsAnt = LangtonsAnt()
+                antProcess = multiprocessing.Process(target=langtonsAnt.Start, args=())
                 modeProcs.append(antProcess)
                 antProcess.start()
         elif ("stopAnt" in aDict):
-            antProcess.terminate()
+                antProcess.terminate()
+                LedController.Clear()
         elif ("startBriansBrain" in aDict):
             if (aDict["startBriansBrain"] == 1):
                 terminateProcesses()
