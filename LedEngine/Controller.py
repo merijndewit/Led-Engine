@@ -5,10 +5,11 @@ import RPi.GPIO as GPIO
 import json
 import multiprocessing
 import os
+from jsonHelper import JsonHelper
+from LedStrip import LedStrip
 
 #LedEngine Scripts
-import LedstripController as Ledstrip
-import jsonHelper
+import LedController as Ledstrip
 
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
@@ -30,13 +31,24 @@ GPIO.setup(21,GPIO.OUT)
 GPIO.output(21,GPIO.HIGH)
 
 modeProcs = []
+ModeToPlay = ""
 
 def newclient():
     if GPIO.input(21):
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
           
 def CheckInput():
-    Ledstrip.setColor(0, 0, 0)
+    global ModeToPlay
+    from LedController import LedController
+    from LedPanel import LedPanel
+    from Rainbow import Rainbow
+    from Fire import Fire
+    from SineWave import SineWave
+    from Stars import Stars
+    from KnightRider import KnightRider
+    from DisplayText import DisplayText
+    from GameOfLife import GameOfLife
+
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
         JsonStr = data.decode('utf_8')
@@ -47,12 +59,13 @@ def CheckInput():
             newclient()
         elif ("rainbowButton" in aDict):
             terminateProcesses()
-            rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
-            modeProcs.append(rainbow)
-            rainbow.start()
+            rainbow = Rainbow()
+            rainbowProcecss = multiprocessing.Process(target=rainbow.Play, args=()) #multiprocessing so we can stop the process
+            modeProcs.append(rainbowProcecss)
+            rainbowProcecss.start()
         elif ("stopButton" in aDict):
-            rainbow.terminate()
-            Ledstrip.Clear()
+            rainbowProcecss.terminate()
+            LedController.Clear()
         elif ("setPixel" in aDict):
             #gets all values after ":"
             x = aDict["setPixel"].get("X")
@@ -63,16 +76,16 @@ def CheckInput():
             Ledstrip.Clear()
         elif ("RedCalibration" in aDict):
             Ledstrip.RedCalibration(int(aDict["RedCalibration"]))
-            jsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
+            JsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
         elif ("GreenCalibration" in aDict):
             Ledstrip.GreenCalibration(int(aDict["GreenCalibration"]))
-            jsonHelper.WriteToJsonFile("greenCalibration", str(aDict["GreenCalibration"]))
+            JsonHelper.WriteToJsonFile("greenCalibration", str(aDict["GreenCalibration"]))
         elif ("BlueCalibration" in aDict):
             Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
-            jsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
+            JsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
         elif ("LedCount" in aDict):
             Ledstrip.BlueCalibration(int(aDict["LedCount"]))
-            jsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
+            JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
         elif ("MakePicture" in aDict):
             Ledstrip.CreateImage()
         elif ("ImageName" in aDict):
@@ -93,7 +106,7 @@ def CheckInput():
         elif ("Url" in aDict):
             Ledstrip.UpdateUrl(aDict["Url"])
         elif ("LoadgifUrl" in aDict):
-            path = Ledstrip.DisplayGIF()
+            path = Ledstrip.ConvertGif()
             gifProcess = multiprocessing.Process(target=Ledstrip.PlayGif, args=()) #multiprocessing so we can stop the process
             modeProcs.append(gifProcess)
             gifProcess.start()
@@ -103,12 +116,12 @@ def CheckInput():
             gifProcess.terminate()
         elif ("setConfigPanelWidth" in aDict):
             Ledstrip.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
-            jsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
+            JsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
         elif ("setConfigPanelHeight" in aDict):
             Ledstrip.setConfigPanelHeight(int(aDict["setConfigPanelHeight"]))
-            jsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
+            JsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
         elif ("RequestJSONdata" in aDict):
-            data = jsonHelper.GetDecodedJSON()
+            data = JsonHelper.GetDecodedJSON()
             string = json.dumps({'JSONdata':[data]})
             sockRX.sendto( string.encode('utf-8'), addr)
         elif ("LoadUploadedFile" in aDict):
@@ -119,7 +132,9 @@ def CheckInput():
         elif ("startGameOfLife" in aDict):
             terminateProcesses()
             if (aDict["startGameOfLife"] == 1):
-                gameOfLifeProcess = multiprocessing.Process(target=Ledstrip.startGameOfLife, args=())
+                terminateProcesses()
+                gameOfLife = GameOfLife()
+                gameOfLifeProcess = multiprocessing.Process(target=gameOfLife.Start, args=())
                 modeProcs.append(gameOfLifeProcess)
                 gameOfLifeProcess.start()
         elif ("stopGameOfLife" in aDict):
@@ -158,63 +173,80 @@ def CheckInput():
         elif ("stopWireWorld" in aDict):
             WireWorldProcess.terminate()
         elif ("SineWave" in aDict):
-            Ledstrip.selectOneColorMode("SineWave")
+            ModeToPlay = "SineWave"
         elif ("FireEffect" in aDict):
-            Ledstrip.selectOneColorMode("FireEffect")
+            ModeToPlay = "FireEffect"
         elif ("StarsEffect" in aDict):
-            Ledstrip.selectOneColorMode("StarsEffect")
+            ModeToPlay = "StarsEffect"
         elif ("KnightRider" in aDict):
-            Ledstrip.selectOneColorMode("KnightRider")
+            ModeToPlay = "KnightRider"
         elif ("DisplayText" in aDict):
-            Ledstrip.selectOneColorMode("DisplayText")
+            ModeToPlay = "DisplayText"
         elif ("StartOneColorMode" in aDict):
             terminateProcesses()
-            oneColorModeProcess = multiprocessing.Process(target=Ledstrip.startOneColorMode, args=())
-            modeProcs.append(oneColorModeProcess)
-            oneColorModeProcess.start()
+            OneColorProcess = None
+            if (ModeToPlay == "SineWave"):
+                sineWave = SineWave()
+                OneColorProcess = multiprocessing.Process(target=sineWave.Start, args=())
+            elif (ModeToPlay == "FireEffect"):
+                fire = Fire()
+                OneColorProcess = multiprocessing.Process(target=fire.Start, args=())
+            elif (ModeToPlay == "StarsEffect"):
+                starsEffect = Stars()
+                OneColorProcess = multiprocessing.Process(target=starsEffect.Start, args=())
+            elif (ModeToPlay == "KnightRider"):
+                knightRider = KnightRider()
+                OneColorProcess = multiprocessing.Process(target=knightRider.Start, args=())
+            elif (ModeToPlay == "DisplayText"):
+                displayText = DisplayText()
+                OneColorProcess = multiprocessing.Process(target=displayText.Start, args=())
+            if OneColorProcess != None:
+                OneColorProcess.start()
         elif ("StopOneColorMode" in aDict):
-            oneColorModeProcess.terminate()
+            OneColorProcess.terminate()
         elif ("valuePanelChanged" in aDict):
             Ledstrip.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
         elif ("valueChanged" in aDict):
             objectID = aDict["valueChanged"].get("objectID")
             objectValue = aDict["valueChanged"].get("objectValue")
             if (objectID == "effecthexChanged"):
-                Ledstrip.sethexOneColorEffect(objectValue)
-            elif (objectID == "SpeedInput"):
-                Ledstrip.SetSpeedValue(int(objectValue))
-            elif (objectID == "WaveLengthInput"):
-                Ledstrip.SetwaveLength(int(objectValue))
+                string = str(objectValue).lstrip("#")
+                LedController.sethexOneColorEffect((int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)))
+            elif (objectID == "SpeedInput"): #rainbow mode
+                Rainbow.SetSpeedValue(int(objectValue))
+            elif (objectID == "WaveLengthInput"): #rainbow mode
+                Rainbow.SetwaveLength(int(objectValue))
             elif (objectID == "HEX"):
                 string = str(objectValue).lstrip("#")
-                Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
+                staticColor = StaticColor()
+                staticColor.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
             elif (objectID == "A1"):
-                Ledstrip.SetBrightness(int(objectValue))
-                jsonHelper.WriteToJsonFile("brightnessValue", objectValue)
+                LedController.SetBrightness(int(objectValue))
+                JsonHelper.WriteToJsonFile("brightnessValue", objectValue)
             elif (objectID == "sineWaveFrequency"):
-                Ledstrip.setSineWaveFrequency(int(objectValue))
+                SineWave.setSineWaveFrequency(int(objectValue))
             elif (objectID == "sineWaveLength"):
-                Ledstrip.setSineWaveLength(int(objectValue))
+                SineWave.setSineWaveLength(int(objectValue))
             elif (objectID == "starsPerSecond"):
-                Ledstrip.setStarsPerSecond(int(objectValue))
+                Stars.setStarsPerSecond(int(objectValue))
             elif (objectID == "knightRiderFade"):
                 Ledstrip.setKnightRiderFade(int(objectValue))
             elif (objectID == "knightRiderSpeed"):
                 Ledstrip.setKnightRiderSpeed(int(objectValue))
             elif (objectID == "displayTextText"):
-                Ledstrip.SetDisplayText(str(objectValue))
+                DisplayText.SetDisplayText(str(objectValue))
             elif (objectID == "textSpeed"):
-                Ledstrip.SetTextSpeed(int(objectValue))
+                DisplayText.SetTextSpeed(int(objectValue))
             elif (objectID == "removeTopPixels"):
-                Ledstrip.SetRemoveTopPixels(int(objectValue))
+                DisplayText.SetRemoveTopPixels(int(objectValue))
             elif (objectID == "textFontSize"):
-                Ledstrip.SetTextFontSize(int(objectValue))
+                DisplayText.SetTextFontSize(int(objectValue))
             elif (objectID == "amountOfPanelsInWidth"):
-                Ledstrip.SetAmountOfPanelsInWidth(int(objectValue))
-                jsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(objectValue))
+                LedPanel.SetAmountOfPanelsInWidth(int(objectValue))
+                JsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(objectValue))
             elif (objectID == "amountOfPanelsInHeight"):
-                Ledstrip.SetAmountOfPanelsInHeight(int(objectValue))
-                jsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(objectValue))
+                LedPanel.SetAmountOfPanelsInHeight(int(objectValue))
+                JsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(objectValue))
         
 def terminateProcesses():
     for proc in modeProcs:
@@ -225,10 +257,10 @@ def terminateProcesses():
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') != 1):
         JSONconfig = open(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'config.json'), "w")
-        jsonHelper.WriteToJsonFile("key", "value")
+        JSONconfig.WriteToJsonFile("key", "value")
         JSONconfig.close()
     else: #Load all values that where set previously by the user
-        Ledstrip.LoadJsonValues()
+        JsonHelper.LoadJsonValues()
 
 def CheckDirectories():
     if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/savedImages'):
@@ -243,9 +275,12 @@ def CheckDirectories():
 
 #start
 if __name__ == "__main__":
+    from StaticColor import StaticColor
     CheckDirectories()
     newclient()
     CheckJSON()
+    staticColor = StaticColor()
+    staticColor.setColor(0, 0, 0)
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
