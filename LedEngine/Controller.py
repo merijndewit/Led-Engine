@@ -140,7 +140,7 @@ def CheckInput():
         elif ("stopGameOfLife" in aDict):
             if (aDict["stopGameOfLife"] == 1):
                 gameOfLifeProcess.terminate()
-                Ledstrip.Clear()
+                LedController.Clear()
         elif ("startAnt" in aDict):
             if (aDict["startAnt"] == 1):
                 terminateProcesses()
