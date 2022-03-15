@@ -52,6 +52,7 @@ def CheckInput():
     from BriansBrain import BriansBrain
     from WireWorld import WireWorld
     from DrawingCanvas import DrawingCanvas
+    from SaveCanvas import SaveCanvas
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -78,7 +79,7 @@ def CheckInput():
             drawingCanvas = DrawingCanvas()
             drawingCanvas.setPixel(x, y, hexString)
         elif ("ClearPixels" in aDict):
-            Ledstrip.Clear()
+            LedController.Clear()
         elif ("RedCalibration" in aDict):
             Ledstrip.RedCalibration(int(aDict["RedCalibration"]))
             JsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
@@ -92,9 +93,9 @@ def CheckInput():
             Ledstrip.BlueCalibration(int(aDict["LedCount"]))
             JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
         elif ("MakePicture" in aDict):
-            Ledstrip.CreateImage()
+            SaveCanvas.CreateImage()
         elif ("ImageName" in aDict):
-            Ledstrip.SetImageName(aDict["ImageName"])
+            SaveCanvas.SetImageName(aDict["ImageName"])
         elif ("searchImages" in aDict):
             data = Ledstrip.GetImageNames()
             for i in range(len(data)):
