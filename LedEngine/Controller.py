@@ -50,6 +50,7 @@ def CheckInput():
     from GameOfLife import GameOfLife
     from LangtonsAnt import LangtonsAnt
     from BriansBrain import BriansBrain
+    from WireWorld import WireWorld
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -168,16 +169,16 @@ def CheckInput():
             x = aDict["setPixelWireWorld"].get("X")
             y = aDict["setPixelWireWorld"].get("Y")
             mode = aDict["setPixelWireWorld"].get("mode")
-            print("setPixel", x, y, mode)
-            Ledstrip.setWireWorldPixel(x, y, mode)
+            WireWorld.setWireWorldPixel(x, y, mode)
         elif ("startWireWorld" in aDict):
             if (aDict["startWireWorld"] == 1):
                 terminateProcesses()
-                WireWorldProcess = multiprocessing.Process(target=Ledstrip.StartWireWorld, args=())
-                modeProcs.append(WireWorldProcess)
-                WireWorldProcess.start()
+                wireWorld = WireWorld()
+                wireWorldProcess = multiprocessing.Process(target=wireWorld.Start, args=())
+                modeProcs.append(wireWorldProcess)
+                wireWorldProcess.start()
         elif ("stopWireWorld" in aDict):
-            WireWorldProcess.terminate()
+            wireWorldProcess.terminate()
         elif ("SineWave" in aDict):
             ModeToPlay = "SineWave"
         elif ("FireEffect" in aDict):
@@ -266,7 +267,7 @@ def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
         JSONconfig.WriteToJsonFile("key", "value")
         JSONconfig.close()
     else: #Load all values that where set previously by the user
-        JsonHelper.LoadJsonValues()
+        JsonHelper.LoadJsonValues()        
 
 def CheckDirectories():
     if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/savedImages'):
