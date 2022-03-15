@@ -51,6 +51,7 @@ def CheckInput():
     from LangtonsAnt import LangtonsAnt
     from BriansBrain import BriansBrain
     from WireWorld import WireWorld
+    from DrawingCanvas import DrawingCanvas
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -74,7 +75,8 @@ def CheckInput():
             x = aDict["setPixel"].get("X")
             y = aDict["setPixel"].get("Y")
             hexString = aDict["setPixel"].get("color")
-            Ledstrip.setPixel(x, y, hexString)
+            drawingCanvas = DrawingCanvas()
+            drawingCanvas.setPixel(x, y, hexString)
         elif ("ClearPixels" in aDict):
             Ledstrip.Clear()
         elif ("RedCalibration" in aDict):
