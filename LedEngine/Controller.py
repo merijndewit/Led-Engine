@@ -55,6 +55,7 @@ def CheckInput():
     from SaveCanvas import SaveCanvas
     from DisplayImage import DisplayImage
     from DisplayGif import DisplayGif
+    from DisplayImageFile import DisplayImageFile
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -116,7 +117,6 @@ def CheckInput():
             DisplayImage.UpdateUrl(aDict["Url"])
         elif ("LoadgifUrl" in aDict):
             terminateProcesses()
-            #path = DisplayGif.ConvertGif()
             displayGif = DisplayGif()
             gifProcess = multiprocessing.Process(target=displayGif.PlayGif, args=()) #multiprocessing so we can stop the process
             modeProcs.append(gifProcess)
@@ -137,7 +137,8 @@ def CheckInput():
             sockRX.sendto( string.encode('utf-8'), addr)
         elif ("LoadUploadedFile" in aDict):
             pixelsToSend = []
-            pixelsToSend = Ledstrip.LoadUploadedFile()
+            displayImageFile = DisplayImageFile()
+            pixelsToSend = displayImageFile.LoadUploadedFile()
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("startGameOfLife" in aDict):
