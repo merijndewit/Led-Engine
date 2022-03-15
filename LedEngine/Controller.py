@@ -54,6 +54,7 @@ def CheckInput():
     from DrawingCanvas import DrawingCanvas
     from SaveCanvas import SaveCanvas
     from DisplayImage import DisplayImage
+    from DisplayGif import DisplayGif
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -114,12 +115,14 @@ def CheckInput():
         elif ("Url" in aDict):
             DisplayImage.UpdateUrl(aDict["Url"])
         elif ("LoadgifUrl" in aDict):
-            path = Ledstrip.ConvertGif()
-            gifProcess = multiprocessing.Process(target=Ledstrip.PlayGif, args=()) #multiprocessing so we can stop the process
+            terminateProcesses()
+            #path = DisplayGif.ConvertGif()
+            displayGif = DisplayGif()
+            gifProcess = multiprocessing.Process(target=displayGif.PlayGif, args=()) #multiprocessing so we can stop the process
             modeProcs.append(gifProcess)
             gifProcess.start()
         elif ("gifUrl" in aDict):
-            Ledstrip.UpdategifUrl(aDict["gifUrl"])
+            DisplayGif.UpdategifUrl(aDict["gifUrl"])
         elif ("StopgifUrl" in aDict):
             gifProcess.terminate()
         elif ("setConfigPanelWidth" in aDict):
