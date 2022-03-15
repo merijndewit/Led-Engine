@@ -35,6 +35,8 @@ class DisplayImage(LedPanel):
         resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+newName)
 
     def DisplayImageFile(this, imageName):
+        DisplayImage.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
+        DisplayImage.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
         pixelList = []
         image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/savedImages/"+imageName)
         if (image.width == DisplayImage.ledPanelsPixelWidth and image.height == DisplayImage.ledPanelsPixelHeight):

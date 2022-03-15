@@ -100,12 +100,16 @@ def CheckInput():
         elif ("ImageName" in aDict):
             SaveCanvas.SetImageName(aDict["ImageName"])
         elif ("searchImages" in aDict):
-            data = Ledstrip.GetImageNames()
+            data = SaveCanvas.GetImageNames()
             for i in range(len(data)):
                 string = '{"LoadableImageName":"'+data[i]+'"}'
                 sockRX.sendto( string.encode('utf-8'), addr)
         elif ("DisplayImage" in aDict):
-            Ledstrip.DisplayImageFile(aDict["DisplayImage"])
+            pixelsToSend = []
+            displayImage = DisplayImage()
+            pixelsToSend = displayImage.DisplayImageFile(aDict["DisplayImage"])
+            for i in range(len(pixelsToSend)):
+                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("LoadUrl" in aDict):
             pixelsToSend = []
             displayImage = DisplayImage()
