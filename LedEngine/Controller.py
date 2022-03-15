@@ -53,6 +53,7 @@ def CheckInput():
     from WireWorld import WireWorld
     from DrawingCanvas import DrawingCanvas
     from SaveCanvas import SaveCanvas
+    from DisplayImage import DisplayImage
 
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -105,12 +106,13 @@ def CheckInput():
             Ledstrip.DisplayImageFile(aDict["DisplayImage"])
         elif ("LoadUrl" in aDict):
             pixelsToSend = []
-            pixelsToSend = Ledstrip.DisplayUrl()
+            displayImage = DisplayImage()
+            pixelsToSend = displayImage.DisplayUrl()
             if pixelsToSend:
                 for i in range(len(pixelsToSend)):
                     sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("Url" in aDict):
-            Ledstrip.UpdateUrl(aDict["Url"])
+            DisplayImage.UpdateUrl(aDict["Url"])
         elif ("LoadgifUrl" in aDict):
             path = Ledstrip.ConvertGif()
             gifProcess = multiprocessing.Process(target=Ledstrip.PlayGif, args=()) #multiprocessing so we can stop the process
