@@ -84,16 +84,16 @@ def CheckInput():
         elif ("ClearPixels" in aDict):
             LedController.Clear()
         elif ("RedCalibration" in aDict):
-            Ledstrip.RedCalibration(int(aDict["RedCalibration"]))
+            LedController.RedCalibration(int(aDict["RedCalibration"]))
             JsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
         elif ("GreenCalibration" in aDict):
-            Ledstrip.GreenCalibration(int(aDict["GreenCalibration"]))
+            LedController.GreenCalibration(int(aDict["GreenCalibration"]))
             JsonHelper.WriteToJsonFile("greenCalibration", str(aDict["GreenCalibration"]))
         elif ("BlueCalibration" in aDict):
-            Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
+            LedController.BlueCalibration(int(aDict["BlueCalibration"]))
             JsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
         elif ("LedCount" in aDict):
-            Ledstrip.BlueCalibration(int(aDict["LedCount"]))
+            LedController.SetPixelAmount(int(aDict["LedCount"]))
             JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
         elif ("MakePicture" in aDict):
             SaveCanvas.CreateImage()
@@ -130,10 +130,10 @@ def CheckInput():
         elif ("StopgifUrl" in aDict):
             gifProcess.terminate()
         elif ("setConfigPanelWidth" in aDict):
-            Ledstrip.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
+            LedPanel.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
             JsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
         elif ("setConfigPanelHeight" in aDict):
-            Ledstrip.setConfigPanelHeight(int(aDict["setConfigPanelHeight"]))
+            LedPanel.setConfigPanelHeight(int(aDict["setConfigPanelHeight"]))
             JsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
         elif ("RequestJSONdata" in aDict):
             data = JsonHelper.GetDecodedJSON()
@@ -225,7 +225,7 @@ def CheckInput():
         elif ("StopOneColorMode" in aDict):
             OneColorProcess.terminate()
         elif ("valuePanelChanged" in aDict):
-            Ledstrip.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
+            LedPanel.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
         elif ("valueChanged" in aDict):
             objectID = aDict["valueChanged"].get("objectID")
             objectValue = aDict["valueChanged"].get("objectValue")
