@@ -30,7 +30,6 @@ class LedController:
         LedController.pixels.show()
 
     def SetBrightness(brightnessValue):
-        LedController.ledBrightness
         LedController.ledBrightness = brightnessValue
 
     def RedCalibration(percentage):

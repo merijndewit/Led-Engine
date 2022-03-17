@@ -65,6 +65,10 @@ def CheckInput():
             aDict = json.loads(JsonStr)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
+        elif ("A1" in aDict):
+            print("save brightnes to json")
+            LedController.SetBrightness(int(aDict["A1"]))
+            JsonHelper.WriteToJsonFile("brightnessValue", aDict["A1"])
         elif ("rainbowButton" in aDict):
             terminateProcesses()
             rainbowProcecss = multiprocessing.Process(target=Rainbow.Start, args=()) #multiprocessing so we can stop the process
@@ -225,6 +229,7 @@ def CheckInput():
                 string = str(objectValue).lstrip("#")
                 StaticColor.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
             elif (objectID == "A1"):
+                print("save brightnes to json")
                 LedController.SetBrightness(int(objectValue))
                 JsonHelper.WriteToJsonFile("brightnessValue", objectValue)
             elif (objectID == "sineWaveFrequency"):
