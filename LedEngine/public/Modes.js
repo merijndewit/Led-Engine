@@ -3,6 +3,8 @@ var socket = io();
 var rowX = 0;
 var rowY = 0;
 
+var lastClickedMode = ""
+
 window.addEventListener("load", function()
 {
   if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
@@ -111,10 +113,12 @@ socket.on('FB',function (data) {
           } else {
             dropdown.style.display = "block";
           } 
+          lastClickedMode = "SineWave.Start"
         }
         else if (id == "FireEffect")
         {
           CollapseAllMenus();
+          lastClickedMode = "Fire.Start"
         }
         else if (id == "StarsEffect")
         {
@@ -126,6 +130,7 @@ socket.on('FB',function (data) {
           } else {
             dropdown.style.display = "block";
           } 
+          lastClickedMode = "Stars.Start"
         }
         else if (id == "KnightRider")
         {
@@ -137,6 +142,7 @@ socket.on('FB',function (data) {
           } else {
             dropdown.style.display = "block";
           } 
+          lastClickedMode = "KnightRider.Start"
         }
         else if (id == "DisplayText")
         {
@@ -148,6 +154,7 @@ socket.on('FB',function (data) {
           } else {
             dropdown.style.display = "block";
           } 
+          lastClickedMode = "DisplayText.Start"
         }
       }
     }
@@ -346,4 +353,22 @@ function valueObjectChanged(e)
     element.innerHTML = e.value;
     socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
   }
+}
+
+function ExecuteFunction(e)
+{ 
+  if (e.id == "StartOneColorMode")
+  {
+    socket.emit('msg',JSON.stringify({ ExecuteFunction: lastClickedMode }));
+    return
+  }
+  else 
+  {
+    socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
+  }
+}
+
+function StopProcesses()
+{ 
+  socket.emit('msg',JSON.stringify({ "StopProcesses": 1 }));
 }

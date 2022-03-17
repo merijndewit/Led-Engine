@@ -383,3 +383,13 @@ function awa(e)
 {
   console.log("AAAAWWWWWDDDDD: "+e)
 }
+
+function ExecuteFunction(e)
+{ 
+  socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
+}
+
+function StopProcesses()
+{ 
+  socket.emit('msg',JSON.stringify({ "StopProcesses": 1 }));
+}
