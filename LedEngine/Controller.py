@@ -20,7 +20,7 @@ UDP_RX_PORT = 3001
 print("UDP target IP: %s" % UDP_TX_IP)
 print("UDP target port: %s" % UDP_TX_PORT)
 
-sockTX = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+sockTX = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sockRX = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
 sockRX.bind((UDP_RX_IP, UDP_RX_PORT))
 
@@ -250,9 +250,9 @@ def CheckInput():
             elif (objectID == "starsPerSecond"):
                 Stars.setStarsPerSecond(int(objectValue))
             elif (objectID == "knightRiderFade"):
-                Ledstrip.setKnightRiderFade(int(objectValue))
+                KnightRider.setKnightRiderFade(int(objectValue))
             elif (objectID == "knightRiderSpeed"):
-                Ledstrip.setKnightRiderSpeed(int(objectValue))
+                KnightRider.setKnightRiderSpeed(int(objectValue))
             elif (objectID == "displayTextText"):
                 DisplayText.SetDisplayText(str(objectValue))
             elif (objectID == "textSpeed"):
