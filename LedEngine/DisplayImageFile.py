@@ -8,7 +8,8 @@ class DisplayImageFile(LedPanel):
     ledPanelsPixelWidth = 0
     ledPanelsPixelHeight = 0
 
-    def LoadUploadedFile(self):
+    @classmethod
+    def LoadUploadedFile(cls):
         DisplayImageFile.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
         DisplayImageFile.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
 
@@ -33,7 +34,7 @@ class DisplayImageFile(LedPanel):
                 for x in range(DisplayImageFile.ledPanelsPixelWidth):
                     pixel = int(LedPanel.getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
-                    LedPanel.pixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
+                    LedPanel.pixels[pixel] = (r * ((cls.Rpercentage / 100)*(cls.ledBrightness / 100)), g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
                     data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                     pixelList.append(json.dumps(data_set))
                 LedPanel.pixels.show()

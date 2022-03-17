@@ -14,8 +14,9 @@ class LangtonsAnt(LedPanel):
     ANTRIGHT = 1
     ANTDOWN = 2
     ANTLEFT = 3
-
-    def Start(self):
+    
+    @classmethod
+    def Start(cls):
         LangtonsAnt.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
         LangtonsAnt.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
         LangtonsAnt.antGrid = LedPanel.make2DArray(LangtonsAnt.ledPanelsPixelWidth, LangtonsAnt.ledPanelsPixelHeight)

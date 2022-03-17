@@ -6,4 +6,4 @@ class LedStrip(LedController):
 
     def setPixelCount(amount):
         LedStrip.pixelCount = amount
-        LedStrip.LedController.SetPixelAmount(amount)
+        LedController.SetPixelAmount(amount)

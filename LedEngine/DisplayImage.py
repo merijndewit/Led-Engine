@@ -12,7 +12,8 @@ class DisplayImage(LedPanel):
 
     url = ""
 
-    def LoadUploadedFile():
+    @classmethod
+    def LoadUploadedFile(cls):
         path = os.path.dirname(os.path.realpath(__file__))+"/uploads"
         imageName = "tmp.png"
         files = os.listdir(path)
@@ -34,7 +35,8 @@ class DisplayImage(LedPanel):
         #resized_image.save('savedImages/'+'new'+ '.png')
         resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+newName)
 
-    def DisplayImageFile(this, imageName):
+    @classmethod
+    def DisplayImageFile(cls, imageName):
         DisplayImage.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
         DisplayImage.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
         pixelList = []
@@ -46,13 +48,14 @@ class DisplayImage(LedPanel):
                 for x in range(DisplayImage.ledPanelsPixelWidth):
                     pixel = int(LedPanel.getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
-                    LedPanel.pixels[pixel] = (r * ((this.Rpercentage / 100)*(this.ledBrightness / 100)), g * (this.Gpercentage / 100)*(this.ledBrightness / 100), b * (this.Bpercentage / 100)*(this.ledBrightness / 100))
+                    LedPanel.pixels[pixel] = (r * ((cls.Rpercentage / 100)*(cls.ledBrightness / 100)), g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
                     data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                     pixelList.append(json.dumps(data_set))
                 LedPanel.pixels.show()
         return pixelList
 
-    def DisplayUrl(this):
+    @classmethod
+    def DisplayUrl(cls):
         DisplayImage.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
         DisplayImage.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
         if DisplayImage.url != "":
@@ -63,7 +66,7 @@ class DisplayImage(LedPanel):
             except:
                 return []
             DisplayImage.DownscaleImage(path, "tmp.png")
-            return DisplayImage.DisplayImageFile(this, imageName)
+            return DisplayImage.DisplayImageFile(imageName)
 
         print("no url entered")
 

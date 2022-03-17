@@ -8,7 +8,8 @@ class GameOfLife(LedPanel):
     cols = LedPanel.ledPanelsPixelWidth
     rows = LedPanel.ledPanelsPixelHeight
 
-    def Start(self):
+    @classmethod
+    def Start(cls):
         GameOfLife.cols = LedPanel.ledPanelsPixelWidth
         GameOfLife.rows = LedPanel.ledPanelsPixelHeight
         listRow = [0] * GameOfLife.rows

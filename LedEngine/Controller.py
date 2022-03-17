@@ -67,8 +67,7 @@ def CheckInput():
             newclient()
         elif ("rainbowButton" in aDict):
             terminateProcesses()
-            rainbow = Rainbow()
-            rainbowProcecss = multiprocessing.Process(target=rainbow.Play, args=()) #multiprocessing so we can stop the process
+            rainbowProcecss = multiprocessing.Process(target=Rainbow.Start, args=()) #multiprocessing so we can stop the process
             modeProcs.append(rainbowProcecss)
             rainbowProcecss.start()
         elif ("stopButton" in aDict):
@@ -79,8 +78,7 @@ def CheckInput():
             x = aDict["setPixel"].get("X")
             y = aDict["setPixel"].get("Y")
             hexString = aDict["setPixel"].get("color")
-            drawingCanvas = DrawingCanvas()
-            drawingCanvas.setPixel(x, y, hexString)
+            DrawingCanvas.setPixel(x, y, hexString)
         elif ("ClearPixels" in aDict):
             LedController.Clear()
         elif ("RedCalibration" in aDict):
@@ -106,14 +104,12 @@ def CheckInput():
                 sockRX.sendto( string.encode('utf-8'), addr)
         elif ("DisplayImage" in aDict):
             pixelsToSend = []
-            displayImage = DisplayImage()
-            pixelsToSend = displayImage.DisplayImageFile(aDict["DisplayImage"])
+            pixelsToSend = DisplayImage.DisplayImageFile(aDict["DisplayImage"])
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("LoadUrl" in aDict):
             pixelsToSend = []
-            displayImage = DisplayImage()
-            pixelsToSend = displayImage.DisplayUrl()
+            pixelsToSend = DisplayImage.DisplayUrl()
             if pixelsToSend:
                 for i in range(len(pixelsToSend)):
                     sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
@@ -121,8 +117,7 @@ def CheckInput():
             DisplayImage.UpdateUrl(aDict["Url"])
         elif ("LoadgifUrl" in aDict):
             terminateProcesses()
-            displayGif = DisplayGif()
-            gifProcess = multiprocessing.Process(target=displayGif.PlayGif, args=()) #multiprocessing so we can stop the process
+            gifProcess = multiprocessing.Process(target=DisplayGif.PlayGif, args=()) #multiprocessing so we can stop the process
             modeProcs.append(gifProcess)
             gifProcess.start()
         elif ("gifUrl" in aDict):
@@ -141,16 +136,14 @@ def CheckInput():
             sockRX.sendto( string.encode('utf-8'), addr)
         elif ("LoadUploadedFile" in aDict):
             pixelsToSend = []
-            displayImageFile = DisplayImageFile()
-            pixelsToSend = displayImageFile.LoadUploadedFile()
+            pixelsToSend = DisplayImageFile.LoadUploadedFile()
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("startGameOfLife" in aDict):
             terminateProcesses()
             if (aDict["startGameOfLife"] == 1):
                 terminateProcesses()
-                gameOfLife = GameOfLife()
-                gameOfLifeProcess = multiprocessing.Process(target=gameOfLife.Start, args=())
+                gameOfLifeProcess = multiprocessing.Process(target=GameOfLife.Start, args=())
                 modeProcs.append(gameOfLifeProcess)
                 gameOfLifeProcess.start()
         elif ("stopGameOfLife" in aDict):
@@ -160,8 +153,7 @@ def CheckInput():
         elif ("startAnt" in aDict):
             if (aDict["startAnt"] == 1):
                 terminateProcesses()
-                langtonsAnt = LangtonsAnt()
-                antProcess = multiprocessing.Process(target=langtonsAnt.Start, args=())
+                antProcess = multiprocessing.Process(target=LangtonsAnt.Start, args=())
                 modeProcs.append(antProcess)
                 antProcess.start()
         elif ("stopAnt" in aDict):
@@ -170,8 +162,7 @@ def CheckInput():
         elif ("startBriansBrain" in aDict):
             if (aDict["startBriansBrain"] == 1):
                 terminateProcesses()
-                briansBrain = BriansBrain()
-                briansBrainProcess = multiprocessing.Process(target=briansBrain.Start, args=())
+                briansBrainProcess = multiprocessing.Process(target=BriansBrain.Start, args=())
                 modeProcs.append(briansBrainProcess)
                 briansBrainProcess.start()
         elif ("stopBriansBrain" in aDict):
@@ -186,8 +177,7 @@ def CheckInput():
         elif ("startWireWorld" in aDict):
             if (aDict["startWireWorld"] == 1):
                 terminateProcesses()
-                wireWorld = WireWorld()
-                wireWorldProcess = multiprocessing.Process(target=wireWorld.Start, args=())
+                wireWorldProcess = multiprocessing.Process(target=WireWorld.Start, args=())
                 modeProcs.append(wireWorldProcess)
                 wireWorldProcess.start()
         elif ("stopWireWorld" in aDict):
@@ -206,20 +196,15 @@ def CheckInput():
             terminateProcesses()
             OneColorProcess = None
             if (ModeToPlay == "SineWave"):
-                sineWave = SineWave()
-                OneColorProcess = multiprocessing.Process(target=sineWave.Start, args=())
+                OneColorProcess = multiprocessing.Process(target=SineWave.Start, args=())
             elif (ModeToPlay == "FireEffect"):
-                fire = Fire()
-                OneColorProcess = multiprocessing.Process(target=fire.Start, args=())
+                OneColorProcess = multiprocessing.Process(target=Fire.Start, args=())
             elif (ModeToPlay == "StarsEffect"):
-                starsEffect = Stars()
-                OneColorProcess = multiprocessing.Process(target=starsEffect.Start, args=())
+                OneColorProcess = multiprocessing.Process(target=Stars.Start, args=())
             elif (ModeToPlay == "KnightRider"):
-                knightRider = KnightRider()
-                OneColorProcess = multiprocessing.Process(target=knightRider.Start, args=())
+                OneColorProcess = multiprocessing.Process(target=KnightRider.Start, args=())
             elif (ModeToPlay == "DisplayText"):
-                displayText = DisplayText()
-                OneColorProcess = multiprocessing.Process(target=displayText.Start, args=())
+                OneColorProcess = multiprocessing.Process(target=DisplayText.Start, args=())
             if OneColorProcess != None:
                 OneColorProcess.start()
         elif ("StopOneColorMode" in aDict):
@@ -238,8 +223,7 @@ def CheckInput():
                 Rainbow.SetwaveLength(int(objectValue))
             elif (objectID == "HEX"):
                 string = str(objectValue).lstrip("#")
-                staticColor = StaticColor()
-                staticColor.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
+                StaticColor.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
             elif (objectID == "A1"):
                 LedController.SetBrightness(int(objectValue))
                 JsonHelper.WriteToJsonFile("brightnessValue", objectValue)
@@ -296,9 +280,11 @@ def CheckDirectories():
 #start
 if __name__ == "__main__":
     from StaticColor import StaticColor
+    from LedPanel import LedPanel
     CheckDirectories()
     newclient()
     CheckJSON()
+    LedPanel()
     staticColor = StaticColor()
     staticColor.setColor(0, 0, 0)
     mainProcess = Thread(target = CheckInput)

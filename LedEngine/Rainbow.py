@@ -12,8 +12,8 @@ class Rainbow(LedStrip):
     
     def SetSpeedValue(speedValue):
         Rainbow.rainbowSpeed = speedValue
-    
-    def Play(self):
+    @classmethod
+    def Start(self):
         h = 0
         s = 1
         while True:

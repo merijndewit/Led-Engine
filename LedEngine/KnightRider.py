@@ -13,13 +13,14 @@ class KnightRider(LedStrip):
     def setKnightRiderSpeed(value):
         KnightRider.knightRiderSpeed = value
 
-    def Start(self):
-        oneColorModeHex = self.oneColorModeHex
-        pixels = self.pixels
-        Rpercentage = self.Rpercentage
-        Bpercentage = self.Bpercentage
-        Gpercentage = self.Gpercentage
-        ledBrightness = self.ledBrightness
+    @classmethod
+    def Start(cls):
+        oneColorModeHex = cls.oneColorModeHex
+        pixels = cls.pixels
+        Rpercentage = cls.Rpercentage
+        Bpercentage = cls.Bpercentage
+        Gpercentage = cls.Gpercentage
+        ledBrightness = cls.ledBrightness
         pixelCount = LedStrip.pixelCount
 
         neighbors = []

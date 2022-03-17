@@ -25,7 +25,8 @@ class DisplayGif(LedPanel):
             DisplayGif.resize_gif(path, None, (DisplayGif.ledPanelsPixelWidth, DisplayGif.ledPanelsPixelHeight))
             return path
 
-    def PlayGif(this):
+    @classmethod
+    def PlayGif(cls):
         DisplayGif.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
         DisplayGif.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
         print(DisplayGif.ledPanelsPixelWidth)
@@ -40,7 +41,7 @@ class DisplayGif(LedPanel):
                     for x in range(DisplayGif.ledPanelsPixelWidth):
                         pixel = int(LedPanel.getPixelNumber(x, y))
                         r, g, b = rgb_im.getpixel((x, y))  
-                        LedPanel.pixels[pixel] = (r * ((this.Rpercentage / 100)*(this.ledBrightness / 100)), g * (this.Gpercentage / 100)*(this.ledBrightness / 100), b * (this.Bpercentage / 100)*(this.ledBrightness / 100))
+                        LedPanel.pixels[pixel] = (r * ((cls.Rpercentage / 100)*(cls.ledBrightness / 100)), g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
                 LedPanel.pixels.show()
                 time.sleep(0.2)
 

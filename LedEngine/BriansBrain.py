@@ -7,7 +7,9 @@ class BriansBrain(LedPanel):
     grid = []
     cols = 0
     rows = 0
-    def Start(self):
+    
+    @classmethod
+    def Start(cls):
         BriansBrain.cols = LedPanel.ledPanelsPixelWidth
         BriansBrain.rows = LedPanel.ledPanelsPixelHeight
 

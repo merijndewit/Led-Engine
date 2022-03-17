@@ -42,8 +42,9 @@ class Stars(LedStrip):
 
     def setStarsPerSecond(value):
         Stars.starsPerSecond = value
-
-    def Start(self):
+        
+    @classmethod
+    def Start(cls):
         starList = []
         startTime = time.time()
         while True:
@@ -53,12 +54,12 @@ class Stars(LedStrip):
                     newStar = Stars.TwingklingStar()
                 else:
                     newStar = Stars.Star()
-                newStar.position = int(random.randint(0, self.pixelCount - 1))
+                newStar.position = int(random.randint(0, cls.pixelCount - 1))
                 starList.append(newStar)
                 startTime = time.time()
 
             for star in range(len(starList)):
-                self.pixels[starList[star].position] = ((self.oneColorModeHex[0]*(starList[star].value / 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (starList[star].value / 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (starList[star].value / 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                cls.pixels[starList[star].position] = ((cls.oneColorModeHex[0]*(starList[star].value / 255) * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), cls.oneColorModeHex[1] * (starList[star].value / 255) * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), cls.oneColorModeHex[2] * (starList[star].value / 255) * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
 
                 starList[star].nextStep()
             
@@ -68,4 +69,4 @@ class Stars(LedStrip):
                     del newList[i]
             starList = newList.copy()
             time.sleep(0.05)    
-            self.pixels.show()
+            cls.pixels.show()

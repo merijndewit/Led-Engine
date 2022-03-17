@@ -13,11 +13,12 @@ class SineWave(LedStrip):
     def setSineWaveLength(value):
         SineWave.sineWaveLength = value / 100
 
-    def Start(self):
+    @classmethod
+    def Start(cls):
         startTime = time.time()
         while True:
-            for i in range(self.pixelCount):
+            for i in range(cls.pixelCount):
                 result = math.sin(SineWave.sineWaveFrequency*(time.time() - startTime)+(SineWave.sineWaveLength * i))
-                self.pixels[i] = (((((result + 1)/2) * self.oneColorModeHex[0]) * (self.Rpercentage / 100)*(self.ledBrightness / 100), (((result + 1)/2) * self.oneColorModeHex[1]) * (self.Gpercentage / 100)*(self.ledBrightness / 100), (((result + 1)/2) * self.oneColorModeHex[2]) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
-            self.pixels.show()
+                cls.pixels[i] = (((((result + 1)/2) * cls.oneColorModeHex[0]) * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), (((result + 1)/2) * cls.oneColorModeHex[1]) * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), (((result + 1)/2) * cls.oneColorModeHex[2]) * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
+            cls.pixels.show()
             #time.sleep(0.01)
