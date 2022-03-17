@@ -31,14 +31,12 @@ GPIO.setup(21,GPIO.OUT)
 GPIO.output(21,GPIO.HIGH)
 
 modeProcs = []
-ModeToPlay = ""
 
 def newclient():
     if GPIO.input(21):
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
           
 def CheckInput():
-    global ModeToPlay
     from LedController import LedController
     from LedPanel import LedPanel
     from Rainbow import Rainbow
@@ -63,19 +61,22 @@ def CheckInput():
         if JsonStr:
             sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT)) 
             aDict = json.loads(JsonStr)
+            print(aDict)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
         elif ("A1" in aDict):
             print("save brightnes to json")
             LedController.SetBrightness(int(aDict["A1"]))
             JsonHelper.WriteToJsonFile("brightnessValue", aDict["A1"])
-        elif ("rainbowButton" in aDict):
+        elif ("ExecuteFunction" in aDict):
+            print("execute function")
+            functionToExecute = eval(aDict["ExecuteFunction"])
             terminateProcesses()
-            rainbowProcecss = multiprocessing.Process(target=Rainbow.Start, args=()) #multiprocessing so we can stop the process
-            modeProcs.append(rainbowProcecss)
-            rainbowProcecss.start()
-        elif ("stopButton" in aDict):
-            rainbowProcecss.terminate()
+            Function = multiprocessing.Process(target=functionToExecute, args=()) #multiprocessing so we can stop the process
+            modeProcs.append(Function)
+            Function.start()
+        elif ("StopProcesses" in aDict):  
+            terminateProcesses()
             LedController.Clear()
         elif ("setPixel" in aDict):
             #gets all values after ":"
@@ -97,8 +98,6 @@ def CheckInput():
         elif ("LedCount" in aDict):
             LedController.SetPixelAmount(int(aDict["LedCount"]))
             JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
-        elif ("MakePicture" in aDict):
-            SaveCanvas.CreateImage()
         elif ("ImageName" in aDict):
             SaveCanvas.SetImageName(aDict["ImageName"])
         elif ("searchImages" in aDict):
@@ -119,15 +118,8 @@ def CheckInput():
                     sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("Url" in aDict):
             DisplayImage.UpdateUrl(aDict["Url"])
-        elif ("LoadgifUrl" in aDict):
-            terminateProcesses()
-            gifProcess = multiprocessing.Process(target=DisplayGif.PlayGif, args=()) #multiprocessing so we can stop the process
-            modeProcs.append(gifProcess)
-            gifProcess.start()
         elif ("gifUrl" in aDict):
             DisplayGif.UpdategifUrl(aDict["gifUrl"])
-        elif ("StopgifUrl" in aDict):
-            gifProcess.terminate()
         elif ("setConfigPanelWidth" in aDict):
             LedPanel.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
             JsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
@@ -143,76 +135,6 @@ def CheckInput():
             pixelsToSend = DisplayImageFile.LoadUploadedFile()
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("startGameOfLife" in aDict):
-            terminateProcesses()
-            if (aDict["startGameOfLife"] == 1):
-                terminateProcesses()
-                gameOfLifeProcess = multiprocessing.Process(target=GameOfLife.Start, args=())
-                modeProcs.append(gameOfLifeProcess)
-                gameOfLifeProcess.start()
-        elif ("stopGameOfLife" in aDict):
-            if (aDict["stopGameOfLife"] == 1):
-                gameOfLifeProcess.terminate()
-                LedController.Clear()
-        elif ("startAnt" in aDict):
-            if (aDict["startAnt"] == 1):
-                terminateProcesses()
-                antProcess = multiprocessing.Process(target=LangtonsAnt.Start, args=())
-                modeProcs.append(antProcess)
-                antProcess.start()
-        elif ("stopAnt" in aDict):
-                antProcess.terminate()
-                LedController.Clear()
-        elif ("startBriansBrain" in aDict):
-            if (aDict["startBriansBrain"] == 1):
-                terminateProcesses()
-                briansBrainProcess = multiprocessing.Process(target=BriansBrain.Start, args=())
-                modeProcs.append(briansBrainProcess)
-                briansBrainProcess.start()
-        elif ("stopBriansBrain" in aDict):
-                briansBrainProcess.terminate()
-                LedController.Clear()
-        elif ("setPixelWireWorld" in aDict):
-            #gets all values after ":"
-            x = aDict["setPixelWireWorld"].get("X")
-            y = aDict["setPixelWireWorld"].get("Y")
-            mode = aDict["setPixelWireWorld"].get("mode")
-            WireWorld.setWireWorldPixel(x, y, mode)
-        elif ("startWireWorld" in aDict):
-            if (aDict["startWireWorld"] == 1):
-                terminateProcesses()
-                wireWorldProcess = multiprocessing.Process(target=WireWorld.Start, args=())
-                modeProcs.append(wireWorldProcess)
-                wireWorldProcess.start()
-        elif ("stopWireWorld" in aDict):
-            wireWorldProcess.terminate()
-        elif ("SineWave" in aDict):
-            ModeToPlay = "SineWave"
-        elif ("FireEffect" in aDict):
-            ModeToPlay = "FireEffect"
-        elif ("StarsEffect" in aDict):
-            ModeToPlay = "StarsEffect"
-        elif ("KnightRider" in aDict):
-            ModeToPlay = "KnightRider"
-        elif ("DisplayText" in aDict):
-            ModeToPlay = "DisplayText"
-        elif ("StartOneColorMode" in aDict):
-            terminateProcesses()
-            OneColorProcess = None
-            if (ModeToPlay == "SineWave"):
-                OneColorProcess = multiprocessing.Process(target=SineWave.Start, args=())
-            elif (ModeToPlay == "FireEffect"):
-                OneColorProcess = multiprocessing.Process(target=Fire.Start, args=())
-            elif (ModeToPlay == "StarsEffect"):
-                OneColorProcess = multiprocessing.Process(target=Stars.Start, args=())
-            elif (ModeToPlay == "KnightRider"):
-                OneColorProcess = multiprocessing.Process(target=KnightRider.Start, args=())
-            elif (ModeToPlay == "DisplayText"):
-                OneColorProcess = multiprocessing.Process(target=DisplayText.Start, args=())
-            if OneColorProcess != None:
-                OneColorProcess.start()
-        elif ("StopOneColorMode" in aDict):
-            OneColorProcess.terminate()
         elif ("valuePanelChanged" in aDict):
             LedPanel.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
         elif ("valueChanged" in aDict):
