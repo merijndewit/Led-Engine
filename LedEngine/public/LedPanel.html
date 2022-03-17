@@ -45,7 +45,7 @@
       </div>
       <br>
       <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
-      <button id="MakePicture" class="createPicture">Save</button>
+      <button onclick="ExecuteFunction(this)" id="SaveCanvas.CreateImage" class="stopstart">Save</button>
     </div>
     <br>
 
@@ -66,8 +66,8 @@
       <br>
       <small>Enter .gif URL:</small>
       <input type="text" id="gif" oninput="gifURLChanged(this)"> 
-      <button id="LoadgifUrl" class="LoadgifUrl">Load</button>
-      <button id="StopgifUrl" class="StopgifUrl">Stop</button>
+      <button onclick="ExecuteFunction(this)" id="DisplayGif.PlayGif" class="stopstart">Play</button>
+      <button onclick="StopProcesses()" class="stopstart">Stop</button>
     </div>
     <br>
     <div class="Panel">
