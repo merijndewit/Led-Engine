@@ -2,9 +2,9 @@ import random
 
 from LedStrip import LedStrip
 
+
 class Fire(LedStrip):
     def Start(self):
-        global oneColorModeHex
         pixelList = []
         for i in range(self.pixelCount):
             pixelList.append(int(random.randint(0, 255)))
@@ -14,5 +14,6 @@ class Fire(LedStrip):
                 if pixelList[pixel] <= 0:
                     pixelList[pixel] = 255
                 else:
-                    pixelList[pixel] -= 1 
+                    pixelList[pixel] -= 1
             self.pixels.show()
+            
