@@ -262,7 +262,7 @@ function mousePressed()
       drawPixel(spotX, spotY, col);
       // send changed pixel to python program
       //socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
-      var object = {  setPixel: { X: spotX, Y: spotY, color: col}}
+      var object = {  SetValueFunction: "DrawingCanvas.setPixel", args : { X: spotX, Y: spotY, color: col}}
 
       socket.emit('msg',JSON.stringify(object));
     }

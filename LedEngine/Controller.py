@@ -1,10 +1,12 @@
 from threading import Thread
 from time import sleep     # Import the sleep function from the time module
 import socket
-import RPi.GPIO as GPIO
 import json
 import multiprocessing
 import os
+import importlib
+import sys
+import RPi.GPIO as GPIO
 from jsonHelper import JsonHelper
 from LedStrip import LedStrip
 
@@ -75,7 +77,12 @@ def CheckInput():
             Function = multiprocessing.Process(target=functionToExecute, args=()) #multiprocessing so we can stop the process
             modeProcs.append(Function)
             Function.start()
-        elif ("StopProcesses" in aDict):  
+        elif ("SetValueFunction" in aDict):
+            string = aDict["SetValueFunction"].split(".",1)
+            print(string[0] , string[1])
+            method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+            method(aDict["args"])
+        elif ("StopProcesses" in aDict):
             terminateProcesses()
             LedController.Clear()
         elif ("setPixel" in aDict):
@@ -83,7 +90,7 @@ def CheckInput():
             x = aDict["setPixel"].get("X")
             y = aDict["setPixel"].get("Y")
             hexString = aDict["setPixel"].get("color")
-            DrawingCanvas.setPixel(x, y, hexString)
+            #DrawingCanvas.setPixel(x, y, hexString)
         elif ("ClearPixels" in aDict):
             LedController.Clear()
         elif ("RedCalibration" in aDict):
