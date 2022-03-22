@@ -131,15 +131,15 @@ socket.on('FB',function (data) {
       }
       if (obj2.JSONdata[0].redCalibration)
       {
-        document.getElementById("RedCalibrationPercentage").value = obj2.JSONdata[0].redCalibration;
+        document.getElementById("LedController.RedCalibration").value = obj2.JSONdata[0].redCalibration;
       }
       if (obj2.JSONdata[0].greenCalibration)
       {
-        document.getElementById("GreenCalibrationPercentage").value = obj2.JSONdata[0].greenCalibration;
+        document.getElementById("LedController.GreenCalibration").value = obj2.JSONdata[0].greenCalibration;
       }
       if (obj2.JSONdata[0].blueCalibration)
       {
-        document.getElementById("BlueCalibrationPercentage").value = obj2.JSONdata[0].blueCalibration;
+        document.getElementById("LedController.BlueCalibration").value = obj2.JSONdata[0].blueCalibration;
       }
       if (obj2.JSONdata[0].LedCount)
       {
@@ -162,30 +162,6 @@ function valueChanged(e){
 function valueHexChanged(value)
 {
   socket.emit('msg','{"HEX":"'+value+'"}');
-}
-
-function RedCalibrationChanged(value)
-{
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"RedCalibration":"'+value.value+'"}');
-  }
-}
-
-function GreenCalibrationChanged(value)
-{
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"GreenCalibration":"'+value.value+'"}');
-  }
-}
-
-function BlueCalibrationChanged(value)
-{
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"BlueCalibration":"'+value.value+'"}');
-  }
 }
 
 function configPanelLedCountChanged(value)
@@ -304,6 +280,11 @@ function displayLedPanelGrid()
         document.getElementById('grid-container').appendChild(gridPanel);
       }
     }  
+}
+
+function SetOneValue(e)
+{
+  socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
 }
 
 function Start()
