@@ -82,26 +82,13 @@ def CheckInput():
             print(string[0] , string[1])
             method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
             method(aDict["args"])
+        elif ("SetOneValueFunction" in aDict):
+            string = aDict["SetOneValueFunction"].split(".",1)
+            method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+            method(aDict["value"])
         elif ("StopProcesses" in aDict):
             terminateProcesses()
             LedController.Clear()
-        elif ("setPixel" in aDict):
-            #gets all values after ":"
-            x = aDict["setPixel"].get("X")
-            y = aDict["setPixel"].get("Y")
-            hexString = aDict["setPixel"].get("color")
-            #DrawingCanvas.setPixel(x, y, hexString)
-        elif ("ClearPixels" in aDict):
-            LedController.Clear()
-        elif ("RedCalibration" in aDict):
-            LedController.RedCalibration(int(aDict["RedCalibration"]))
-            JsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
-        elif ("GreenCalibration" in aDict):
-            LedController.GreenCalibration(int(aDict["GreenCalibration"]))
-            JsonHelper.WriteToJsonFile("greenCalibration", str(aDict["GreenCalibration"]))
-        elif ("BlueCalibration" in aDict):
-            LedController.BlueCalibration(int(aDict["BlueCalibration"]))
-            JsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
         elif ("LedCount" in aDict):
             LedController.SetPixelAmount(int(aDict["LedCount"]))
             JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
