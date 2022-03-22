@@ -249,6 +249,7 @@ function Clear()
   {
     grid[i] = row.slice();
   }
+  socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
 }
 
 function mousePressed() 
@@ -387,6 +388,11 @@ function awa(e)
 function ExecuteFunction(e)
 { 
   socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
+}
+
+function SetValue(e)
+{
+  socket.emit('msg', JSON.stringify({  SetValueFunction: e.id, args : { arg0: e.value}}));
 }
 
 function StopProcesses()
