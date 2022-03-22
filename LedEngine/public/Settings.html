@@ -25,13 +25,13 @@
   </div>
   <br>
   <small>Red percentage:</small>
-  <input type="text" min="1" value="100" id="RedCalibrationPercentage" class="smallTextBox" oninput="RedCalibrationChanged(this)">
+  <input type="text" min="1" value="100" id="LedController.RedCalibration" class="smallTextBox" oninput="SetOneValue(this)">
   <br>
   <small>Green percentage:</small>
-  <input type="text" min="1" value="100" id="GreenCalibrationPercentage" class="smallTextBox" oninput="GreenCalibrationChanged(this)">
+  <input type="text" min="1" value="100" id="LedController.GreenCalibration" class="smallTextBox" oninput="SetOneValue(this)">
   <br>
   <small>Blue percentage:</small>
-  <input type="text" min="1" value="100" id="BlueCalibrationPercentage" class="smallTextBox" oninput="BlueCalibrationChanged(this)">
+  <input type="text" min="1" value="100" id="LedController.BlueCalibration" class="smallTextBox" oninput="SetOneValue(this)">
   <br>
   <button id="color0" class="color0"></button>
   <button id="color1" class="color1"></button>
