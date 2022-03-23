@@ -61,7 +61,7 @@ def CheckInput():
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
         JsonStr = data.decode('utf_8')
         if JsonStr:
-            sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT)) 
+            sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
             aDict = json.loads(JsonStr)
             print(aDict)
         if (JsonStr.find('{"NewClient":1}') != -1):

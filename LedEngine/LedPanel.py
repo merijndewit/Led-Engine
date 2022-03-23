@@ -93,9 +93,13 @@ class LedPanel(LedController):
             LedPanel.pixelArray.append(rowY)
 
     def setConfigPanelWidth(value):
-        LedPanel.ledPanelsPixelWidth = value
+        from jsonHelper import JsonHelper
+        LedPanel.ledPanelsPixelWidth = int(value)
         LedPanel.NewPixelArray()
+        JsonHelper.WriteToJsonFile("LEDPanelWidth", str(value))
 
     def setConfigPanelHeight(value):
-        LedPanel.ledPanelsPixelHeight = value
+        from jsonHelper import JsonHelper
+        LedPanel.ledPanelsPixelHeight = int(value)
         LedPanel.NewPixelArray()
+        JsonHelper.WriteToJsonFile("LEDPanelHeight", str(value))

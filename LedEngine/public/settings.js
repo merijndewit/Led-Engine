@@ -111,11 +111,11 @@ socket.on('FB',function (data) {
     {
       if (obj2.JSONdata[0].LEDPanelHeight)
       {
-        document.getElementById("configPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
+        document.getElementById("LedPanel.setConfigPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
       }
       if (obj2.JSONdata[0].LEDPanelWidth)
       {
-        document.getElementById("configPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
+        document.getElementById("LedPanel.setConfigPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
       }
       if (obj2.JSONdata[0].amountOfPanelsInWidth)
       {
@@ -143,7 +143,7 @@ socket.on('FB',function (data) {
       }
       if (obj2.JSONdata[0].LedCount)
       {
-        document.getElementById("configPanelLedCount").value = obj2.JSONdata[0].LedCount;
+        document.getElementById("LedController.SetPixelAmount").value = obj2.JSONdata[0].LedCount;
       }
     }
   }
@@ -162,31 +162,6 @@ function valueChanged(e){
 function valueHexChanged(value)
 {
   socket.emit('msg','{"HEX":"'+value+'"}');
-}
-
-function configPanelLedCountChanged(value)
-{
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"LedCount":"'+value.value+'"}');
-  }
-}
-
-
-function configPanelWidthChanged(value)
-{
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"setConfigPanelWidth":"'+value.value+'"}');
-  }
-}
-
-function configPanelHeightChanged(value)
-{
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"setConfigPanelHeight":"'+value.value+'"}');
-  }
 }
 
 function valueObjectChanged(e)
