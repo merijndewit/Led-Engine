@@ -137,24 +137,6 @@ def CheckInput():
                 print("save brightnes to json")
                 LedController.SetBrightness(int(objectValue))
                 JsonHelper.WriteToJsonFile("brightnessValue", objectValue)
-            elif (objectID == "sineWaveFrequency"):
-                SineWave.setSineWaveFrequency(int(objectValue))
-            elif (objectID == "sineWaveLength"):
-                SineWave.setSineWaveLength(int(objectValue))
-            elif (objectID == "starsPerSecond"):
-                Stars.setStarsPerSecond(int(objectValue))
-            elif (objectID == "knightRiderFade"):
-                KnightRider.setKnightRiderFade(int(objectValue))
-            elif (objectID == "knightRiderSpeed"):
-                KnightRider.setKnightRiderSpeed(int(objectValue))
-            elif (objectID == "displayTextText"):
-                DisplayText.SetDisplayText(str(objectValue))
-            elif (objectID == "textSpeed"):
-                DisplayText.SetTextSpeed(int(objectValue))
-            elif (objectID == "removeTopPixels"):
-                DisplayText.SetRemoveTopPixels(int(objectValue))
-            elif (objectID == "textFontSize"):
-                DisplayText.SetTextFontSize(int(objectValue))
             elif (objectID == "amountOfPanelsInWidth"):
                 LedPanel.SetAmountOfPanelsInWidth(int(objectValue))
                 JsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(objectValue))
