@@ -133,14 +133,7 @@ def CheckInput():
         elif ("valueChanged" in aDict):
             objectID = aDict["valueChanged"].get("objectID")
             objectValue = aDict["valueChanged"].get("objectValue")
-            if (objectID == "SpeedInput"): #rainbow mode
-                Rainbow.SetSpeedValue(int(objectValue))
-            elif (objectID == "WaveLengthInput"): #rainbow mode
-                Rainbow.SetwaveLength(int(objectValue))
-            elif (objectID == "HEX"):
-                string = str(objectValue).lstrip("#")
-                StaticColor.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
-            elif (objectID == "A1"):
+            if (objectID == "A1"):
                 print("save brightnes to json")
                 LedController.SetBrightness(int(objectValue))
                 JsonHelper.WriteToJsonFile("brightnessValue", objectValue)
@@ -203,7 +196,7 @@ if __name__ == "__main__":
     CheckJSON()
     LedPanel()
     staticColor = StaticColor()
-    staticColor.setColor(0, 0, 0)
+    staticColor.setColor("#000000")
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
