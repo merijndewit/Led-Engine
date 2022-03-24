@@ -372,3 +372,11 @@ function StopProcesses()
 { 
   socket.emit('msg',JSON.stringify({ "StopProcesses": 1 }));
 }
+
+function SetOneValue(e)
+{
+  if (e.value != "")
+  {
+    socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+  }
+}

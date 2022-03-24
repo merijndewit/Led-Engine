@@ -8,10 +8,11 @@ class Rainbow(LedStrip):
     rainbowSpeed = 100
 
     def SetwaveLength(waveLengthValue):
-        Rainbow.waveLength = waveLengthValue
+        Rainbow.waveLength = int(waveLengthValue)
     
     def SetSpeedValue(speedValue):
-        Rainbow.rainbowSpeed = speedValue
+        Rainbow.rainbowSpeed = int(speedValue)
+        
     @classmethod
     def Start(self):
         h = 0

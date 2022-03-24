@@ -63,7 +63,6 @@ def CheckInput():
         if JsonStr:
             sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
             aDict = json.loads(JsonStr)
-            print(aDict)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
         elif ("A1" in aDict):
@@ -134,10 +133,7 @@ def CheckInput():
         elif ("valueChanged" in aDict):
             objectID = aDict["valueChanged"].get("objectID")
             objectValue = aDict["valueChanged"].get("objectValue")
-            if (objectID == "effecthexChanged"):
-                string = str(objectValue).lstrip("#")
-                LedController.sethexOneColorEffect((int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)))
-            elif (objectID == "SpeedInput"): #rainbow mode
+            if (objectID == "SpeedInput"): #rainbow mode
                 Rainbow.SetSpeedValue(int(objectValue))
             elif (objectID == "WaveLengthInput"): #rainbow mode
                 Rainbow.SetwaveLength(int(objectValue))
