@@ -150,7 +150,7 @@ def CheckInput():
             if (aDict["startGameOfLife"] == 1):
                 terminateProcesses()
                 gameOfLife = GameOfLife()
-                gameOfLifeProcess = multiprocessing.Process(target=gameOfLife.Start, args=())
+                gameOfLifeProcess = multiprocessing.Process(target=gameOfLife._Start, args=())
                 modeProcs.append(gameOfLifeProcess)
                 gameOfLifeProcess.start()
         elif ("stopGameOfLife" in aDict):
