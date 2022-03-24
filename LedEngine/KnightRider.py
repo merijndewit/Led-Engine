@@ -8,10 +8,10 @@ class KnightRider(LedStrip):
     knightRiderSpeed = 1
 
     def setKnightRiderFade(value):
-        KnightRider.knightRiderFade = value
+        KnightRider.knightRiderFade = int(value)
 
     def setKnightRiderSpeed(value):
-        KnightRider.knightRiderSpeed = value
+        KnightRider.knightRiderSpeed = int(value)
 
     @classmethod
     def Start(cls):

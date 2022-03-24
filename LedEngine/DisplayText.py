@@ -13,13 +13,13 @@ class DisplayText(LedPanel):
         DisplayText.textToDisplay = value
 
     def SetTextSpeed(value):
-        DisplayText.textSpeed = value
+        DisplayText.textSpeed = int(value)
 
     def SetTextFontSize(value):
-        DisplayText.textFontSize = value
+        DisplayText.textFontSize = int(value)
 
     def SetRemoveTopPixels(value):
-        DisplayText.removeTopPixels = value
+        DisplayText.removeTopPixels = int(value)
     
     @classmethod
     def Start(cls):

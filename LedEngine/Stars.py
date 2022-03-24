@@ -41,7 +41,7 @@ class Stars(LedStrip):
     starsPerSecond = 1
 
     def setStarsPerSecond(value):
-        Stars.starsPerSecond = value
+        Stars.starsPerSecond = int(value)
         
     @classmethod
     def Start(cls):

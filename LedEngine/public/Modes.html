@@ -54,7 +54,7 @@
   <br>
   <b>Color:</b>
   <br>
-  <input type="color" id="effecthexChanged" oninput="valueObjectChanged(this)">
+  <input type="color" id="LedController.sethexOneColorEffect" oninput="SetOneValue(this)">
   <br>
   <div class="Header-Panel">
     <strong>_</strong>
@@ -63,10 +63,10 @@
   <button id="SineWave">Sine Wave</button>
   <div class="dropdown" id="dropdown-container">
     <small>frequency:</small>
-    <input type="text" min="1" value="1" id="sineWaveFrequency" oninput="valueObjectChanged(this)">
+    <input type="text" min="1" value="1" id="SineWave.setSineWaveFrequency" oninput="SetOneValue(this)">
     <br>
     <small>waveLength:</small>
-    <input type="text" min="1" value="1" id="sineWaveLength" oninput="valueObjectChanged(this)">
+    <input type="text" min="1" value="1" id="SineWave.setSineWaveLength" oninput="SetOneValue(this)">
   </div>
   <br>
   <button id="FireEffect">Fire Effect</button>
@@ -74,31 +74,31 @@
   <button id="StarsEffect">Stars Effect</button>
   <div class="dropdown" id="dropdown-StarsEffect">
     <small>star-rate:</small>
-    <input type="text" min="1" value="1" id="starsPerSecond" oninput="valueObjectChanged(this)">
+    <input type="text" min="1" value="1" id="Stars.setStarsPerSecond" oninput="SetOneValue(this)">
   </div>
   <br>
   <button id="KnightRider">Knight Rider</button>
   <div class="dropdown" id="dropdown-KnightRider">
     <small>Knight rider fade:</small>
-    <input type="text" min="1" value="100" id="knightRiderFade" oninput="valueObjectChanged(this)">
+    <input type="text" min="1" value="100" id="KnightRider.setKnightRiderFade" oninput="SetOneValue(this)">
     <br>
     <small>Knight rider speed:</small>
-    <input type="text" min="1" value="1" id="knightRiderSpeed" oninput="valueObjectChanged(this)">
+    <input type="text" min="1" value="1" id="KnightRider.setKnightRiderSpeed" oninput="SetOneValue(this)">
   </div>
   <br>
   <button id="DisplayText">Display Text</button>
   <div class="dropdown" id="dropdown-DisplayText">
     <small>Text to display:</small>
-    <input type="text" value="" id="displayTextText" oninput="valueObjectChanged(this)">
+    <input type="text" value="" id="DisplayText.SetDisplayText" oninput="SetOneValue(this)">
     <br>
     <small>Font size:</small>
-    <input type="text" value="9" id="textFontSize" oninput="valueObjectChanged(this)">
+    <input type="text" value="9" id="DisplayText.SetTextFontSize" oninput="SetOneValue(this)">
     <br>
     <small>Text speed(ms):</small>
-    <input type="text" value="300" id="textSpeed" oninput="valueObjectChanged(this)">
+    <input type="text" value="300" id="DisplayText.SetTextSpeed" oninput="SetOneValue(this)">
     <br>
     <small>Remove top pixels:</small>
-    <input type="text" value="0" id="removeTopPixels" oninput="valueObjectChanged(this)">
+    <input type="text" value="0" id="DisplayText.SetRemoveTopPixels" oninput="SetOneValue(this)">
   </div>
   <br><br>
   <button id="StartOneColorMode" class="stopstart" onclick="ExecuteFunction(this)">Start</button>

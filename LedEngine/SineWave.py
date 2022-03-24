@@ -8,10 +8,10 @@ class SineWave(LedStrip):
     sineWaveLength = 1
 
     def setSineWaveFrequency(value):
-        SineWave.sineWaveFrequency = value
+        SineWave.sineWaveFrequency = int(value)
 
     def setSineWaveLength(value):
-        SineWave.sineWaveLength = value / 100
+        SineWave.sineWaveLength = int(value) / 100
 
     @classmethod
     def Start(cls):

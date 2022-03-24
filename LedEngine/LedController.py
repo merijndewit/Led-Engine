@@ -10,8 +10,8 @@ class LedController:
     oneColorModeHex = (50, 0, 0)
     pixels = neopixel.NeoPixel(board.D21, 256, auto_write=False)
     
-    def sethexOneColorEffect(value):
-        LedController.oneColorModeHex = value
+    def sethexOneColorEffect(string):
+        LedController.oneColorModeHex = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
 
     def SetPixelAmount(amount):
         from jsonHelper import JsonHelper
