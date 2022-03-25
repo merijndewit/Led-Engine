@@ -6,12 +6,30 @@ import multiprocessing
 import os
 import importlib
 import sys
+import re
 import RPi.GPIO as GPIO
 from jsonHelper import JsonHelper
 from LedStrip import LedStrip
 
 #LedEngine Scripts
-import LedController as Ledstrip
+from LedController import LedController
+from LedPanel import LedPanel
+from Rainbow import Rainbow
+from Fire import Fire
+from SineWave import SineWave
+from Stars import Stars
+from KnightRider import KnightRider
+from DisplayText import DisplayText
+from GameOfLife import GameOfLife
+from LangtonsAnt import LangtonsAnt
+from BriansBrain import BriansBrain
+from WireWorld import WireWorld
+from DrawingCanvas import DrawingCanvas
+from SaveCanvas import SaveCanvas
+from DisplayImage import DisplayImage
+from DisplayGif import DisplayGif
+from DisplayImageFile import DisplayImageFile
+
 
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
@@ -39,24 +57,17 @@ def newclient():
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
           
 def CheckInput():
-    from LedController import LedController
-    from LedPanel import LedPanel
-    from Rainbow import Rainbow
-    from Fire import Fire
-    from SineWave import SineWave
-    from Stars import Stars
-    from KnightRider import KnightRider
-    from DisplayText import DisplayText
-    from GameOfLife import GameOfLife
-    from LangtonsAnt import LangtonsAnt
-    from BriansBrain import BriansBrain
-    from WireWorld import WireWorld
-    from DrawingCanvas import DrawingCanvas
-    from SaveCanvas import SaveCanvas
-    from DisplayImage import DisplayImage
-    from DisplayGif import DisplayGif
-    from DisplayImageFile import DisplayImageFile
-
+    switcher = {
+        "ExecuteFunction": ExecuteFunction,
+        "SetValueFunction": SetValueFunction,
+        "SetOneValueFunction": SetOneValueFunction,
+        "StopProcesses": StopProcesses,
+        "searchImages": searchImages,
+        "DisplayImage": displayImage,
+        "LoadUrl": LoadUrl,
+        "RequestJSONdata": RequestJSONdata,
+        "LoadUploadedFile": LoadUploadedFile
+    }
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
         JsonStr = data.decode('utf_8')
@@ -65,51 +76,64 @@ def CheckInput():
             aDict = json.loads(JsonStr)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
-        elif ("ExecuteFunction" in aDict):
-            functionToExecute = eval(aDict["ExecuteFunction"])
-            terminateProcesses()
-            Function = multiprocessing.Process(target=functionToExecute, args=()) #multiprocessing so we can stop the process
-            modeProcs.append(Function)
-            Function.start()
-        elif ("SetValueFunction" in aDict):
-            string = aDict["SetValueFunction"].split(".", 1)
-            method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
-            method(aDict["args"])
-        elif ("SetOneValueFunction" in aDict):
-            string = aDict["SetOneValueFunction"].split(".",1)
-            method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
-            method(aDict["value"])
-        elif ("StopProcesses" in aDict):
-            terminateProcesses()
-            LedController.Clear()
-        elif ("LedCount" in aDict):
-            LedController.SetPixelAmount(int(aDict["LedCount"]))
-            JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
-        elif ("searchImages" in aDict):
-            data = SaveCanvas.GetImageNames()
-            for i in range(len(data)):
-                string = '{"LoadableImageName":"'+data[i]+'"}'
-                sockRX.sendto( string.encode('utf-8'), addr)
-        elif ("DisplayImage" in aDict):
-            pixelsToSend = []
-            pixelsToSend = DisplayImage.DisplayImageFile(aDict["DisplayImage"])
-            for i in range(len(pixelsToSend)):
-                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("LoadUrl" in aDict):
-            pixelsToSend = []
-            pixelsToSend = DisplayImage.DisplayUrl()
-            if pixelsToSend:
-                for i in range(len(pixelsToSend)):
-                    sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("RequestJSONdata" in aDict):
-            data = JsonHelper.GetDecodedJSON()
-            string = json.dumps({'JSONdata':[data]})
-            sockRX.sendto( string.encode('utf-8'), addr)
-        elif ("LoadUploadedFile" in aDict):
-            pixelsToSend = []
-            pixelsToSend = DisplayImageFile.LoadUploadedFile()
-            for i in range(len(pixelsToSend)):
-                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+        key = next(iter(aDict))
+        print(JsonStr, key)
+        func = switcher.get(key, doNothing)
+        func(aDict, addr)
+    
+def doNothing(aDict, addr):
+    print(next(iter(aDict)), "does not exist in switcher")
+
+def ExecuteFunction(aDict, addr):
+    functionToExecute = eval(aDict["ExecuteFunction"])
+    terminateProcesses()
+    Function = multiprocessing.Process(target=functionToExecute, args=()) #multiprocessing so we can stop the process
+    modeProcs.append(Function)
+    Function.start()
+    
+def SetValueFunction(aDict, addr):
+    string = aDict["SetValueFunction"].split(".", 1)
+    method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+    method(aDict["args"])
+    
+def SetOneValueFunction(aDict, addr):
+    string = aDict["SetOneValueFunction"].split(".",1)
+    method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+    method(aDict["value"])
+    
+def StopProcesses(aDict, addr):
+    terminateProcesses()
+    LedController.Clear()
+    
+def searchImages(aDict, addr):
+    data = SaveCanvas.GetImageNames()
+    for i in range(len(data)):
+        string = '{"LoadableImageName":"'+data[i]+'"}'
+        sockRX.sendto( string.encode('utf-8'), addr)
+        
+def displayImage(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = DisplayImage.DisplayImageFile(aDict["DisplayImage"])
+    for i in range(len(pixelsToSend)):
+        sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+        
+def LoadUrl(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = DisplayImage.DisplayUrl()
+    if pixelsToSend:
+        for i in range(len(pixelsToSend)):
+            sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+            
+def RequestJSONdata(aDict, addr):
+    data = JsonHelper.GetDecodedJSON()
+    string = json.dumps({'JSONdata':[data]})
+    sockRX.sendto( string.encode('utf-8'), addr)
+    
+def LoadUploadedFile(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = DisplayImageFile.LoadUploadedFile()
+    for i in range(len(pixelsToSend)):
+        sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         
 def terminateProcesses():
     for proc in modeProcs:
