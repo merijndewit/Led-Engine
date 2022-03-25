@@ -1,5 +1,5 @@
 import os
-import urllib
+import urllib.request
 import time
 from PIL import Image
 
@@ -13,15 +13,17 @@ class DisplayGif(LedPanel):
 
     def UpdategifUrl(value):
         DisplayGif.gifUrl = str(value)
+        print("gif set to:", value)
 
     def ConvertGif():
         if DisplayGif.gifUrl != "":
             imageName = "tmp.gif"
-            path = os.path.dirname(os.path.realpath(__file__))+"/tmpImages/" + imageName
+            path = os.path.dirname(os.path.realpath(__file__)) + "/tmpImages/" + imageName
             try:
                 urllib.request.urlretrieve(DisplayGif.gifUrl, path)
             except:
-                return ""
+                print("coudn't download gif")
+                return
             DisplayGif.resize_gif(path, None, (DisplayGif.ledPanelsPixelWidth, DisplayGif.ledPanelsPixelHeight))
             return path
 
