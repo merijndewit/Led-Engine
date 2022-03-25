@@ -65,10 +65,6 @@ def CheckInput():
             aDict = json.loads(JsonStr)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
-        elif ("A1" in aDict):
-            print("save brightnes to json")
-            LedController.SetBrightness(int(aDict["A1"]))
-            JsonHelper.WriteToJsonFile("brightnessValue", aDict["A1"])
         elif ("ExecuteFunction" in aDict):
             print("execute function")
             functionToExecute = eval(aDict["ExecuteFunction"])
@@ -77,7 +73,7 @@ def CheckInput():
             modeProcs.append(Function)
             Function.start()
         elif ("SetValueFunction" in aDict):
-            string = aDict["SetValueFunction"].split(".",1)
+            string = aDict["SetValueFunction"].split(".", 1)
             print(string[0] , string[1])
             method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
             method(aDict["args"])
@@ -113,12 +109,6 @@ def CheckInput():
             DisplayImage.UpdateUrl(aDict["Url"])
         elif ("gifUrl" in aDict):
             DisplayGif.UpdategifUrl(aDict["gifUrl"])
-        elif ("setConfigPanelWidth" in aDict):
-            LedPanel.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
-            JsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
-        elif ("setConfigPanelHeight" in aDict):
-            LedPanel.setConfigPanelHeight(int(aDict["setConfigPanelHeight"]))
-            JsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
         elif ("RequestJSONdata" in aDict):
             data = JsonHelper.GetDecodedJSON()
             string = json.dumps({'JSONdata':[data]})
@@ -128,8 +118,6 @@ def CheckInput():
             pixelsToSend = DisplayImageFile.LoadUploadedFile()
             for i in range(len(pixelsToSend)):
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("valuePanelChanged" in aDict):
-            LedPanel.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
         
 def terminateProcesses():
     for proc in modeProcs:

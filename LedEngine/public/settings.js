@@ -193,7 +193,7 @@ function valuePanelChanged(e)
     );
     console.log("xpos", xPosition, "ypos", yPosition)
     element.innerHTML = e.value;
-    socket.emit('msg',JSON.stringify({ valuePanelChanged: {value : e.value, x : xPosition, y : yPosition} }));
+    socket.emit('msg',JSON.stringify({ SetValueFunction: "LedPanel.setPanelArray", args: {value : e.value, x : xPosition, y : yPosition}}));
   }
 }
 

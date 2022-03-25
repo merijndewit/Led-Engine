@@ -73,8 +73,8 @@ class LedPanel(LedController):
         index += LedPanel.panels2DArray[panelY][panelX] * (LedPanel.ledPanelWidth * LedPanel.ledPanelHeight)
         return index
 
-    def setPanelArray(x, y, value):
-        LedPanel.panels2DArray[x][y] = value
+    def setPanelArray(aDict):
+        LedPanel.panels2DArray[int(aDict.get("x"))][int(aDict.get("y"))] = int(aDict.get("value"))
 
     def SetAmountOfPanelsInWidth(value):
         from jsonHelper import JsonHelper
