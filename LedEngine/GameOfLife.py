@@ -13,7 +13,7 @@ class GameOfLife(LedPanel):
         GameOfLife._rows = LedPanel.ledPanelsPixelHeight
         __listRow = [0] * GameOfLife._rows
         __listCol = []
-        for i in range(GameOfLife._cols): 
+        for i in range(GameOfLife._cols):
             for j in range(GameOfLife._rows):
                 __listRow[j] = int(random.randint(0, 1))
             __listCol.append(__listRow)
