@@ -146,7 +146,7 @@ socket.on('FB',function (data) {
       }
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("LedController.SetBrightness").value = obj2.JSONdata[0].brightnessValue;
       }
     }
     else if (id == 'LoadableImageName')
@@ -393,6 +393,14 @@ function ExecuteFunction(e)
 function SetValue(e)
 {
   socket.emit('msg', JSON.stringify({  SetValueFunction: e.id, args : { arg0: e.value}}));
+}
+
+function SetOneValue(e)
+{
+  if (e.value != "")
+  {
+    socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+  }
 }
 
 function StopProcesses()

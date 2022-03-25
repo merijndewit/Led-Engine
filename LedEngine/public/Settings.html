@@ -16,7 +16,7 @@
 
 
 <div class="Brightness">
-  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="LedController.SetBrightness" oninput="SetOneValue(this)">
 </div>
 <h1>Setup/Settings</h1>
 <div class="Panel">
@@ -63,10 +63,10 @@
   <input type="text" value="0" id="LedPanel.setConfigPanelHeight" class="smallTextBox" oninput="SetOneValue(this)">
   <br>
   <small>Amount of LED-Panels in width:</small>
-  <input type="text" value="0" id="amountOfPanelsInWidth" class="smallTextBox" oninput="amountOfLedPanelsChanged(this)">
+  <input type="text" value="0" id="LedPanel.SetAmountOfPanelsInWidth" class="smallTextBox" oninput="SetOneValue(this)">
   <br>
   <small>Amount of LED-Panels in height:</small>
-  <input type="text" value="0" id="amountOfPanelsInHeight" class="smallTextBox" oninput="amountOfLedPanelsChanged(this)">
+  <input type="text" value="0" id="LedPanel.SetAmountOfPanelsInHeight" class="smallTextBox" oninput="SetOneValue(this)">
   <br>
   <div class="grid-container" id="grid-container">
   </div>

@@ -24,7 +24,9 @@ class LedController:
         LedController.pixels.show()
 
     def SetBrightness(brightnessValue):
-        LedController.ledBrightness = brightnessValue
+        from jsonHelper import JsonHelper
+        LedController.ledBrightness = int(brightnessValue)
+        JsonHelper.WriteToJsonFile("brightnessValue", brightnessValue)
 
     def RedCalibration(percentage):
         from jsonHelper import JsonHelper

@@ -130,19 +130,6 @@ def CheckInput():
                 sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         elif ("valuePanelChanged" in aDict):
             LedPanel.setPanelArray(int(aDict["valuePanelChanged"].get("x")), int(aDict["valuePanelChanged"].get("y")), int(aDict["valuePanelChanged"].get("value")))
-        elif ("valueChanged" in aDict):
-            objectID = aDict["valueChanged"].get("objectID")
-            objectValue = aDict["valueChanged"].get("objectValue")
-            if (objectID == "A1"):
-                print("save brightnes to json")
-                LedController.SetBrightness(int(objectValue))
-                JsonHelper.WriteToJsonFile("brightnessValue", objectValue)
-            elif (objectID == "amountOfPanelsInWidth"):
-                LedPanel.SetAmountOfPanelsInWidth(int(objectValue))
-                JsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(objectValue))
-            elif (objectID == "amountOfPanelsInHeight"):
-                LedPanel.SetAmountOfPanelsInHeight(int(objectValue))
-                JsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(objectValue))
         
 def terminateProcesses():
     for proc in modeProcs:

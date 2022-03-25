@@ -82,20 +82,18 @@ socket.on('FB',function (data) {
     {
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("LedController.SetBrightness").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }
 });
 
-function valueChanged(e){
-  let a = e.value;
-
-  // this updates the brightness slider value
-  var sliderDiv = document.getElementById("A1");
-  sliderDiv.innerHTML = a;
-
-  socket.emit('msg','{"A1":'+a+'}');
+function SetOneValue(e)
+{
+  if (e.value != "")
+  {
+    socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+  }
 }
 
 function Start()

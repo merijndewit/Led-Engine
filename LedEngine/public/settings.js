@@ -119,13 +119,13 @@ socket.on('FB',function (data) {
       }
       if (obj2.JSONdata[0].amountOfPanelsInWidth)
       {
-        document.getElementById("amountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
+        document.getElementById("LedPanel.SetAmountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
         ledPanelsWidth = obj2.JSONdata[0].amountOfPanelsInWidth;
         displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].amountOfPanelsInHeight)
       {
-        document.getElementById("amountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
+        document.getElementById("LedPanel.SetAmountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
         ledPanelsHeight = obj2.JSONdata[0].amountOfPanelsInHeight;
         displayLedPanelGrid();
       }
@@ -144,6 +144,10 @@ socket.on('FB',function (data) {
       if (obj2.JSONdata[0].LedCount)
       {
         document.getElementById("LedController.SetPixelAmount").value = obj2.JSONdata[0].LedCount;
+      }
+      if (obj2.JSONdata[0].brightnessValue)
+      {
+        document.getElementById("LedController.SetBrightness").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }

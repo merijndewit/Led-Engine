@@ -77,12 +77,16 @@ class LedPanel(LedController):
         LedPanel.panels2DArray[x][y] = value
 
     def SetAmountOfPanelsInWidth(value):
-        LedPanel.amountOfPanelsInWidth = value
+        from jsonHelper import JsonHelper
+        LedPanel.amountOfPanelsInWidth = int(value)
         LedPanel.panels2DArray = LedPanel.make2DArray(LedPanel.amountOfPanelsInWidth, LedPanel.amountOfPanelsInHeight)
+        JsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(value))
 
     def SetAmountOfPanelsInHeight(value):
-        LedPanel.amountOfPanelsInHeight = value
+        from jsonHelper import JsonHelper
+        LedPanel.amountOfPanelsInHeight = int(value)
         LedPanel.panels2DArray = LedPanel.make2DArray(LedPanel.amountOfPanelsInWidth, LedPanel.amountOfPanelsInHeight)
+        JsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(value))
 
     def NewPixelArray():
         LedPanel.pixelArray = []
