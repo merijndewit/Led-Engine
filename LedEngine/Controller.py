@@ -66,7 +66,6 @@ def CheckInput():
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
         elif ("ExecuteFunction" in aDict):
-            print("execute function")
             functionToExecute = eval(aDict["ExecuteFunction"])
             terminateProcesses()
             Function = multiprocessing.Process(target=functionToExecute, args=()) #multiprocessing so we can stop the process
@@ -74,7 +73,6 @@ def CheckInput():
             Function.start()
         elif ("SetValueFunction" in aDict):
             string = aDict["SetValueFunction"].split(".", 1)
-            print(string[0] , string[1])
             method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
             method(aDict["args"])
         elif ("SetOneValueFunction" in aDict):
@@ -87,8 +85,6 @@ def CheckInput():
         elif ("LedCount" in aDict):
             LedController.SetPixelAmount(int(aDict["LedCount"]))
             JsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
-        elif ("ImageName" in aDict):
-            SaveCanvas.SetImageName(aDict["ImageName"])
         elif ("searchImages" in aDict):
             data = SaveCanvas.GetImageNames()
             for i in range(len(data)):

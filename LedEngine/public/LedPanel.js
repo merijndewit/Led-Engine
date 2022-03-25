@@ -208,11 +208,6 @@ function PixelColorChanged(e)
   col = e.value;
 }
 
-function ImageNameChanged(e)
-{
-  socket.emit('msg','{"ImageName":"'+e.value+'"}');
-}
-
 function setup(){} //p5js setup
 
 function setup2()

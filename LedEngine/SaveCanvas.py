@@ -24,6 +24,7 @@ class SaveCanvas(LedPanel):
             img.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+SaveCanvas.imageName + '.png')
 
     def SetImageName(value):
+        print("set image name: ", value)
         SaveCanvas.imageName = value
 
     def GetImageNames():
