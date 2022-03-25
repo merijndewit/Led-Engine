@@ -105,10 +105,6 @@ def CheckInput():
             if pixelsToSend:
                 for i in range(len(pixelsToSend)):
                     sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("Url" in aDict):
-            DisplayImage.UpdateUrl(aDict["Url"])
-        elif ("gifUrl" in aDict):
-            DisplayGif.UpdategifUrl(aDict["gifUrl"])
         elif ("RequestJSONdata" in aDict):
             data = JsonHelper.GetDecodedJSON()
             string = json.dumps({'JSONdata':[data]})

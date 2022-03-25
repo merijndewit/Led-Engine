@@ -337,11 +337,6 @@ function ResetNames()
   names = [];
 }
 
-function urlChanged(value)
-{
-  socket.emit('msg','{"Url":"'+value.value+'"}');
-}
-
 //only used for debugging
 //Note: this doesnt refresh the led panel
 function refresh()
