@@ -219,12 +219,12 @@ function setup2()
     canvas = createCanvas(8 * rowX, 8 * rowY);
     canvas.parent('canvasPanel');
     background(120);
-    var row = new Array(rowY).fill('#000000');
-    for (let i = 0; i < Xwidth; i++) 
-    {
-      grid[i] = row;
+
+    for (var i = 0; i < rowY; i++) {
+      grid[i] = Array(Xwidth).fill('#000000');
     }
-    colorMode(RGB)
+
+    colorMode(RGB);
     renderBoard();
     //background(255, 204, 0);
   }
@@ -246,7 +246,7 @@ function Clear()
   }
 }
 
-function mousePressed() 
+function mouseDragged() 
 {
   if (pickColor == false)
   {
@@ -262,7 +262,7 @@ function mousePressed()
       socket.emit('msg',JSON.stringify(object));
     }
   }
-  else
+  else if (pickColor)
   {
     let spotX = floor(mouseX / (width / rowX));
     let spotY = floor(mouseY / (height / rowY));
@@ -291,23 +291,9 @@ function renderBoard()
 
 function drawPixel(spotX, spotY, pickedColor)
 {
-  //add pixel to grid
-  //adding a pixel like this: "grid[spotX][spotY] = col" sets the whole row for some reason
-  //so we just create a array and add the whole array to the grid array
-  //There must be a better way so please improve my code here:
-  gridY = []
-  for (let i = 0; i < rowY; i++)
-  {
-    if (spotY != i)
-    {
-      gridY.push(grid[spotX][i]);
-    }
-    else
-    {
-      gridY.push(pickedColor);
-    }
-  }
-  grid[spotX] = gridY;
+  console.log("Set the picked color", grid, spotX, spotY);
+  console.log("Set the picked color", grid[spotX][spotY]);
+  grid[spotX][spotY] = pickedColor;
   fill(color(grid[spotX][spotY]));
   rect(spotX*(width / rowX),spotY*(height / rowY), width / rowX, height / rowY);
 }
@@ -362,11 +348,6 @@ function Start()
 {
   //here we read the json file for the previous settings
   socket.emit('msg','{"RequestJSONdata":"1"}');
-}
-
-function awa(e)
-{
-  console.log("AAAAWWWWWDDDDD: "+e)
 }
 
 function ExecuteFunction(e)
