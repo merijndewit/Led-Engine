@@ -85,11 +85,9 @@ def doNothing(aDict, addr):
     print(next(iter(aDict)), "does not exist in switcher")
 
 def ExecuteFunction(aDict, addr):
-    functionToExecute = eval(aDict["ExecuteFunction"])
-    terminateProcesses()
-    Function = multiprocessing.Process(target=functionToExecute, args=()) #multiprocessing so we can stop the process
-    modeProcs.append(Function)
-    Function.start()
+    string = aDict["ExecuteFunction"].split(".", 1)
+    method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+    method()
     
 def SetValueFunction(aDict, addr):
     string = aDict["SetValueFunction"].split(".", 1)
