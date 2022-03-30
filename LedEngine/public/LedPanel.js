@@ -246,14 +246,50 @@ function Clear()
   }
 }
 
+let previousX = -1;
+let previousY = -1;
+
 function mouseDragged() 
 {
   if (pickColor == false)
   {
     let spotX = floor(mouseX / (width / rowX));
     let spotY = floor(mouseY / (height / rowY));
+    if (spotX >= 0 && spotX <= rowX - 1 && spotY >= 0 && spotY <= rowY - 1 && previousX != spotX || previousY != spotY)
+    {
+      previousX = spotX;
+      previousY = spotY;
+      drawPixel(spotX, spotY, col);
+      // send changed pixel to python program
+      //socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+      var object = {  SetValueFunction: "DrawingCanvas.setPixel", args : { X: spotX, Y: spotY, color: col}}
+
+      socket.emit('msg',JSON.stringify(object));
+    }
+  }
+  else if (pickColor)
+  {
+    let spotX = floor(mouseX / (width / rowX));
+    let spotY = floor(mouseY / (height / rowY));
     if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
     {
+      var hex = grid[spotX][spotY];
+      SetColor(hex);
+      pickColor = false;
+    }
+  }
+}
+
+function mousePressed() 
+{
+  if (pickColor == false)
+  {
+    let spotX = floor(mouseX / (width / rowX));
+    let spotY = floor(mouseY / (height / rowY));
+    if (spotX >= 0 && spotX <= rowX - 1 && spotY >= 0 && spotY <= rowY - 1)
+    {
+      previousX = spotX;
+      previousY = spotY;
       drawPixel(spotX, spotY, col);
       // send changed pixel to python program
       //socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
@@ -291,8 +327,6 @@ function renderBoard()
 
 function drawPixel(spotX, spotY, pickedColor)
 {
-  console.log("Set the picked color", grid, spotX, spotY);
-  console.log("Set the picked color", grid[spotX][spotY]);
   grid[spotX][spotY] = pickedColor;
   fill(color(grid[spotX][spotY]));
   rect(spotX*(width / rowX),spotY*(height / rowY), width / rowX, height / rowY);

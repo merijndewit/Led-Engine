@@ -16,7 +16,7 @@ class LedPanel(LedController):
     def make2DArray(cols, rows):
         listRow = [0] * cols
         listCol = []
-        for i in range(rows): 
+        for i in range(rows):
             listCol.append(listRow.copy())
         return listCol
 
@@ -95,6 +95,7 @@ class LedPanel(LedController):
             for ii in range(LedPanel.ledPanelsPixelHeight):
                 rowY.append('#000000')
             LedPanel.pixelArray.append(rowY)
+        LedPanel.Clear()
 
     def setConfigPanelWidth(value):
         from jsonHelper import JsonHelper
