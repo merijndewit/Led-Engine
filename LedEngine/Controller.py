@@ -96,8 +96,10 @@ def SetValueFunction(aDict, addr):
     method(aDict["args"])
     
 def SetOneValueFunction(aDict, addr):
-    string = aDict["SetOneValueFunction"].split(".",1)
-    method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+    string = aDict["SetOneValueFunction"].split(".", 1)
+    objectClass = getattr(sys.modules[string[0]], string[0])
+    objectClass()
+    method = getattr(objectClass, string[1])
     method(aDict["value"])
     
 def StopProcesses(aDict, addr):
