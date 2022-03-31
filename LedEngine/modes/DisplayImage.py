@@ -6,15 +6,16 @@ from PIL import Image
 from LedPanel import LedPanel
 
 class DisplayImage(LedPanel):
-
-    ledPanelsPixelWidth = 0
-    ledPanelsPixelHeight = 0
-
-    url = ""
+    
+    def __init__(self):
+        self.url = ""
+        
+    def UpdateUrl(value):
+        DisplayImage.url = str(value)
 
     @classmethod
-    def LoadUploadedFile(cls):
-        path = os.path.dirname(os.path.realpath(__file__))+"/uploads"
+    def LoadUploadedFile(self):
+        path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"
         imageName = "tmp.png"
         files = os.listdir(path)
 
@@ -23,53 +24,52 @@ class DisplayImage(LedPanel):
         for f in files:
             if (f != ""):
                 filePath = path+"/"+str(f)
-                DisplayImage.DownscaleImage(filePath, "tmp.png")
+                self.DownscaleImage(self, filePath, "tmp.png")
                 os.remove(filePath)
-        return DisplayImage.DisplayImageFile(imageName)
+        return self.DisplayImageFile(imageName)
 
-    def DownscaleImage(imagePath, newName):
-        DisplayImage.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
-        DisplayImage.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
+    def DownscaleImage(self, imagePath, newName):
+        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
+        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
         image = Image.open(imagePath)
-        resized_image = image.resize((DisplayImage.ledPanelsPixelWidth, DisplayImage.ledPanelsPixelHeight))
+        resized_image = image.resize((self.ledPanelsPixelWidth, self.ledPanelsPixelHeight))
         #resized_image.save('savedImages/'+'new'+ '.png')
-        resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+newName)
+        resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/../savedImages/'+newName)
 
     @classmethod
-    def DisplayImageFile(cls, imageName):
-        DisplayImage.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
-        DisplayImage.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
+    def DisplayImageFile(self, imageName):
+        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
+        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
         pixelList = []
-        image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/savedImages/"+imageName)
-        if (image.width == DisplayImage.ledPanelsPixelWidth and image.height == DisplayImage.ledPanelsPixelHeight):
+        image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../savedImages/"+imageName)
+        if (image.width == self.ledPanelsPixelWidth and image.height == self.ledPanelsPixelHeight):
             rgb_im = image.convert('RGB')
-            LedPanel.Clear()
-            for y in range(DisplayImage.ledPanelsPixelHeight):
-                for x in range(DisplayImage.ledPanelsPixelWidth):
-                    pixel = int(LedPanel.getPixelNumber(x, y))
+            self.Clear()
+            for y in range(self.ledPanelsPixelHeight):
+                for x in range(self.ledPanelsPixelWidth):
+                    pixel = int(self.getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
-                    LedPanel.pixels[pixel] = (r * ((cls.Rpercentage / 100)*(cls.ledBrightness / 100)), g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
+                    self.pixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
                     data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                     pixelList.append(json.dumps(data_set))
-                LedPanel.pixels.show()
+                self.pixels.show()
         return pixelList
 
     @classmethod
-    def DisplayUrl(cls):
-        DisplayImage.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
-        DisplayImage.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
-        if DisplayImage.url != "":
+    def DisplayUrl(self):
+        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
+        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
+        if self.url != "":
             imageName = "tmp.png"
-            path = os.path.dirname(os.path.realpath(__file__))+"/tmpImages/" + imageName
+            path = os.path.dirname(os.path.realpath(__file__))+"/../tmpImages/" + imageName
             try:
-                urllib.request.urlretrieve(DisplayImage.url, path)
+                urllib.request.urlretrieve(self.url, path)
             except:
                 return []
-            DisplayImage.DownscaleImage(path, "tmp.png")
-            return DisplayImage.DisplayImageFile(imageName)
+            self.DownscaleImage(self, path, "tmp.png")
+            return self.DisplayImageFile(imageName)
 
         print("no url entered")
 
-    def UpdateUrl(value):
-        DisplayImage.url = str(value)
+
 
