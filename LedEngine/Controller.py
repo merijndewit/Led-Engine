@@ -86,7 +86,9 @@ def doNothing(aDict, addr):
 
 def ExecuteFunction(aDict, addr):
     string = aDict["ExecuteFunction"].split(".", 1)
-    method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
+    objectClass = getattr(sys.modules[string[0]], string[0])
+    objectClass()
+    method = getattr(objectClass, string[1])
     method()
     
 def SetValueFunction(aDict, addr):
