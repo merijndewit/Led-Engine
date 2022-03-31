@@ -5,15 +5,16 @@ from PIL import Image
 from LedPanel import LedPanel
 
 class DisplayImageFile(LedPanel):
-    ledPanelsPixelWidth = 0
-    ledPanelsPixelHeight = 0
+    
+    def __init__(self):
+        pass
 
     @classmethod
-    def LoadUploadedFile(cls):
-        DisplayImageFile.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
-        DisplayImageFile.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
+    def LoadUploadedFile(self):
+        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
+        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
 
-        path = os.path.dirname(os.path.realpath(__file__))+"/uploads"
+        path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"
         imageName = "tmp.png"
         files = os.listdir(path)
 
@@ -22,29 +23,29 @@ class DisplayImageFile(LedPanel):
         for f in files:
             if (f != ""):
                 filePath = path+"/"+str(f)
-                DisplayImageFile.DownscaleImage(filePath, "tmp.png")
+                self.DownscaleImage(self, filePath, "tmp.png")
                 os.remove(filePath)
 
         pixelList = []
-        image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/savedImages/"+imageName)
-        if (image.width == DisplayImageFile.ledPanelsPixelWidth and image.height == DisplayImageFile.ledPanelsPixelHeight):
+        image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../savedImages/"+imageName)
+        if (image.width == self.ledPanelsPixelWidth and image.height == self.ledPanelsPixelHeight):
             rgb_im = image.convert('RGB')
-            LedPanel.Clear()
-            for y in range(DisplayImageFile.ledPanelsPixelHeight):
-                for x in range(DisplayImageFile.ledPanelsPixelWidth):
-                    pixel = int(LedPanel.getPixelNumber(x, y))
+            self.Clear()
+            for y in range(self.ledPanelsPixelHeight):
+                for x in range(self.ledPanelsPixelWidth):
+                    pixel = int(self.getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
-                    LedPanel.pixels[pixel] = (r * ((cls.Rpercentage / 100)*(cls.ledBrightness / 100)), g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
+                    self.pixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
                     data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                     pixelList.append(json.dumps(data_set))
-                LedPanel.pixels.show()
+                self.pixels.show()
         return pixelList
 
-    def DownscaleImage(imagePath, newName):
+    def DownscaleImage(self, imagePath, newName):
         image = Image.open(imagePath)
-        resized_image = image.resize((DisplayImageFile.ledPanelsPixelWidth, DisplayImageFile.ledPanelsPixelHeight))
+        resized_image = image.resize((self.ledPanelsPixelWidth, self.ledPanelsPixelHeight))
         #resized_image.save('savedImages/'+'new'+ '.png')
-        resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+newName)
+        resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/../savedImages/'+newName)
 
 
 
