@@ -84,11 +84,12 @@ def doNothing(aDict, addr):
     print(next(iter(aDict)), "does not exist in switcher")
 
 def ExecuteFunction(aDict, addr):
+    #dp = DisplayText
+    #dp.Start()
     string = aDict["ExecuteFunction"].split(".", 1)
     objectClass = getattr(sys.modules[string[0]], string[0])
-    objectClass()
-    method = getattr(objectClass, string[1])
-    method()
+    #method = getattr(objectClass, string[1])
+    objectClass().Start()
     
 def SetValueFunction(aDict, addr):
     string = aDict["SetValueFunction"].split(".", 1)
@@ -98,9 +99,8 @@ def SetValueFunction(aDict, addr):
 def SetOneValueFunction(aDict, addr):
     string = aDict["SetOneValueFunction"].split(".", 1)
     objectClass = getattr(sys.modules[string[0]], string[0])
-    objectClass()
-    method = getattr(objectClass, string[1])
-    method(aDict["value"])
+    
+    getattr(objectClass(), string[1])(aDict["value"])
     
 def StopProcesses(aDict, addr):
     terminateProcesses()
@@ -165,6 +165,8 @@ def CheckDirectories():
 if __name__ == "__main__":
     from StaticColor import StaticColor
     from LedPanel import LedPanel
+    from LedController import LedController
+    LedController()
     CheckDirectories()
     newclient()
     CheckJSON()
