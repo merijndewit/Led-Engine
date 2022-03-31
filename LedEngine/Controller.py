@@ -2,18 +2,18 @@ from threading import Thread
 from time import sleep     # Import the sleep function from the time module
 import socket
 import json
-import multiprocessing
 import os
-import importlib
 import sys
-import re
 import RPi.GPIO as GPIO
 from jsonHelper import JsonHelper
 from LedStrip import LedStrip
-
-#LedEngine Scripts
 from LedController import LedController
 from LedPanel import LedPanel
+from SaveCanvas import SaveCanvas
+
+#LedEngine Scripts
+sys.path.append(os. getcwd() + '/modes/')
+
 from Rainbow import Rainbow
 from Fire import Fire
 from SineWave import SineWave
@@ -25,7 +25,6 @@ from LangtonsAnt import LangtonsAnt
 from BriansBrain import BriansBrain
 from WireWorld import WireWorld
 from DrawingCanvas import DrawingCanvas
-from SaveCanvas import SaveCanvas
 from DisplayImage import DisplayImage
 from DisplayGif import DisplayGif
 from DisplayImageFile import DisplayImageFile
