@@ -28,6 +28,46 @@ from DrawingCanvas import DrawingCanvas
 from DisplayImage import DisplayImage
 from DisplayGif import DisplayGif
 from DisplayImageFile import DisplayImageFile
+from StaticColor import StaticColor
+
+LedPanel()
+LedController()
+LedStrip()
+
+rainbow = Rainbow()
+fire = Fire()
+sine_wave = SineWave()
+stars = Stars()
+knight_rider = KnightRider()
+display_text = DisplayText()
+game_of_life = GameOfLife()
+langtons_ant = LangtonsAnt()
+brians_brain = BriansBrain()
+wire_world = WireWorld()
+drawing_canvas = DrawingCanvas()
+display_image = DisplayImage()
+display_gif = DisplayGif()
+display_image_file = DisplayImageFile()
+static_color = StaticColor()
+
+get_instantiated_class = {
+    "Rainbow": rainbow,
+    "Fire": fire,
+    "SineWave": sine_wave,
+    "Stars": stars,
+    "KnightRider": knight_rider,
+    "DisplayText": display_text,
+    "GameOfLife": game_of_life,
+    "LangtonsAnt": langtons_ant,
+    "BriansBrain": brians_brain,
+    "WireWorld": wire_world,
+    "DrawingCanvas": drawing_canvas,
+    "DisplayImage": display_image,
+    "DisplayGif": display_gif,
+    "DisplayImageFile": display_image_file,
+    "StaticColor": static_color
+}
+
 
 
 UDP_TX_IP = "127.0.0.1"
@@ -50,6 +90,7 @@ GPIO.setup(21,GPIO.OUT)
 GPIO.output(21,GPIO.HIGH)
 
 modeProcs = []
+
 
 def newclient():
     if GPIO.input(21):
@@ -84,12 +125,9 @@ def doNothing(aDict, addr):
     print(next(iter(aDict)), "does not exist in switcher")
 
 def ExecuteFunction(aDict, addr):
-    #dp = DisplayText
-    #dp.Start()
     string = aDict["ExecuteFunction"].split(".", 1)
-    objectClass = getattr(sys.modules[string[0]], string[0])
-    #method = getattr(objectClass, string[1])
-    objectClass().Start()
+    instantiated_class = get_instantiated_class.get(string[0], doNothing)
+    getattr(instantiated_class, string[1])
     
 def SetValueFunction(aDict, addr):
     string = aDict["SetValueFunction"].split(".", 1)
@@ -98,9 +136,8 @@ def SetValueFunction(aDict, addr):
     
 def SetOneValueFunction(aDict, addr):
     string = aDict["SetOneValueFunction"].split(".", 1)
-    objectClass = getattr(sys.modules[string[0]], string[0])
-    
-    getattr(objectClass(), string[1])(aDict["value"])
+    instantiated_class = get_instantiated_class.get(string[0], doNothing)
+    getattr(instantiated_class, string[1])(aDict["value"])
     
 def StopProcesses(aDict, addr):
     terminateProcesses()
@@ -163,22 +200,14 @@ def CheckDirectories():
 
 #start
 if __name__ == "__main__":
-    from StaticColor import StaticColor
-    from LedPanel import LedPanel
-    from LedController import LedController
-    LedController()
+    
     CheckDirectories()
     newclient()
     CheckJSON()
-    LedPanel()
-    staticColor = StaticColor()
-    staticColor.setColor("#000000")
+    
+    static_color.setColor("#FF0000")
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
 while True:
     sleep(1)
-
-
-
-               

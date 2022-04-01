@@ -95,7 +95,7 @@ class LedPanel(LedController):
             for ii in range(LedPanel.ledPanelsPixelHeight):
                 rowY.append('#000000')
             LedPanel.pixelArray.append(rowY)
-        LedPanel.Clear()
+        #LedPanel.Clear()
 
     def setConfigPanelWidth(value):
         from jsonHelper import JsonHelper
