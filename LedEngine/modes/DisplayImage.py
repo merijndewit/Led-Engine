@@ -8,12 +8,12 @@ from LedPanel import LedPanel
 class DisplayImage(LedPanel):
     
     def __init__(self):
+        super().__init__()
         self.url = ""
         
-    def UpdateUrl(value):
-        DisplayImage.url = str(value)
+    def UpdateUrl(self, value):
+        self.url = str(value)
 
-    @classmethod
     def LoadUploadedFile(self):
         path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"
         imageName = "tmp.png"
@@ -24,22 +24,17 @@ class DisplayImage(LedPanel):
         for f in files:
             if (f != ""):
                 filePath = path+"/"+str(f)
-                self.DownscaleImage(self, filePath, "tmp.png")
+                self.DownscaleImage(filePath, "tmp.png")
                 os.remove(filePath)
         return self.DisplayImageFile(imageName)
 
     def DownscaleImage(self, imagePath, newName):
-        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
-        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
         image = Image.open(imagePath)
         resized_image = image.resize((self.ledPanelsPixelWidth, self.ledPanelsPixelHeight))
         #resized_image.save('savedImages/'+'new'+ '.png')
         resized_image.save(os.path.dirname(os.path.realpath(__file__))+'/../savedImages/'+newName)
 
-    @classmethod
     def DisplayImageFile(self, imageName):
-        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
-        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
         pixelList = []
         image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../savedImages/"+imageName)
         if (image.width == self.ledPanelsPixelWidth and image.height == self.ledPanelsPixelHeight):
@@ -55,10 +50,7 @@ class DisplayImage(LedPanel):
                 self.pixels.show()
         return pixelList
 
-    @classmethod
     def DisplayUrl(self):
-        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
-        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
         if self.url != "":
             imageName = "tmp.png"
             path = os.path.dirname(os.path.realpath(__file__))+"/../tmpImages/" + imageName
@@ -66,7 +58,7 @@ class DisplayImage(LedPanel):
                 urllib.request.urlretrieve(self.url, path)
             except:
                 return []
-            self.DownscaleImage(self, path, "tmp.png")
+            self.DownscaleImage(path, "tmp.png")
             return self.DisplayImageFile(imageName)
 
         print("no url entered")
