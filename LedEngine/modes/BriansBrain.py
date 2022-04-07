@@ -6,14 +6,15 @@ from LedPanel import LedPanel
 class BriansBrain(LedPanel):
     
     def __init__(self):
+        super().__init__()
         self.grid = []
         self.cols = 0
         self.rows = 0
 
-    @classmethod
     def Start(self):
         self.cols = self.ledPanelsPixelWidth
         self.rows = self.ledPanelsPixelHeight
+        print(self.cols, self.rows)
 
         listRow = [0] * self.rows
         listCol = []
@@ -24,7 +25,7 @@ class BriansBrain(LedPanel):
             listRow = [0] * self.cols
         self.grid = listCol
         while True:
-            self.drawBriansBrain(self)
+            self.drawBriansBrain()
 
     def drawBriansBrain(self):
         for i in range(self.cols):
@@ -46,18 +47,18 @@ class BriansBrain(LedPanel):
                 elif (self.grid[i][j] == 1):
                     nextGrid[i][j] = 0
                 elif (self.grid[i][j] == 0):
-                    neighbors = self.countNeighborsBriansBrain(self, self.grid, i, j)
+                    neighbors = self.countNeighborsBriansBrain(i, j)
                     if (neighbors == 2):
                         nextGrid[i][j] = 2
         self.grid = nextGrid
         time.sleep(0.5)
 
-    def countNeighborsBriansBrain(self, grid, x, y):
+    def countNeighborsBriansBrain(self, x, y):
         sum = 0
         for i in range(-1, 2):
             for j in range(-1, 2):
                 col = (x + i + self.cols) % self.cols
                 row = (y + j + self.rows) % self.rows
-                if (grid[col][row] == 2):
+                if (self.grid[col][row] == 2):
                     sum += 1
         return sum;
