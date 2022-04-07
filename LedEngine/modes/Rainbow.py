@@ -4,19 +4,23 @@ import time
 from LedStrip import LedStrip
 
 class Rainbow(LedStrip):
-    waveLength = 100
-    rainbowSpeed = 100
+    def __init__(self):
+        LedStrip.__init__(self)
+        self.waveLength = 100
+        self.rainbowSpeed = 100
+        #self.Start()
 
-    def SetwaveLength(waveLengthValue):
-        Rainbow.waveLength = int(waveLengthValue)
+    def SetwaveLength(self, waveLengthValue):
+        self.waveLength = int(waveLengthValue)
     
-    def SetSpeedValue(speedValue):
-        Rainbow.rainbowSpeed = int(speedValue)
+    def SetSpeedValue(self, speedValue):
+        self.rainbowSpeed = int(speedValue)
         
-    @classmethod
     def Start(self):
         h = 0
         s = 1
+        self.ledBrightness = 10
+        print("show")
         while True:
             for i in range(self.pixelCount):
                 hh = (i / self.waveLength) + h
@@ -26,6 +30,7 @@ class Rainbow(LedStrip):
                 self.pixels[i] = (((rgb[0] * 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), (rgb[1] * 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), (rgb[2] * 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 h += 0.0001
                 time.sleep(0.001 / (self.rainbowSpeed / 100))
+                
             self.pixels.show()
             if h == 1:
                 h == 0

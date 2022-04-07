@@ -127,17 +127,20 @@ def doNothing(aDict, addr):
 def ExecuteFunction(aDict, addr):
     string = aDict["ExecuteFunction"].split(".", 1)
     instantiated_class = get_instantiated_class.get(string[0], doNothing)
-    getattr(instantiated_class, string[1])
+    func = getattr(instantiated_class, string[1])
+    func()
     
 def SetValueFunction(aDict, addr):
     string = aDict["SetValueFunction"].split(".", 1)
-    method = getattr(getattr(sys.modules[string[0]], string[0]) , string[1])
-    method(aDict["args"])
+    instantiated_class = get_instantiated_class.get(string[0], doNothing)
+    func = getattr(instantiated_class, string[1])
+    func(aDict["args"])
     
 def SetOneValueFunction(aDict, addr):
     string = aDict["SetOneValueFunction"].split(".", 1)
     instantiated_class = get_instantiated_class.get(string[0], doNothing)
-    getattr(instantiated_class, string[1])(aDict["value"])
+    func = getattr(instantiated_class, string[1])
+    func(aDict["value"])
     
 def StopProcesses(aDict, addr):
     terminateProcesses()
@@ -205,7 +208,7 @@ if __name__ == "__main__":
     newclient()
     CheckJSON()
     
-    static_color.setColor("#FF0000")
+    static_color.setColor("#000000")
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
