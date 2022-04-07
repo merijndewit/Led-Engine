@@ -5,6 +5,7 @@ import json
 import os
 import sys
 import RPi.GPIO as GPIO
+import multiprocessing
 from jsonHelper import JsonHelper
 from LedStrip import LedStrip
 from LedController import LedController
@@ -128,7 +129,9 @@ def ExecuteFunction(aDict, addr):
     string = aDict["ExecuteFunction"].split(".", 1)
     instantiated_class = get_instantiated_class.get(string[0], doNothing)
     func = getattr(instantiated_class, string[1])
-    func()
+    process = multiprocessing.Process(target=func, args=()) #multiprocessing so we can stop the process
+    modeProcs.append(process)
+    process.start()
     
 def SetValueFunction(aDict, addr):
     string = aDict["SetValueFunction"].split(".", 1)
@@ -144,7 +147,8 @@ def SetOneValueFunction(aDict, addr):
     
 def StopProcesses(aDict, addr):
     terminateProcesses()
-    LedController.Clear()
+    controller = LedController()
+    controller.Clear()
     
 def searchImages(aDict, addr):
     data = SaveCanvas.GetImageNames()
