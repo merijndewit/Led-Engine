@@ -5,4 +5,5 @@ LedEngine/tmpImages/*
 LedEngine/config.json
 .vscode
 .vscode/*
-modes/__pycache__/
+modes/__pycache__/*
+__pycache__/*
