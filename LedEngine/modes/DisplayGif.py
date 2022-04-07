@@ -8,12 +8,11 @@ from LedPanel import LedPanel
 class DisplayGif(LedPanel):
     
     def __init__(self):
+        super().__init__()
         self.gifUrl = ""
-        self.ledPanelsPixelWidth = 0
-        self.ledPanelsPixelHeight = 0
 
-    def UpdategifUrl(value):
-        DisplayGif.gifUrl = str(value)
+    def UpdategifUrl(self, value):
+        self.gifUrl = str(value)
         print("gif set to:", value)
 
     def ConvertGif(self):
@@ -25,15 +24,14 @@ class DisplayGif(LedPanel):
             except:
                 print("coudn't download gif")
                 return
-            self.resize_gif(self, path, None, (self.ledPanelsPixelWidth, self.ledPanelsPixelHeight))
+            self.resize_gif(path, None, (self.ledPanelsPixelWidth, self.ledPanelsPixelHeight))
             return path
 
-    @classmethod
     def PlayGif(self):
-        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
-        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
+        self.ledPanelsPixelWidth
+        self.ledPanelsPixelHeight
         print(self.ledPanelsPixelWidth)
-        self.ConvertGif(self)
+        self.ConvertGif()
         gif = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../tmpImages/tmp.gif")
         
         while True:
@@ -49,7 +47,7 @@ class DisplayGif(LedPanel):
                 time.sleep(0.2)
 
     def resize_gif(self, path, save_as=None, resize_to=None):
-        all_frames = self.extract_and_resize_frames(self, path, resize_to)
+        all_frames = self.extract_and_resize_frames(path, resize_to)
 
         if not save_as:
             save_as = path
