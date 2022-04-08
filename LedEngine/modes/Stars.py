@@ -4,6 +4,11 @@ import random
 from LedStrip import LedStrip
 
 class Stars(LedStrip):
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.starsPerSecond = 1
+
     class Star:
         step = 1
         def __init__(self): #constructor
@@ -38,35 +43,34 @@ class Stars(LedStrip):
                 self.value = random.randint(-5, 5)
                 self.value += self.originalValue
 
-    starsPerSecond = 1
+    
 
-    def setStarsPerSecond(value):
-        Stars.starsPerSecond = int(value)
+    def setStarsPerSecond(self, value):
+        self.starsPerSecond = int(value)
         
-    @classmethod
-    def Start(cls):
+    def Start(self):
         starList = []
         startTime = time.time()
         while True:
-            if time.time() - startTime >= 1 / Stars.starsPerSecond:
+            if time.time() - startTime >= 1 / self.starsPerSecond:
                 randomNumber = int(random.randint(0, 3))
                 if randomNumber == 0:
-                    newStar = Stars.TwingklingStar()
+                    newStar = self.TwingklingStar()
                 else:
-                    newStar = Stars.Star()
-                newStar.position = int(random.randint(0, cls.pixelCount - 1))
+                    newStar = self.Star()
+                newStar.position = int(random.randint(0, self.pixelCount - 1))
                 starList.append(newStar)
                 startTime = time.time()
 
             for star in range(len(starList)):
-                cls.pixels[starList[star].position] = ((cls.oneColorModeHex[0]*(starList[star].value / 255) * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), cls.oneColorModeHex[1] * (starList[star].value / 255) * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), cls.oneColorModeHex[2] * (starList[star].value / 255) * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
+                self.pixels[starList[star].position] = ((self.oneColorModeHex[0]*(starList[star].value / 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (starList[star].value / 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (starList[star].value / 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
 
                 starList[star].nextStep()
-            
+
             newList = starList.copy()
             for i in range(len(starList)):
                 if starList[i].value == 0 and starList[i].declining == True:
                     del newList[i]
             starList = newList.copy()
-            time.sleep(0.05)    
-            cls.pixels.show()
+            time.sleep(0.05)
+            self.pixels.show()
