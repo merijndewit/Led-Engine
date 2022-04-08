@@ -6,7 +6,7 @@ import os
 import sys
 import RPi.GPIO as GPIO
 import multiprocessing
-from jsonHelper import JsonHelper
+import jsonHelper
 from LedStrip import LedStrip
 from LedController import LedController
 from LedPanel import LedPanel
@@ -104,8 +104,8 @@ def CheckInput():
         "SetOneValueFunction": SetOneValueFunction,
         "StopProcesses": StopProcesses,
         "searchImages": searchImages,
-        "DisplayImage": displayImage,
-        "LoadUrl": LoadUrl,
+        #"DisplayImage": displayImage,
+        #"LoadUrl": LoadUrl,
         "RequestJSONdata": RequestJSONdata,
         "LoadUploadedFile": LoadUploadedFile
     }
@@ -155,28 +155,16 @@ def searchImages(aDict, addr):
     for i in range(len(data)):
         string = '{"LoadableImageName":"'+data[i]+'"}'
         sockRX.sendto( string.encode('utf-8'), addr)
-        
-def displayImage(aDict, addr):
-    pixelsToSend = []
-    pixelsToSend = DisplayImage.DisplayImageFile(aDict["DisplayImage"])
-    for i in range(len(pixelsToSend)):
-        sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        
-def LoadUrl(aDict, addr):
-    pixelsToSend = []
-    pixelsToSend = DisplayImage.DisplayUrl()
-    if pixelsToSend:
-        for i in range(len(pixelsToSend)):
-            sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
             
 def RequestJSONdata(aDict, addr):
-    data = JsonHelper.GetDecodedJSON()
+    data = jsonHelper.GetDecodedJSON()
     string = json.dumps({'JSONdata':[data]})
     sockRX.sendto( string.encode('utf-8'), addr)
     
 def LoadUploadedFile(aDict, addr):
     pixelsToSend = []
-    pixelsToSend = DisplayImageFile.LoadUploadedFile()
+    instantiated_class = get_instantiated_class.get("DisplayImageFile", doNothing)
+    pixelsToSend = instantiated_class.LoadUploadedFile()
     for i in range(len(pixelsToSend)):
         sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         
@@ -192,7 +180,8 @@ def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
         JSONconfig.WriteToJsonFile("key", "value")
         JSONconfig.close()
     else: #Load all values that where set previously by the user
-        JsonHelper.LoadJsonValues()        
+        pass
+        #JsonHelper.LoadJsonValues()        
 
 def CheckDirectories():
     if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/savedImages'):
