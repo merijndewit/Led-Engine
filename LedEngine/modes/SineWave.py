@@ -4,21 +4,24 @@ import math
 from LedStrip import LedStrip
 
 class SineWave(LedStrip):
-    sineWaveFrequency = 1
-    sineWaveLength = 1
+    
+    def __init__(self) -> None:
+        super().__init__()
+    
+        self.sineWaveFrequency = 1
+        self.sineWaveLength = 1
 
-    def setSineWaveFrequency(value):
-        SineWave.sineWaveFrequency = int(value)
+    def setSineWaveFrequency(self, value):
+        self.sineWaveFrequency = int(value)
 
-    def setSineWaveLength(value):
-        SineWave.sineWaveLength = int(value) / 100
+    def setSineWaveLength(self, value):
+        self.sineWaveLength = int(value) / 100
 
-    @classmethod
-    def Start(cls):
+    def Start(self):
         startTime = time.time()
         while True:
-            for i in range(cls.pixelCount):
-                result = math.sin(SineWave.sineWaveFrequency*(time.time() - startTime)+(SineWave.sineWaveLength * i))
-                cls.pixels[i] = (((((result + 1)/2) * cls.oneColorModeHex[0]) * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), (((result + 1)/2) * cls.oneColorModeHex[1]) * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), (((result + 1)/2) * cls.oneColorModeHex[2]) * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
-            cls.pixels.show()
+            for i in range(self.pixelCount):
+                result = math.sin(self.sineWaveFrequency*(time.time() - startTime)+(self.sineWaveLength * i))
+                self.pixels[i] = (((((result + 1)/2) * self.oneColorModeHex[0]) * (self.Rpercentage / 100)*(self.ledBrightness / 100), (((result + 1)/2) * self.oneColorModeHex[1]) * (self.Gpercentage / 100)*(self.ledBrightness / 100), (((result + 1)/2) * self.oneColorModeHex[2]) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+            self.pixels.show()
             #time.sleep(0.01)
