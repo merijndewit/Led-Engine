@@ -4,17 +4,20 @@ from LedStrip import LedStrip
 
 
 class Fire(LedStrip):
-    @classmethod
-    def Start(cls):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def Start(self):
         pixelList = []
-        for i in range(cls.pixelCount):
+        for i in range(self.pixelCount):
             pixelList.append(int(random.randint(0, 255)))
         while True:
-            for pixel in range(cls.pixelCount):
-                cls.pixels[pixel] = ((cls.oneColorModeHex[0]*(pixelList[pixel] / 255) * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), cls.oneColorModeHex[1] * (pixelList[pixel] / 255) * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), cls.oneColorModeHex[2] * (pixelList[pixel] / 255) * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
+            for pixel in range(self.pixelCount):
+                self.pixels[pixel] = ((self.oneColorModeHex[0]*(pixelList[pixel] / 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (pixelList[pixel] / 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (pixelList[pixel] / 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 if pixelList[pixel] <= 0:
                     pixelList[pixel] = 255
                 else:
                     pixelList[pixel] -= 1
-            cls.pixels.show()
+            self.pixels.show()
             
