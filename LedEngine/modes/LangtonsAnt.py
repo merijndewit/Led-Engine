@@ -1,79 +1,78 @@
 from LedPanel import LedPanel
 
 class LangtonsAnt(LedPanel):
-    antGrid = []
-    x = 0
-    y = 0
-    dir = 0
-    color = (0, 0, 0)
-
-    ledPanelsPixelWidth = 0
-    ledPanelsPixelHeight = 0
-
-    ANTUP = 0
-    ANTRIGHT = 1
-    ANTDOWN = 2
-    ANTLEFT = 3
     
-    @classmethod
-    def Start(cls):
-        LangtonsAnt.ledPanelsPixelWidth = LedPanel.ledPanelsPixelWidth
-        LangtonsAnt.ledPanelsPixelHeight = LedPanel.ledPanelsPixelHeight
-        LangtonsAnt.antGrid = LedPanel.make2DArray(LangtonsAnt.ledPanelsPixelWidth, LangtonsAnt.ledPanelsPixelHeight)
-        LangtonsAnt.x = int(LangtonsAnt.ledPanelsPixelWidth / 2)
-        LangtonsAnt.y = int(LangtonsAnt.ledPanelsPixelHeight / 2)
-        LangtonsAnt.dir = LangtonsAnt.ANTUP
+    def __init__(self) -> None:
+        super().__init__()
+    
+        self.antGrid = []
+        self.x = 0
+        self.y = 0
+        self.dir = 0
+        self.color = (0, 0, 0)
+
+        self.ANTUP = 0
+        self.ANTRIGHT = 1
+        self.ANTDOWN = 2
+        self.ANTLEFT = 3
+    
+
+    def Start(self):
+        self.antGrid = self.make2DArray(self.ledPanelsPixelWidth, self.ledPanelsPixelHeight)
+        self.x = int(self.ledPanelsPixelWidth / 2)
+        self.y = int(self.ledPanelsPixelHeight / 2)
+        self.dir = self.ANTUP
         while True:
-            LangtonsAnt.drawAnt()
+            self.drawAnt()
 
-    def turnRight():
-        LangtonsAnt.dir += 1
-        if (LangtonsAnt.dir > LangtonsAnt.ANTLEFT):
-            LangtonsAnt.dir = LangtonsAnt.ANTUP
+    def turnRight(self):
+        self.dir += 1
+        if (self.dir > self.ANTLEFT):
+            self.dir = self.ANTUP
     
-    def turnLeft():
-        LangtonsAnt.dir -= 1
-        if (LangtonsAnt.dir < LangtonsAnt.ANTUP):
-            LangtonsAnt.dir = LangtonsAnt.ANTLEFT
+    def turnLeft(self):
+        self.dir -= 1
+        if (self.dir < self.ANTUP):
+            self.dir = self.ANTLEFT
 
-    def moveForward():
-        if (LangtonsAnt.dir == LangtonsAnt.ANTUP):
-            LangtonsAnt.color = (2, 0, 1.5)
-            LangtonsAnt.y -= 1 
-        elif (LangtonsAnt.dir == LangtonsAnt.ANTRIGHT):
-            LangtonsAnt.color = (2, 1.5, 0)
-            LangtonsAnt.x += 1
-        elif (LangtonsAnt.dir == LangtonsAnt.ANTDOWN):
-            LangtonsAnt.color = (2, 1.5, 1.5)
-            LangtonsAnt.y += 1
-        elif (LangtonsAnt.dir == LangtonsAnt.ANTLEFT):
-            LangtonsAnt.color = (2, 0, 0)
-            LangtonsAnt.x -= 1
+    def moveForward(self):
+        if (self.dir == self.ANTUP):
+            self.color = (2, 0, 1.5)
+            self.y -= 1 
+        elif (self.dir == self.ANTRIGHT):
+            self.color = (2, 1.5, 0)
+            self.x += 1
+        elif (self.dir == self.ANTDOWN):
+            self.color = (2, 1.5, 1.5)
+            self.y += 1
+        elif (self.dir == self.ANTLEFT):
+            self.color = (2, 0, 0)
+            self.x -= 1
 
-        if (LangtonsAnt.x > LangtonsAnt.ledPanelsPixelWidth - 1):
-            LangtonsAnt.x = 0
-        elif (LangtonsAnt.x < 0):
-            LangtonsAnt.x = LangtonsAnt.ledPanelsPixelWidth - 1
-        if (LangtonsAnt.y > LangtonsAnt.ledPanelsPixelHeight - 1):
-            LangtonsAnt.y = 0
-        elif (LangtonsAnt.y < 0) :
-            LangtonsAnt.y = LangtonsAnt.ledPanelsPixelHeight - 1
+        if (self.x > self.ledPanelsPixelWidth - 1):
+            self.x = 0
+        elif (self.x < 0):
+            self.x = self.ledPanelsPixelWidth - 1
+        if (self.y > self.ledPanelsPixelHeight - 1):
+            self.y = 0
+        elif (self.y < 0) :
+            self.y = self.ledPanelsPixelHeight - 1
 
-    def drawAnt():
+    def drawAnt(self):
         for n in range(100):
-            state = LangtonsAnt.antGrid[LangtonsAnt.x][LangtonsAnt.y]
+            state = self.antGrid[self.x][self.y]
             if (state == 0):
-                LangtonsAnt.turnRight()
-                LangtonsAnt.antGrid[LangtonsAnt.x][LangtonsAnt.y] = 1
+                self.turnRight()
+                self.antGrid[self.x][self.y] = 1
             elif (state == 1):
-                LangtonsAnt.turnLeft()
-                LangtonsAnt.antGrid[LangtonsAnt.x][LangtonsAnt.y] = 0
-            if (LangtonsAnt.antGrid[LangtonsAnt.x][LangtonsAnt.y] == 1):
-                LangtonsAnt.color = (0, 0, 0)
+                self.turnLeft()
+                self.antGrid[self.x][self.y] = 0
+            if (self.antGrid[self.x][self.y] == 1):
+                self.color = (0, 0, 0)
 
-            pixel = LedPanel.getPixelNumber(LangtonsAnt.x, LangtonsAnt.y)
-            LedPanel.pixels[pixel] = (LangtonsAnt.color)
+            pixel = self.getPixelNumber(self.x, self.y)
+            self.pixels[pixel] = (self.color)
 
-            LangtonsAnt.moveForward()
+            self.moveForward()
             #time.sleep(0.05)
-            LedPanel.pixels.show()
+            self.pixels.show()
