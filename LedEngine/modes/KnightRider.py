@@ -4,66 +4,60 @@ from LedStrip import LedStrip
 
 class KnightRider(LedStrip):
 
-    knightRiderFade = 100
-    knightRiderSpeed = 1
+    def __init__(self) -> None:
+        super().__init__()
 
-    def setKnightRiderFade(value):
-        KnightRider.knightRiderFade = int(value)
+        self.knightRiderFade = 100
+        self.knightRiderSpeed = 1
 
-    def setKnightRiderSpeed(value):
-        KnightRider.knightRiderSpeed = int(value)
+    def setKnightRiderFade(self, value):
+        self.knightRiderFade = int(value)
 
-    @classmethod
-    def Start(cls):
-        oneColorModeHex = cls.oneColorModeHex
-        pixels = cls.pixels
-        Rpercentage = cls.Rpercentage
-        Bpercentage = cls.Bpercentage
-        Gpercentage = cls.Gpercentage
-        ledBrightness = cls.ledBrightness
-        pixelCount = LedStrip.pixelCount
+    def setKnightRiderSpeed(self, value):
+        self.knightRiderSpeed = int(value)
 
+    def Start(self):
         neighbors = []
         pixelStrength = 100
         while pixelStrength >= 15:
-            strength = pixelStrength / (1 + (KnightRider.knightRiderFade * 0.001))
+            strength = pixelStrength / (1 + (self.knightRiderFade * 0.001))
             if pixelStrength >= 15:
                 neighbors.append(strength)
-                pixelStrength = pixelStrength / (1 + (KnightRider.knightRiderFade * 0.001))
+                pixelStrength = pixelStrength / (1 + (self.knightRiderFade * 0.001))
             else:
                 break
-        if len(neighbors) * 2 >= pixelCount:
+        if len(neighbors) * 2 >= self.pixelCount:
             print("Please increse fade")
             return
 
         while True:
-            for position in range(pixelCount):
-                pixels[position] = ((oneColorModeHex[0] * (Rpercentage / 100)*(ledBrightness / 100), oneColorModeHex[1] * (Gpercentage / 100)*(ledBrightness / 100), oneColorModeHex[2] * (Bpercentage / 100)*(ledBrightness / 100)))
+            for position in range(self.pixelCount):
+                self.pixels[position] = ((self.oneColorModeHex[0] * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 for neighborPixel in range(len(neighbors)):
                     neighborFront = position + neighborPixel + 1
                     if neighborFront <= 255:
-                        pixels[neighborFront] = ((oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
+                        self.pixels[neighborFront] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                     neighborRear = position - neighborPixel - 1
                     if neighborRear >= 0:
 
-                        pixels[neighborRear] = ((oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
-                    pixels[neighborRear - len(neighbors)] = ((0, 0, 0))
-                time.sleep(KnightRider.knightRiderSpeed * 0.001)
-                pixels.show()
+                        self.pixels[neighborRear] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                    self.pixels[neighborRear - len(neighbors)] = ((0, 0, 0))
+                time.sleep(self.knightRiderSpeed * 0.001)
+                self.pixels.show()
 
-            for pixel in range(pixelCount - 1, 0, -1):
-                pixels[pixel] = ((oneColorModeHex[0] * (Rpercentage / 100)*(ledBrightness / 100), oneColorModeHex[1] * (Gpercentage / 100)*(ledBrightness / 100), oneColorModeHex[2] * (Bpercentage / 100)*(ledBrightness / 100)))
+            for pixel in range(self.pixelCount - 1, 0, -1):
+                self.pixels[pixel] = ((self.oneColorModeHex[0] * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 #show neighbors
                 for neighborPixel in range(len(neighbors)):
                     neighborFront = pixel + neighborPixel + 1
                     if neighborFront <= 255:
-                        pixels[neighborFront] = ((oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
+                        self.pixels[neighborFront] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                     neighborRear = pixel - neighborPixel - 1
                     if neighborRear >= 0:
 
-                        pixels[neighborRear] = ((oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (Rpercentage / 100)*(ledBrightness / 100), oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (Gpercentage / 100)*(ledBrightness / 100), oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (Bpercentage / 100)*(ledBrightness / 100)))
-                    if (neighborFront + len(neighbors) <= pixelCount):
-                        pixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
-                time.sleep(KnightRider.knightRiderSpeed * 0.001)     
-                pixels.show()
+                        self.pixels[neighborRear] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                    if (neighborFront + len(neighbors) <= self.pixelCount):
+                        self.pixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
+                time.sleep(self.knightRiderSpeed * 0.001)
+                self.pixels.show()
 
