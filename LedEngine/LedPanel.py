@@ -1,34 +1,48 @@
 import os
+import jsonHelper
 from LedController import LedController
 
 class LedPanel(LedController):
-    pixelArray = []
-    panels2DArray = []
-    width = 0
-    height = 0
-    ledPanelWidth = 0
-    ledPanelHeight = 0
-    ledPanelsPixelWidth = 0
-    ledPanelsPixelHeight = 0
-    amountOfPanelsInWidth = 1
-    amountOfPanelsInHeight = 1
 
-    def make2DArray(cols, rows):
+    def make2DArray(self, cols, rows):
         listRow = [0] * cols
         listCol = []
         for i in range(rows):
             listCol.append(listRow.copy())
         return listCol
+    
+    def __init__(self) -> None:
+        super().__init__()
+        self.pixelArray = []
+        self.panels2DArray = []
+        self.width = 0
+        self.height = 0
+        self.amountOfPanelsInWidth = 1
+        self.amountOfPanelsInHeight = 1
 
-    def __init__(self):
-        if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') == 1):
-            from jsonHelper import JsonHelper
-            JsonHelper.LoadJsonValues()
-            LedPanel.ledPanelsPixelWidth = LedPanel.ledPanelWidth * LedPanel.amountOfPanelsInWidth
-            LedPanel.ledPanelsPixelHeight = LedPanel.ledPanelHeight * LedPanel.amountOfPanelsInHeight
-            LedPanel.pixelArray = LedPanel.make2DArray(LedPanel.ledPanelsPixelWidth, LedPanel.ledPanelsPixelHeight)
-            LedPanel.panels2DArray = LedPanel.make2DArray(LedPanel.amountOfPanelsInWidth, LedPanel.amountOfPanelsInHeight)
-            LedPanel.NewPixelArray()
+        if (jsonHelper.Key_In_JSON("LEDPanelWidth")):
+            self.ledPanelWidth = int(jsonHelper.Get_Key_Value("LEDPanelWidth"))
+        else:
+            self.ledPanelWidth = 16
+        if (jsonHelper.Key_In_JSON("LEDPanelHeight")):
+            self.ledPanelHeight = int(jsonHelper.Get_Key_Value("LEDPanelHeight"))
+        else:
+            self.ledPanelHeight = 16
+            
+        if (jsonHelper.Key_In_JSON("amountOfPanelsInWidth")):
+            self.amountOfPanelsInWidth = int(jsonHelper.Get_Key_Value("amountOfPanelsInWidth"))
+        else:
+            self.amountOfPanelsInWidth = 1
+        if (jsonHelper.Key_In_JSON("amountOfPanelsInHeight")):
+            self.amountOfPanelsInHeight = int(jsonHelper.Get_Key_Value("amountOfPanelsInHeight"))
+        else:
+            self.amountOfPanelsInHeight = 1
+
+        self.ledPanelsPixelWidth = self.ledPanelWidth * self.amountOfPanelsInWidth
+        self.ledPanelsPixelHeight = self.ledPanelHeight * self.amountOfPanelsInHeight
+        self.pixelArray = self.make2DArray(self.ledPanelsPixelWidth, self.ledPanelsPixelHeight)
+        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
+        self.NewPixelArray()
 
     # get pixel number with lookup table methode
     # converts coordinates to the pixel number on the led panel
@@ -54,57 +68,57 @@ class LedPanel(LedController):
     #        rowX.append(rowY)
     #    return rowX[int(corY)][int(corX)]¨
 
-    def getPixelNumber(corX, corY):
+    def getPixelNumber(self, corX, corY):
         index = 0
         
         #these calculations calculates what part of the grid the pixel is 
-        panelX = int(corX / LedPanel.ledPanelWidth) 
-        panelY = int(corY / LedPanel.ledPanelHeight)
+        panelX = int(corX / self.ledPanelWidth) 
+        panelY = int(corY / self.ledPanelHeight)
 
         #these calculations calculate the pixel number of the ledpanel
-        panelPixelX = corX - (panelX * LedPanel.ledPanelWidth)
-        panelPixelY = corY - (panelY * LedPanel.ledPanelHeight)
+        panelPixelX = corX - (panelX * self.ledPanelWidth)
+        panelPixelY = corY - (panelY * self.ledPanelHeight)
     
         if (int(panelPixelY) % 2) == 0: #you can easely mirror the image by changing == to !=
-            index = (int(panelPixelY) * LedPanel.ledPanelWidth) + (LedPanel.ledPanelWidth - int(panelPixelX)) - 1
+            index = (int(panelPixelY) * self.ledPanelWidth) + (self.ledPanelWidth - int(panelPixelX)) - 1
         else:
-            index = (int(panelPixelY) * LedPanel.ledPanelWidth) + int(panelPixelX)
+            index = (int(panelPixelY) * self.ledPanelWidth) + int(panelPixelX)
         
-        index += LedPanel.panels2DArray[panelY][panelX] * (LedPanel.ledPanelWidth * LedPanel.ledPanelHeight)
+        index += self.panels2DArray[panelY][panelX] * (self.ledPanelWidth * self.ledPanelHeight)
         return index
 
     def setPanelArray(aDict):
-        LedPanel.panels2DArray[int(aDict.get("x"))][int(aDict.get("y"))] = int(aDict.get("value"))
+        self.panels2DArray[int(aDict.get("x"))][int(aDict.get("y"))] = int(aDict.get("value"))
 
     def SetAmountOfPanelsInWidth(value):
         from jsonHelper import JsonHelper
-        LedPanel.amountOfPanelsInWidth = int(value)
-        LedPanel.panels2DArray = LedPanel.make2DArray(LedPanel.amountOfPanelsInWidth, LedPanel.amountOfPanelsInHeight)
+        self.amountOfPanelsInWidth = int(value)
+        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
         JsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(value))
 
     def SetAmountOfPanelsInHeight(value):
         from jsonHelper import JsonHelper
-        LedPanel.amountOfPanelsInHeight = int(value)
-        LedPanel.panels2DArray = LedPanel.make2DArray(LedPanel.amountOfPanelsInWidth, LedPanel.amountOfPanelsInHeight)
+        self.amountOfPanelsInHeight = int(value)
+        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
         JsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(value))
 
-    def NewPixelArray():
-        LedPanel.pixelArray = []
-        for i in range(LedPanel.ledPanelsPixelWidth):
+    def NewPixelArray(self):
+        self.pixelArray = []
+        for i in range(self.ledPanelsPixelWidth):
             rowY = []
-            for ii in range(LedPanel.ledPanelsPixelHeight):
+            for ii in range(self.ledPanelsPixelHeight):
                 rowY.append('#000000')
-            LedPanel.pixelArray.append(rowY)
-        #LedPanel.Clear()
+            self.pixelArray.append(rowY)
+        #self.Clear()
 
     def setConfigPanelWidth(value):
         from jsonHelper import JsonHelper
-        LedPanel.ledPanelsPixelWidth = int(value)
-        LedPanel.NewPixelArray()
+        self.ledPanelsPixelWidth = int(value)
+        self.NewPixelArray()
         JsonHelper.WriteToJsonFile("LEDPanelWidth", str(value))
 
     def setConfigPanelHeight(value):
         from jsonHelper import JsonHelper
-        LedPanel.ledPanelsPixelHeight = int(value)
-        LedPanel.NewPixelArray()
+        self.ledPanelsPixelHeight = int(value)
+        self.NewPixelArray()
         JsonHelper.WriteToJsonFile("LEDPanelHeight", str(value))
