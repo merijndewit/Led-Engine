@@ -1,14 +1,27 @@
 import board
 import neopixel
+import jsonHelper
 
 class LedController:
     
     def __init__(self) -> None:
-        
-        self.Rpercentage = 100
-        self.Gpercentage = 100
-        self.Bpercentage = 100
-        self.ledBrightness = 100
+        if (jsonHelper.Key_In_JSON("redCalibration")):
+            self.Rpercentage = int(jsonHelper.Get_Key_Value("redCalibration"))
+        else:
+            self.Rpercentage = 100
+        if (jsonHelper.Key_In_JSON("greenCalibration")):
+            self.Gpercentage = int(jsonHelper.Get_Key_Value("greenCalibration"))
+        else:
+            self.Gpercentage = 100
+        if (jsonHelper.Key_In_JSON("blueCalibration")):
+            self.Bpercentage = int(jsonHelper.Get_Key_Value("blueCalibration"))
+        else:
+            self.Bpercentage = 100
+        if (jsonHelper.Key_In_JSON("brightnessValue")):
+            self.ledBrightness = int(jsonHelper.Get_Key_Value("brightnessValue"))
+        else:
+            self.ledBrightness = 10
+            
         self.oneColorModeHex = (50, 0, 0)
         self.pixels = neopixel.NeoPixel(board.D21, 256, auto_write=False)
     
@@ -16,9 +29,8 @@ class LedController:
         LedController.oneColorModeHex = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
 
     def SetPixelAmount(amount):
-        from jsonHelper import JsonHelper
         LedController.pixels = neopixel.NeoPixel(board.D21, int(amount), auto_write=False)
-        JsonHelper.WriteToJsonFile("LedCount", str(amount))
+        jsonHelper.WriteToJsonFile("LedCount", str(amount))
         print("set pixel amount to: " + amount)
 
     def Clear(self):
@@ -26,22 +38,18 @@ class LedController:
         self.pixels.show()
 
     def SetBrightness(brightnessValue):
-        from jsonHelper import JsonHelper
         LedController.ledBrightness = int(brightnessValue)
-        JsonHelper.WriteToJsonFile("brightnessValue", brightnessValue)
+        jsonHelper.WriteToJsonFile("brightnessValue", brightnessValue)
 
     def RedCalibration(percentage):
-        from jsonHelper import JsonHelper
         LedController.Rpercentage = int(percentage)
-        JsonHelper.WriteToJsonFile("redCalibration", str(percentage))
+        jsonHelper.WriteToJsonFile("redCalibration", str(percentage))
     def GreenCalibration(percentage):
-        from jsonHelper import JsonHelper
         LedController.Gpercentage = int(percentage)
-        JsonHelper.WriteToJsonFile("greenCalibration", str(percentage))
+        jsonHelper.WriteToJsonFile("greenCalibration", str(percentage))
     def BlueCalibration(percentage):
-        from jsonHelper import JsonHelper
         LedController.Bpercentage = int(percentage)
-        JsonHelper.WriteToJsonFile("blueCalibration", str(percentage))
+        jsonHelper.WriteToJsonFile("", str(percentage))
 
     def sendToClient(message):
         import Controller
