@@ -5,7 +5,7 @@ from LedStrip import LedStrip
 
 class Rainbow(LedStrip):
     def __init__(self):
-        LedStrip.__init__(self)
+        super().__init__()
         self.waveLength = 100
         self.rainbowSpeed = 100
         #self.Start()
