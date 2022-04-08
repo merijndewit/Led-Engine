@@ -283,7 +283,8 @@ function mousePressed()
   {
     drawPixel(spotX, spotY, col);
     // send changed pixel to python program
-    var object = {  setPixelWireWorld: { X: spotX, Y: spotY, mode: mode}}
+
+    var object = {  SetValueFunction: "WireWorld.setWireWorldPixel", args : { X: spotX, Y: spotY, mode: mode}}
 
     socket.emit('msg',JSON.stringify(object));
   }
