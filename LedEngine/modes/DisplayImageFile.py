@@ -6,16 +6,15 @@ from LedPanel import LedPanel
 
 class DisplayImageFile(LedPanel):
     
-    def __init__(self):
-        pass
+    def __init__(self) -> None:
+        super().__init__()
+        self.imageName = "tmp.png"
 
-    @classmethod
+
     def LoadUploadedFile(self):
-        self.ledPanelsPixelWidth = self.ledPanelsPixelWidth
-        self.ledPanelsPixelHeight = self.ledPanelsPixelHeight
 
         path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"
-        imageName = "tmp.png"
+        
         files = os.listdir(path)
 
         if (files == ""):
@@ -23,11 +22,11 @@ class DisplayImageFile(LedPanel):
         for f in files:
             if (f != ""):
                 filePath = path+"/"+str(f)
-                self.DownscaleImage(self, filePath, "tmp.png")
+                self.DownscaleImage(filePath, "tmp.png")
                 os.remove(filePath)
 
         pixelList = []
-        image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../savedImages/"+imageName)
+        image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../savedImages/"+self.imageName)
         if (image.width == self.ledPanelsPixelWidth and image.height == self.ledPanelsPixelHeight):
             rgb_im = image.convert('RGB')
             self.Clear()
