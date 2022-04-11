@@ -111,43 +111,43 @@ socket.on('FB',function (data) {
     {
       if (obj2.JSONdata[0].LEDPanelHeight)
       {
-        document.getElementById("LedPanel.setConfigPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
+        document.getElementById("LEDPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
       }
       if (obj2.JSONdata[0].LEDPanelWidth)
       {
-        document.getElementById("LedPanel.setConfigPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
+        document.getElementById("LEDPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
       }
       if (obj2.JSONdata[0].amountOfPanelsInWidth)
       {
-        document.getElementById("LedPanel.SetAmountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
+        document.getElementById("amountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
         ledPanelsWidth = obj2.JSONdata[0].amountOfPanelsInWidth;
         displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].amountOfPanelsInHeight)
       {
-        document.getElementById("LedPanel.SetAmountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
+        document.getElementById("amountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
         ledPanelsHeight = obj2.JSONdata[0].amountOfPanelsInHeight;
         displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].redCalibration)
       {
-        document.getElementById("LedController.RedCalibration").value = obj2.JSONdata[0].redCalibration;
+        document.getElementById("redCalibration").value = obj2.JSONdata[0].redCalibration;
       }
       if (obj2.JSONdata[0].greenCalibration)
       {
-        document.getElementById("LedController.GreenCalibration").value = obj2.JSONdata[0].greenCalibration;
+        document.getElementById("greenCalibration").value = obj2.JSONdata[0].greenCalibration;
       }
       if (obj2.JSONdata[0].blueCalibration)
       {
-        document.getElementById("LedController.BlueCalibration").value = obj2.JSONdata[0].blueCalibration;
+        document.getElementById("blueCalibration").value = obj2.JSONdata[0].blueCalibration;
       }
       if (obj2.JSONdata[0].LedCount)
       {
-        document.getElementById("LedController.SetPixelAmount").value = obj2.JSONdata[0].LedCount;
+        document.getElementById("LedCount").value = obj2.JSONdata[0].LedCount;
       }
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("LedController.SetBrightness").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("brightnessValue").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }
@@ -264,6 +264,11 @@ function displayLedPanelGrid()
 function SetOneValue(e)
 {
   socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+}
+
+function WriteToJson(e)
+{
+  socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : e.id, value : e.value}));
 }
 
 function Start()

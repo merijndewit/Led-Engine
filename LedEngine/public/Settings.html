@@ -16,7 +16,7 @@
 
 
 <div class="Brightness">
-  <input type="range" min="0" max="100" value="100" class="range-slider" id="LedController.SetBrightness" oninput="SetOneValue(this)">
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="brightnessValue" oninput="WriteToJson(this)">
 </div>
 <h1>Setup/Settings</h1>
 <div class="Panel">
@@ -25,13 +25,13 @@
   </div>
   <br>
   <small>Red percentage:</small>
-  <input type="text" min="1" value="100" id="LedController.RedCalibration" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" min="1" value="100" id="redCalibration" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <small>Green percentage:</small>
-  <input type="text" min="1" value="100" id="LedController.GreenCalibration" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" min="1" value="100" id="greenCalibration" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <small>Blue percentage:</small>
-  <input type="text" min="1" value="100" id="LedController.BlueCalibration" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" min="1" value="100" id="blueCalibration" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <button id="color0" class="color0"></button>
   <button id="color1" class="color1"></button>
@@ -47,7 +47,7 @@
   </div>
   <br>  
   <small>Led count:</small >
-  <input type="text" value="0" id="LedController.SetPixelAmount" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" value="0" id="LedCount" class="smallTextBox" oninput="WriteToJson(this)">
   <br><br>
 </div>
 <br>
@@ -57,16 +57,16 @@
   </div>
   <br>
   <small>LED-Panel Width:</small>
-  <input type="text" value="0" id="LedPanel.setConfigPanelWidth" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" value="0" id="LEDPanelWidth" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <small>LED-Panel Height:</small>
-  <input type="text" value="0" id="LedPanel.setConfigPanelHeight" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" value="0" id="LEDPanelHeight" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <small>Amount of LED-Panels in width:</small>
-  <input type="text" value="0" id="LedPanel.SetAmountOfPanelsInWidth" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" value="0" id="amountOfPanelsInWidth" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <small>Amount of LED-Panels in height:</small>
-  <input type="text" value="0" id="LedPanel.SetAmountOfPanelsInHeight" class="smallTextBox" oninput="SetOneValue(this)">
+  <input type="text" value="0" id="amountOfPanelsInHeight" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <div class="grid-container" id="grid-container">
   </div>
