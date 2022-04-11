@@ -18,6 +18,7 @@ class SineWave(LedStrip):
         self.sineWaveLength = int(value) / 100
 
     def Start(self):
+        super().__init__()
         startTime = time.time()
         while True:
             for i in range(self.pixelCount):

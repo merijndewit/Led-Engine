@@ -17,10 +17,9 @@ class Rainbow(LedStrip):
         self.rainbowSpeed = int(speedValue)
         
     def Start(self):
+        super().__init__()
         h = 0
         s = 1
-        self.ledBrightness = 10
-        print("show")
         while True:
             for i in range(self.pixelCount):
                 hh = (i / self.waveLength) + h

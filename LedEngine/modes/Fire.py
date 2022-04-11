@@ -9,6 +9,7 @@ class Fire(LedStrip):
         super().__init__()
 
     def Start(self):
+        super().__init__()
         pixelList = []
         for i in range(self.pixelCount):
             pixelList.append(int(random.randint(0, 255)))

@@ -17,6 +17,7 @@ class KnightRider(LedStrip):
         self.knightRiderSpeed = int(value)
 
     def Start(self):
+        super().__init__()
         neighbors = []
         pixelStrength = 100
         while pixelStrength >= 15:

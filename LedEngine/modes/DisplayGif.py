@@ -28,9 +28,7 @@ class DisplayGif(LedPanel):
             return path
 
     def PlayGif(self):
-        self.ledPanelsPixelWidth
-        self.ledPanelsPixelHeight
-        print(self.ledPanelsPixelWidth)
+        super().__init__()
         self.ConvertGif()
         gif = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../tmpImages/tmp.gif")
         

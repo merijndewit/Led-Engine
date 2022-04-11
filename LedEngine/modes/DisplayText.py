@@ -25,6 +25,7 @@ class DisplayText(LedPanel):
         self.removeTopPixels = int(value)
 
     def Start(self):
+        super().__init__()
         font = ImageFont.truetype('font/PixeloidSans.ttf', self.textFontSize)
         print("length", font.getsize(self.textToDisplay))
         img = Image.new(mode="RGB", size=font.getsize(self.textToDisplay))

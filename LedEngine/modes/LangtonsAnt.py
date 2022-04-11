@@ -18,6 +18,7 @@ class LangtonsAnt(LedPanel):
     
 
     def Start(self):
+        super().__init__()
         self.antGrid = self.make2DArray(self.ledPanelsPixelWidth, self.ledPanelsPixelHeight)
         self.x = int(self.ledPanelsPixelWidth / 2)
         self.y = int(self.ledPanelsPixelHeight / 2)

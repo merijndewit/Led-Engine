@@ -49,6 +49,7 @@ class Stars(LedStrip):
         self.starsPerSecond = int(value)
         
     def Start(self):
+        super().__init__()
         starList = []
         startTime = time.time()
         while True:

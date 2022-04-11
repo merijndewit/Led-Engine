@@ -12,7 +12,7 @@ class DisplayImageFile(LedPanel):
 
 
     def LoadUploadedFile(self):
-
+        super().__init__()
         path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"
         
         files = os.listdir(path)

@@ -6,6 +6,7 @@ class DrawingCanvas(LedPanel):
         super().__init__()
 
     def setPixel(self, aDict):
+        super().__init__()
         x = aDict.get("X")
         y = aDict.get("Y")
         color = aDict.get("color")

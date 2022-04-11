@@ -15,6 +15,7 @@ class DisplayImage(LedPanel):
         self.url = str(value)
 
     def LoadUploadedFile(self):
+        super().__init__()
         path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"
         imageName = "tmp.png"
         files = os.listdir(path)
@@ -51,6 +52,7 @@ class DisplayImage(LedPanel):
         return pixelList
 
     def DisplayUrl(self):
+        super().__init__()
         if self.url != "":
             imageName = "tmp.png"
             path = os.path.dirname(os.path.realpath(__file__))+"/../tmpImages/" + imageName
@@ -62,6 +64,7 @@ class DisplayImage(LedPanel):
             return self.DisplayImageFile(imageName)
 
         print("no url entered")
+        return
 
 
 

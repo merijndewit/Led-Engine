@@ -28,6 +28,7 @@ class WireWorld(LedPanel):
         self.wireWorldPixels.append(wireWorldPixel)
 
     def Start(self):
+        super().__init__()
         self.wireWorldGrid = self.make2DArray(self.ledPanelsPixelWidth, self.ledPanelsPixelHeight)
         for i in range(len(self.wireWorldPixels)):
             self.wireWorldGrid[self.wireWorldPixels[i].x][self.wireWorldPixels[i].y] = self.wireWorldPixels[i].mode
