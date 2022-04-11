@@ -7,4 +7,4 @@ class LedStrip(LedController):
         if (jsonHelper.Key_In_JSON("LedCount")):
             self.pixelCount = int(jsonHelper.Get_Key_Value("LedCount"))
         else:
-            self.pixelCount = 0
+            self.pixelCount = 256

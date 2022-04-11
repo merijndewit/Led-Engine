@@ -21,9 +21,17 @@ class LedController:
             self.ledBrightness = int(jsonHelper.Get_Key_Value("brightnessValue"))
         else:
             self.ledBrightness = 10
+        if (jsonHelper.Key_In_JSON("LedCount")):
+            self.pixels = neopixel.NeoPixel(board.D21, int(jsonHelper.Get_Key_Value("LedCount")), auto_write=False)
+        else:
+            self.pixels = neopixel.NeoPixel(board.D21, 256, auto_write=False)
+        if (jsonHelper.Key_In_JSON("colorEffect")):
+            string = str(jsonHelper.Get_Key_Value("colorEffect")).lstrip("#")
+            self.oneColorModeHex = (int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16))
+        else:
+            self.oneColorModeHex = (50, 0, 0)
             
-        self.oneColorModeHex = (50, 0, 0)
-        self.pixels = neopixel.NeoPixel(board.D21, 256, auto_write=False)
+        
     
     def sethexOneColorEffect(string):
         LedController.oneColorModeHex = (int(string[1:3], 16), int(string[3:5], 16), int(string[5:7], 16))
