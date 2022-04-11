@@ -381,3 +381,8 @@ function SetOneValue(e)
     socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
   }
 }
+
+function WriteToJson(e)
+{
+  socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : e.id, value : e.value}));
+}
