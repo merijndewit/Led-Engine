@@ -30,10 +30,7 @@ from DisplayImage import DisplayImage
 from DisplayGif import DisplayGif
 from DisplayImageFile import DisplayImageFile
 from StaticColor import StaticColor
-
-LedPanel()
-LedController()
-LedStrip()
+from FishTank import FishTank
 
 rainbow = Rainbow()
 fire = Fire()
@@ -50,6 +47,7 @@ display_image = DisplayImage()
 display_gif = DisplayGif()
 display_image_file = DisplayImageFile()
 static_color = StaticColor()
+fish_tank = FishTank()
 
 get_instantiated_class = {
     "Rainbow": rainbow,
@@ -66,10 +64,9 @@ get_instantiated_class = {
     "DisplayImage": display_image,
     "DisplayGif": display_gif,
     "DisplayImageFile": display_image_file,
-    "StaticColor": static_color
+    "StaticColor": static_color,
+    "FishTank": fish_tank
 }
-
-
 
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
@@ -92,7 +89,6 @@ GPIO.output(21,GPIO.HIGH)
 
 modeProcs = []
 
-
 def newclient():
     if GPIO.input(21):
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
@@ -107,7 +103,8 @@ def CheckInput():
         #"DisplayImage": displayImage,
         #"LoadUrl": LoadUrl,
         "RequestJSONdata": RequestJSONdata,
-        "LoadUploadedFile": LoadUploadedFile
+        "LoadUploadedFile": LoadUploadedFile,
+        "WriteToJson": WriteToJson
     }
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -168,12 +165,15 @@ def LoadUploadedFile(aDict, addr):
     for i in range(len(pixelsToSend)):
         sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
         
+def WriteToJson(aDict, addr):
+    jsonHelper.WriteToJsonFile(aDict["key"], aDict["value"])
+        
 def terminateProcesses():
     for proc in modeProcs:
         #proc.join(timeout=0)
         if proc.is_alive():
             proc.terminate()
-
+            
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') != 1):
         JSONconfig = open(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'config.json'), "w")
