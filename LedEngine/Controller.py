@@ -11,6 +11,7 @@ from LedStrip import LedStrip
 from LedController import LedController
 from LedPanel import LedPanel
 from SaveCanvas import SaveCanvas
+from pixel_manager import PixelManager
 
 #LedEngine Scripts
 sys.path.append(os. getcwd() + '/modes/')
@@ -32,6 +33,8 @@ from DisplayImageFile import DisplayImageFile
 from StaticColor import StaticColor
 from FishTank import FishTank
 
+
+pixel_manager = PixelManager()
 rainbow = Rainbow()
 fire = Fire()
 sine_wave = SineWave()
@@ -65,7 +68,8 @@ get_instantiated_class = {
     "DisplayGif": display_gif,
     "DisplayImageFile": display_image_file,
     "StaticColor": static_color,
-    "FishTank": fish_tank
+    "FishTank": fish_tank,
+    "pixel_manager": pixel_manager
 }
 
 UDP_TX_IP = "127.0.0.1"
@@ -100,8 +104,8 @@ def CheckInput():
         "SetOneValueFunction": SetOneValueFunction,
         "StopProcesses": StopProcesses,
         "searchImages": searchImages,
-        #"DisplayImage": displayImage,
-        #"LoadUrl": LoadUrl,
+        "DisplayImage": displayImage,
+        "LoadUrl": LoadUrl,
         "RequestJSONdata": RequestJSONdata,
         "LoadUploadedFile": LoadUploadedFile,
         "WriteToJson": WriteToJson
@@ -145,13 +149,26 @@ def SetOneValueFunction(aDict, addr):
 def StopProcesses(aDict, addr):
     terminateProcesses()
     controller = LedController()
-    controller.Clear()
+    PixelManager.ClearLeds()
     
 def searchImages(aDict, addr):
     data = SaveCanvas.GetImageNames()
     for i in range(len(data)):
         string = '{"LoadableImageName":"'+data[i]+'"}'
         sockRX.sendto( string.encode('utf-8'), addr)
+        
+def displayImage(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = display_image.DisplayImageFile(aDict["DisplayImage"])
+    for i in range(len(pixelsToSend)):
+        sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+        
+def LoadUrl(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = display_image.DisplayUrl()
+    if pixelsToSend:
+        for i in range(len(pixelsToSend)):
+            sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
             
 def RequestJSONdata(aDict, addr):
     data = jsonHelper.GetDecodedJSON()
@@ -201,7 +218,8 @@ if __name__ == "__main__":
     newclient()
     CheckJSON()
     
-    static_color.setColor("#000000")
+    PixelManager.Fill((0, 0, 0))
+    PixelManager.Show_All()
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
