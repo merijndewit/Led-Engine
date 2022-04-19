@@ -82,21 +82,6 @@ class LedPanel(LedController):
         index += self.panels2DArray[panelY][panelX] * (self.ledPanelWidth * self.ledPanelHeight)
         return index
 
-    def setPanelArray(aDict):
-        self.panels2DArray[int(aDict.get("x"))][int(aDict.get("y"))] = int(aDict.get("value"))
-
-    def SetAmountOfPanelsInWidth(value):
-        from jsonHelper import JsonHelper
-        self.amountOfPanelsInWidth = int(value)
-        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
-        JsonHelper.WriteToJsonFile("amountOfPanelsInWidth", str(value))
-
-    def SetAmountOfPanelsInHeight(value):
-        from jsonHelper import JsonHelper
-        self.amountOfPanelsInHeight = int(value)
-        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
-        JsonHelper.WriteToJsonFile("amountOfPanelsInHeight", str(value))
-
     def NewPixelArray(self):
         self.pixelArray = []
         for i in range(self.ledPanelsPixelWidth):
@@ -105,15 +90,3 @@ class LedPanel(LedController):
                 rowY.append('#000000')
             self.pixelArray.append(rowY)
         #self.Clear()
-
-    def setConfigPanelWidth(value):
-        from jsonHelper import JsonHelper
-        self.ledPanelsPixelWidth = int(value)
-        self.NewPixelArray()
-        JsonHelper.WriteToJsonFile("LEDPanelWidth", str(value))
-
-    def setConfigPanelHeight(value):
-        from jsonHelper import JsonHelper
-        self.ledPanelsPixelHeight = int(value)
-        self.NewPixelArray()
-        JsonHelper.WriteToJsonFile("LEDPanelHeight", str(value))
