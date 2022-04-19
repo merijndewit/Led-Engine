@@ -1,17 +1,17 @@
 from LedPanel import LedPanel
+from pixel_manager import PixelManager
 
 class DrawingCanvas(LedPanel):
 
     def __init__(self) -> None:
         super().__init__()
 
-    def setPixel(self, aDict):
-        super().__init__()
-        x = aDict.get("X")
-        y = aDict.get("Y")
-        color = aDict.get("color")
+    def setPixel(self, pixel):
+        #super().__init__()
+        x = pixel.get("X")
+        y = pixel.get("Y")
+        color = pixel.get("color")
         self.pixelArray[int(x)][int(y)] = color
-        pixel = int(self.getPixelNumber(x, y))
-        self.pixels[pixel] = (int(color[1:3], 16) * (self.Rpercentage / 100)*(self.ledBrightness / 100), int(color[3:5], 16) * (self.Gpercentage / 100)*(self.ledBrightness / 100), int(color[5:7], 16) * (self.Bpercentage / 100)*(self.ledBrightness / 100))
         
-        self.pixels.show()
+        pixel = int(self.getPixelNumber(x, y))
+        PixelManager.Show_Pixel(pixel, (int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)), True)

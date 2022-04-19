@@ -4,6 +4,7 @@ import time
 from PIL import Image
 
 from LedPanel import LedPanel
+from pixel_manager import PixelManager
 
 class DisplayGif(LedPanel):
     
@@ -40,8 +41,8 @@ class DisplayGif(LedPanel):
                     for x in range(self.ledPanelsPixelWidth):
                         pixel = int(self.getPixelNumber(x, y))
                         r, g, b = rgb_im.getpixel((x, y))  
-                        self.pixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
-                self.pixels.show()
+                        PixelManager.Set_Pixel(pixel, (r, g, b), False)
+                PixelManager.Show_All()
                 time.sleep(0.2)
 
     def resize_gif(self, path, save_as=None, resize_to=None):

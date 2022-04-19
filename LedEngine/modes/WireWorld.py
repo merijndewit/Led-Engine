@@ -1,6 +1,7 @@
 import time
 
 from LedPanel import LedPanel
+from pixel_manager import PixelManager
 
 class WireWorld(LedPanel):
     
@@ -44,15 +45,15 @@ class WireWorld(LedPanel):
             for i in range(self.rows):
                 pixel = self.getPixelNumber(j, i)
                 if (self.wireWorldGrid[j][i] == 0):
-                    self.pixels[pixel] = (0, 0, 0)
+                    PixelManager.Set_Pixel(pixel, (0, 0, 0), False)
                 elif (self.wireWorldGrid[j][i] == 1):
-                    self.pixels[pixel] = (1, 1, 0)
+                    PixelManager.Set_Pixel(pixel, (200, 100, 0), False)
                 elif (self.wireWorldGrid[j][i] == 2):
-                    self.pixels[pixel] = (0, 0, 1)
+                    PixelManager.Set_Pixel(pixel, (0, 0, 200), False)
                 elif (self.wireWorldGrid[j][i] == 3):
-                    self.pixels[pixel] = (1, 0, 0)
+                    PixelManager.Set_Pixel(pixel, (200, 0, 0), False)
         nextgrid = self.make2DArray(self.cols, self.rows)
-        self.pixels.show()
+        PixelManager.Show_All()
         time.sleep(0.5)
         
         for i in range(self.cols):

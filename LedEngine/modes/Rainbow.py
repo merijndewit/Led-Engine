@@ -2,6 +2,7 @@ import colorsys
 import time
 
 from LedStrip import LedStrip
+from pixel_manager import PixelManager
 
 class Rainbow(LedStrip):
     def __init__(self):
@@ -26,10 +27,11 @@ class Rainbow(LedStrip):
                 if hh >= 1:
                     hh -= 1
                 rgb = colorsys.hsv_to_rgb(hh, s, 1)
-                self.pixels[i] = (((rgb[0] * 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), (rgb[1] * 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), (rgb[2] * 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                PixelManager.Set_Pixel(i, (rgb[0] * 255, rgb[1] * 255, rgb[2] * 255), False)
+                #self.neopixels[i] = (((rgb[0] * 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), (rgb[1] * 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), (rgb[2] * 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 h += 0.0001
                 time.sleep(0.001 / (self.rainbowSpeed / 100))
-                
-            self.pixels.show()
+
+            PixelManager.Show_All()
             if h == 1:
                 h == 0

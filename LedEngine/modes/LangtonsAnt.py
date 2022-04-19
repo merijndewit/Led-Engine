@@ -1,4 +1,5 @@
 from LedPanel import LedPanel
+from pixel_manager import PixelManager
 
 class LangtonsAnt(LedPanel):
     
@@ -38,16 +39,16 @@ class LangtonsAnt(LedPanel):
 
     def moveForward(self):
         if (self.dir == self.ANTUP):
-            self.color = (2, 0, 1.5)
+            self.color = (255, 0, 150)
             self.y -= 1 
         elif (self.dir == self.ANTRIGHT):
-            self.color = (2, 1.5, 0)
+            self.color = (255, 150, 0)
             self.x += 1
         elif (self.dir == self.ANTDOWN):
-            self.color = (2, 1.5, 1.5)
+            self.color = (255, 150, 150)
             self.y += 1
         elif (self.dir == self.ANTLEFT):
-            self.color = (2, 0, 0)
+            self.color = (255, 0, 0)
             self.x -= 1
 
         if (self.x > self.ledPanelsPixelWidth - 1):
@@ -72,8 +73,8 @@ class LangtonsAnt(LedPanel):
                 self.color = (0, 0, 0)
 
             pixel = self.getPixelNumber(self.x, self.y)
-            self.pixels[pixel] = (self.color)
+            PixelManager.Set_Pixel(pixel, self.color, False)
 
             self.moveForward()
             #time.sleep(0.05)
-            self.pixels.show()
+            PixelManager.Show_All()

@@ -1,6 +1,7 @@
 import time
 
 from LedStrip import LedStrip
+from pixel_manager import PixelManager
 
 class KnightRider(LedStrip):
 
@@ -33,32 +34,32 @@ class KnightRider(LedStrip):
 
         while True:
             for position in range(self.pixelCount):
-                self.pixels[position] = ((self.oneColorModeHex[0] * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                self.neopixels[position] = ((self.oneColorModeHex[0] * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 for neighborPixel in range(len(neighbors)):
                     neighborFront = position + neighborPixel + 1
                     if neighborFront <= 255:
-                        self.pixels[neighborFront] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                        self.neopixels[neighborFront] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                     neighborRear = position - neighborPixel - 1
                     if neighborRear >= 0:
 
-                        self.pixels[neighborRear] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
-                    self.pixels[neighborRear - len(neighbors)] = ((0, 0, 0))
+                        self.neopixels[neighborRear] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1]  * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                    self.neopixels[neighborRear - len(neighbors)] = ((0, 0, 0))
                 time.sleep(self.knightRiderSpeed * 0.001)
-                self.pixels.show()
+                self.neopixels.show()
 
             for pixel in range(self.pixelCount - 1, 0, -1):
-                self.pixels[pixel] = ((self.oneColorModeHex[0] * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                self.neopixels[pixel] = ((self.oneColorModeHex[0] * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 #show neighbors
                 for neighborPixel in range(len(neighbors)):
                     neighborFront = pixel + neighborPixel + 1
                     if neighborFront <= 255:
-                        self.pixels[neighborFront] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                        self.neopixels[neighborFront] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                     neighborRear = pixel - neighborPixel - 1
                     if neighborRear >= 0:
 
-                        self.pixels[neighborRear] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
+                        self.neopixels[neighborRear] = ((self.oneColorModeHex[0] * (neighbors[neighborPixel] / 100) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (neighbors[neighborPixel] / 100) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (neighbors[neighborPixel] / 100) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                     if (neighborFront + len(neighbors) <= self.pixelCount):
-                        self.pixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
+                        self.neopixels[neighborFront + len(neighbors) - 1] = ((0, 0, 0))
                 time.sleep(self.knightRiderSpeed * 0.001)
-                self.pixels.show()
+                self.neopixels.show()
 

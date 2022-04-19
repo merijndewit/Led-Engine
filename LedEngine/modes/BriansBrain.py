@@ -2,6 +2,7 @@ import random
 import time
 
 from LedPanel import LedPanel
+from pixel_manager import PixelManager
 
 class BriansBrain(LedPanel):
     
@@ -33,12 +34,12 @@ class BriansBrain(LedPanel):
             for j in range(self.rows):
                 pixel = self.getPixelNumber(j, i)
                 if (self.grid[i][j] == 1):
-                    self.pixels[pixel] = (0, 1, 0)
+                    PixelManager.Set_Pixel(pixel, (0, 100, 0), True)
                 elif(self.grid[i][j] == 2):
-                    self.pixels[pixel] = (1, 0, 0)
+                    PixelManager.Set_Pixel(pixel, (100, 0, 0), True)
                 else:
-                    self.pixels[pixel] = (0, 0, 0)
-        self.pixels.show()
+                    PixelManager.Set_Pixel(pixel, (0, 0, 0), True)
+        PixelManager.Show_All()
         
         nextGrid = self.grid
         for i in range(self.cols):

@@ -3,13 +3,13 @@ import json
 from PIL import Image
 
 from LedPanel import LedPanel
+from pixel_manager import PixelManager
 
 class DisplayImageFile(LedPanel):
     
     def __init__(self) -> None:
         super().__init__()
         self.imageName = "tmp.png"
-
 
     def LoadUploadedFile(self):
         super().__init__()
@@ -34,10 +34,11 @@ class DisplayImageFile(LedPanel):
                 for x in range(self.ledPanelsPixelWidth):
                     pixel = int(self.getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
-                    self.pixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
+                    #self.neopixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
+                    PixelManager.Set_Pixel(pixel, (r, g, b), True)
                     data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                     pixelList.append(json.dumps(data_set))
-                self.pixels.show()
+                PixelManager.Show_All()
         return pixelList
 
     def DownscaleImage(self, imagePath, newName):
