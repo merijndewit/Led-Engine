@@ -110,7 +110,8 @@ def CheckInput():
         "LoadUrl": LoadUrl,
         "RequestJSONdata": RequestJSONdata,
         "LoadUploadedFile": LoadUploadedFile,
-        "WriteToJson": WriteToJson
+        "WriteToJson": WriteToJson,
+        "clear_leds" : clear_leds
     }
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -186,6 +187,9 @@ def LoadUploadedFile(aDict, addr):
         
 def WriteToJson(aDict, addr):
     jsonHelper.WriteToJsonFile(aDict["key"], aDict["value"])
+    
+def clear_leds(aDict, addr):
+    PixelManager.clear(True)
         
 def terminateProcesses():
     for proc in modeProcs:
