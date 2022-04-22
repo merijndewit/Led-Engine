@@ -391,7 +391,7 @@ function ExecuteFunction(e)
 
 function ClearPanel(e)
 { 
-  socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
+  socket.emit('msg',JSON.stringify({ "clear_leds": 1 }));
   Clear()
 }
 
