@@ -151,8 +151,7 @@ def SetOneValueFunction(aDict, addr):
 def StopProcesses(aDict, addr):
     terminateProcesses()
     controller = LedController()
-    PixelManager.Clear()
-    PixelManager.Show_All()
+    PixelManager.clear(True)
     
 def searchImages(aDict, addr):
     data = SaveCanvas.GetImageNames()
