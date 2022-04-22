@@ -12,6 +12,7 @@ from LedController import LedController
 from LedPanel import LedPanel
 from SaveCanvas import SaveCanvas
 from pixel_manager import PixelManager
+import color
 
 #LedEngine Scripts
 sys.path.append(os. getcwd() + '/modes/')
@@ -33,6 +34,7 @@ from DisplayImageFile import DisplayImageFile
 from StaticColor import StaticColor
 from FishTank import FishTank
 
+PixelManager.init()
 
 pixel_manager = PixelManager()
 rainbow = Rainbow()
@@ -149,7 +151,8 @@ def SetOneValueFunction(aDict, addr):
 def StopProcesses(aDict, addr):
     terminateProcesses()
     controller = LedController()
-    PixelManager.ClearLeds()
+    PixelManager.Clear()
+    PixelManager.Show_All()
     
 def searchImages(aDict, addr):
     data = SaveCanvas.GetImageNames()
@@ -218,8 +221,8 @@ if __name__ == "__main__":
     newclient()
     CheckJSON()
     
-    PixelManager.Fill((0, 0, 0))
-    PixelManager.Show_All()
+    PixelManager.fill_colors(color.Color())
+    PixelManager.show_all()
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
