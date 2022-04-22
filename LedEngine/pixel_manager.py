@@ -1,62 +1,99 @@
 import board
-import neopixel
 import jsonHelper
+import os
+import color
+from led_lib import LedLib
+from PIL import Image
 
 class PixelManager():
     
-    canvas_pixel_list = []
-    if (jsonHelper.Key_In_JSON("redCalibration")):
-        Rpercentage = int(jsonHelper.Get_Key_Value("redCalibration"))
-    else:
-        Rpercentage = 100
-    if (jsonHelper.Key_In_JSON("greenCalibration")):
-        Gpercentage = int(jsonHelper.Get_Key_Value("greenCalibration"))
-    else:
-        Gpercentage = 100
-    if (jsonHelper.Key_In_JSON("blueCalibration")):
-        Bpercentage = int(jsonHelper.Get_Key_Value("blueCalibration"))
-    else:
-        Bpercentage = 100
-    if (jsonHelper.Key_In_JSON("brightnessValue")):
-        ledBrightness = int(jsonHelper.Get_Key_Value("brightnessValue"))
-    else:
-        ledBrightness = 10
-    if (jsonHelper.Key_In_JSON("LedCount")):
-        neopixels = neopixel.NeoPixel(board.D21, int(jsonHelper.Get_Key_Value("LedCount")), auto_write=False)
-    else:
-        neopixels = neopixel.NeoPixel(board.D21, 256, auto_write=False)
-          
-    @classmethod 
-    def Clear(cls):
-        cls.neopixels.fill((0, 0, 0))
-        
-    @classmethod 
-    def ClearLeds(cls):
-        cls.neopixels.fill((0, 0, 0))
-        cls.Show_All()
-        
     @classmethod
-    def Fill(cls, color):
-        cls.neopixels.fill((color[0] * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), color[1] * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), color[2] * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
+    def init(cls):
+        cls.canvas_pixel_list = []
+        if (jsonHelper.Key_In_JSON("redCalibration")):
+            cls.Rpercentage = int(jsonHelper.Get_Key_Value("redCalibration"))
+        else:
+            cls.Rpercentage = 100
+        if (jsonHelper.Key_In_JSON("greenCalibration")):
+            cls.Gpercentage = int(jsonHelper.Get_Key_Value("greenCalibration"))
+        else:
+            cls.Gpercentage = 100
+        if (jsonHelper.Key_In_JSON("blueCalibration")):
+            cls.Bpercentage = int(jsonHelper.Get_Key_Value("blueCalibration"))
+        else:
+            cls.Bpercentage = 100
+        if (jsonHelper.Key_In_JSON("brightnessValue")):
+            cls.ledBrightness = int(jsonHelper.Get_Key_Value("brightnessValue"))
+        else:
+            cls.ledBrightness = 10
+        if (jsonHelper.Key_In_JSON("LedCount")):
+            LedLib(int(jsonHelper.Get_Key_Value("LedCount")))
+        else:
+            LedLib(256)
+        if (jsonHelper.Key_In_JSON("LEDPanelWidth")):
+            ledPanelWidth = int(jsonHelper.Get_Key_Value("LEDPanelWidth"))
+        else:
+            ledPanelWidth = 16
+        if (jsonHelper.Key_In_JSON("LEDPanelHeight")):
+            ledPanelHeight = int(jsonHelper.Get_Key_Value("LEDPanelHeight"))
+        else:
+            ledPanelHeight = 16
+        if (jsonHelper.Key_In_JSON("amountOfPanelsInWidth")):
+            amountOfPanelsInWidth = int(jsonHelper.Get_Key_Value("amountOfPanelsInWidth"))
+        else:
+            amountOfPanelsInWidth = 1
+        if (jsonHelper.Key_In_JSON("amountOfPanelsInHeight")):
+            amountOfPanelsInHeight = int(jsonHelper.Get_Key_Value("amountOfPanelsInHeight"))
+        else:
+            amountOfPanelsInHeight = 1
+            
+        cls.ledPanelsPixelWidth = ledPanelWidth * amountOfPanelsInWidth
+        cls.ledPanelsPixelHeight = ledPanelHeight * amountOfPanelsInHeight
+        cls.create_color_list()
+    
+    
+    @classmethod
+    def create_color_list(cls, show=False):
+        cls.canvas_pixel_list = []
+        for i in range(cls.ledPanelsPixelWidth * cls.ledPanelsPixelHeight):
+            cls.canvas_pixel_list.append(color.Color()) #this appends a black color to the list
+        if show:
+            cls.show_all()
+            
+    @classmethod
+    def fill_colors(cls, fill_color):
+        cls.canvas_pixel_list = []
+        for i in range(cls.ledPanelsPixelWidth * cls.ledPanelsPixelHeight):
+            cls.canvas_pixel_list.append(fill_color)
         
     @classmethod    
-    def Show_Pixel(cls, pixel, color, save):
-        cls.neopixels[pixel] = (color[0] * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), color[1] * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), color[2] * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
-        cls.Show_All()
-        if save:
-            cls.Save_Pixel(pixel, color)
-            
-    @classmethod    
-    def Set_Pixel(cls, pixel, color, save):
-        cls.neopixels[pixel] = (color[0] * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), color[1] * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), color[2] * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
-        if save:
-            cls.Save_Pixel(pixel, color)
+    def set_color(cls, color, pixel_number, show=False):
+        #cls.neopixels[pixel_number] = (color.r * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), color.g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), color.b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
+        cls.save_color(color, pixel_number)
+        if show:
+            cls.show_all()
      
     @classmethod     
-    def Save_Pixel(cls, pixel, color):
-        tup = (pixel, color)
-        cls.canvas_pixel_list.append(tup)
+    def save_color(cls, color, pixel_number):
+        cls.canvas_pixel_list[pixel_number] = color
         
     @classmethod     
-    def Show_All(cls):
-        PixelManager.neopixels.show()
+    def show_all(cls):
+        for i in range(len(cls.canvas_pixel_list)):
+            LedLib.set_neopixel(i, (cls.canvas_pixel_list[i].r * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), cls.canvas_pixel_list[i].g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), cls.canvas_pixel_list[i].b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100)))
+        LedLib.show_pixels()
+        
+    @classmethod
+    def SetImageName(cls, value):
+        cls.imageName = value
+        
+    @classmethod
+    def Create_Image(cls):
+        #print(cls.canvas_pixel_list[0][0], cls.canvas_pixel_list[0][1], cls.canvas_pixel_list[0][2])
+        cls.imageName = "test"
+        if cls.imageName != "":
+            img = Image.new('RGB', [16, 16])
+            data = img.load()
+            for i in range(len(cls.canvas_pixel_list)):
+                data[cls.canvas_pixel_list[i][0],cls.canvas_pixel_list[i][1]] = cls.canvas_pixel_list[i][2]
+            img.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+cls.imageName + '.png')
