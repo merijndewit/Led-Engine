@@ -1,5 +1,6 @@
 from LedPanel import LedPanel
 from pixel_manager import PixelManager
+from color import Color
 
 import random
 import time
@@ -12,7 +13,7 @@ class FishTank(LedPanel):
         self.fish_list = []
         self.food_list = []
         self.start_time = time.time()
-        self.food_respawn_time = 10
+        self.food_respawn_time = 5
         self.fish_count = 3
 
     
@@ -33,7 +34,7 @@ class FishTank(LedPanel):
         
     def Update(self):
         #draw fish
-        PixelManager.Clear()
+        PixelManager.clear()
         
         if time.time() - self.start_time >= self.food_respawn_time: # spawn food
             new_food = FishFood()
@@ -47,7 +48,8 @@ class FishTank(LedPanel):
             for j in range(len(self.fish_list)):
                 for i in range(len(self.food_list[::-1])): # draw all food
                     pixel = self.getPixelNumber(self.food_list[i].x, self.food_list[i].y)
-                    PixelManager.Set_Pixel(pixel, (0, 255, 200), False)
+                    col = Color(150, 255, 0)
+                    PixelManager.set_color(col, pixel, False)
                     if self.food_list[i].x == self.fish_list[j].x and self.food_list[i].y == self.fish_list[j].y:
                         self.food_list.remove(self.food_list[i])
                     else:
@@ -58,14 +60,16 @@ class FishTank(LedPanel):
                             
         for i in range(len(self.fish_list)): # draw all fish with their tails
             pixel = self.getPixelNumber(self.fish_list[i].x, self.fish_list[i].y)
-            PixelManager.Set_Pixel(pixel, (255, 50, 0), False)
+            col = Color(255, 60, 0)
+            PixelManager.set_color(col, pixel, False)
             print(self.fish_list[i].x, self.fish_list[i].y)
             pixel = self.getPixelNumber(self.fish_list[i].GetTailLocation()[0], self.fish_list[i].GetTailLocation()[1])
-            PixelManager.Set_Pixel(pixel, (255, 50, 0), False)
+            col = Color(255, 30, 0)
+            PixelManager.set_color(col, pixel, False)
                 
         time.sleep(0.2)
         print("show")
-        PixelManager.Show_All()
+        PixelManager.show_all()
         
         
 class Fish(FishTank):
