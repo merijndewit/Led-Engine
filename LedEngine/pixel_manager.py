@@ -49,11 +49,10 @@ class PixelManager():
             
         cls.ledPanelsPixelWidth = ledPanelWidth * amountOfPanelsInWidth
         cls.ledPanelsPixelHeight = ledPanelHeight * amountOfPanelsInHeight
-        cls.create_color_list()
-    
+        cls.clear()
     
     @classmethod
-    def create_color_list(cls, show=False):
+    def clear(cls, show=False):
         cls.canvas_pixel_list = []
         for i in range(cls.ledPanelsPixelWidth * cls.ledPanelsPixelHeight):
             cls.canvas_pixel_list.append(color.Color()) #this appends a black color to the list
@@ -68,7 +67,6 @@ class PixelManager():
         
     @classmethod    
     def set_color(cls, color, pixel_number, show=False):
-        #cls.neopixels[pixel_number] = (color.r * (cls.Rpercentage / 100)*(cls.ledBrightness / 100), color.g * (cls.Gpercentage / 100)*(cls.ledBrightness / 100), color.b * (cls.Bpercentage / 100)*(cls.ledBrightness / 100))
         cls.save_color(color, pixel_number)
         if show:
             cls.show_all()
@@ -89,11 +87,14 @@ class PixelManager():
         
     @classmethod
     def Create_Image(cls):
-        #print(cls.canvas_pixel_list[0][0], cls.canvas_pixel_list[0][1], cls.canvas_pixel_list[0][2])
         cls.imageName = "test"
         if cls.imageName != "":
             img = Image.new('RGB', [16, 16])
             data = img.load()
+            snake_pattern = True
             for i in range(len(cls.canvas_pixel_list)):
-                data[cls.canvas_pixel_list[i][0],cls.canvas_pixel_list[i][1]] = cls.canvas_pixel_list[i][2]
+                if (snake_pattern and int(i / cls.ledPanelsPixelWidth) % 2 != 1):
+                    data[((cls.ledPanelsPixelWidth - 1) - i) % cls.ledPanelsPixelWidth, i / cls.ledPanelsPixelWidth] = cls.canvas_pixel_list[i].get_color_tup()
+                else:
+                    data[i % cls.ledPanelsPixelWidth, i / cls.ledPanelsPixelWidth] = cls.canvas_pixel_list[i].get_color_tup()
             img.save(os.path.dirname(os.path.realpath(__file__))+'/savedImages/'+cls.imageName + '.png')
