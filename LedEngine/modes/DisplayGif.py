@@ -5,6 +5,7 @@ from PIL import Image
 
 from LedPanel import LedPanel
 from pixel_manager import PixelManager
+from color import Color
 
 class DisplayGif(LedPanel):
     
@@ -14,7 +15,6 @@ class DisplayGif(LedPanel):
 
     def UpdategifUrl(self, value):
         self.gifUrl = str(value)
-        print("gif set to:", value)
 
     def ConvertGif(self):
         if self.gifUrl != "":
@@ -41,8 +41,9 @@ class DisplayGif(LedPanel):
                     for x in range(self.ledPanelsPixelWidth):
                         pixel = int(self.getPixelNumber(x, y))
                         r, g, b = rgb_im.getpixel((x, y))  
-                        PixelManager.Set_Pixel(pixel, (r, g, b), False)
-                PixelManager.Show_All()
+                        col = Color(r, g, b)
+                        PixelManager.set_color(col, pixel)
+                PixelManager.show_all()
                 time.sleep(0.2)
 
     def resize_gif(self, path, save_as=None, resize_to=None):
