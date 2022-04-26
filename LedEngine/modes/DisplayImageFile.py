@@ -4,6 +4,7 @@ from PIL import Image
 
 from LedPanel import LedPanel
 from pixel_manager import PixelManager
+from color import Color
 
 class DisplayImageFile(LedPanel):
     
@@ -29,16 +30,16 @@ class DisplayImageFile(LedPanel):
         image = Image.open(os.path.dirname(os.path.realpath(__file__))+"/../savedImages/"+self.imageName)
         if (image.width == self.ledPanelsPixelWidth and image.height == self.ledPanelsPixelHeight):
             rgb_im = image.convert('RGB')
-            self.Clear()
+            PixelManager.clear()
             for y in range(self.ledPanelsPixelHeight):
                 for x in range(self.ledPanelsPixelWidth):
                     pixel = int(self.getPixelNumber(x, y))
                     r, g, b = rgb_im.getpixel((x, y))  
-                    #self.neopixels[pixel] = (r * ((self.Rpercentage / 100)*(self.ledBrightness / 100)), g * (self.Gpercentage / 100)*(self.ledBrightness / 100), b * (self.Bpercentage / 100)*(self.ledBrightness / 100))
-                    PixelManager.Set_Pixel(pixel, (r, g, b), True)
+                    col = Color(r, g, b)
+                    PixelManager.set_color(col, pixel)
                     data_set = {"X": x, "Y": y, "R": r, "G": g, "B": b}
                     pixelList.append(json.dumps(data_set))
-                PixelManager.Show_All()
+                PixelManager.show_all()
         return pixelList
 
     def DownscaleImage(self, imagePath, newName):
