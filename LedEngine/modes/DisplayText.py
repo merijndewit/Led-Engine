@@ -3,6 +3,7 @@ import time
 
 from LedPanel import LedPanel
 from pixel_manager import PixelManager
+from color import Color
 
 class DisplayText(LedPanel):
     
@@ -44,9 +45,10 @@ class DisplayText(LedPanel):
                             red = (self.oneColorModeHex[0] + r) / 2
                             green = (self.oneColorModeHex[1] + g) / 2
                             blue = (self.oneColorModeHex[2] + b) / 2
-                            PixelManager.Set_Pixel(self.getPixelNumber(width, height), (red, green, blue), False)
+                            col = Color(red, green, blue)
+                            PixelManager.set_color(col, self.getPixelNumber(width, height))
                 
-                PixelManager.Show_All()
+                PixelManager.show_all()
                 return
             else: #scroll function if thext doesnt fit in the led panel completely
                 for widthPos in range(img.width - self.ledPanelsPixelWidth):
@@ -57,9 +59,10 @@ class DisplayText(LedPanel):
                                 red = (self.oneColorModeHex[0] + r) / 2
                                 green = (self.oneColorModeHex[1] + g) / 2
                                 blue = (self.oneColorModeHex[2] + b) / 2
-                                PixelManager.Set_Pixel(self.getPixelNumber(width, height), (red, green, blue), False)
-                    PixelManager.Show_All()
-                    PixelManager.Clear()
+                                col = Color(red, green, blue)
+                                PixelManager.set_color(col, self.getPixelNumber(width, height))
+                    PixelManager.show_all()
+                    PixelManager.clear()
                     time.sleep((self.textSpeed / 1000) + waitExtraSec)
                     waitExtraSec = 0
             waitExtraSec = 0.75
