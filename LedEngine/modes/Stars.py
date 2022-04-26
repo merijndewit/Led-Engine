@@ -3,6 +3,7 @@ import random
 
 from LedStrip import LedStrip
 from pixel_manager import PixelManager
+from color import Color
 
 class Stars(LedStrip):
 
@@ -63,14 +64,14 @@ class Stars(LedStrip):
                 newStar.position = int(random.randint(0, self.pixelCount - 1))
                 starList.append(newStar)
                 startTime = time.time()
-            PixelManager.Clear()
+            PixelManager.clear()
             for star in range(len(starList)):
                 #"self.neopixels[starList[star].position] = ((self.oneColorModeHex[0]*(starList[star].value / 255) * (self.Rpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[1] * (starList[star].value / 255) * (self.Gpercentage / 100)*(self.ledBrightness / 100), self.oneColorModeHex[2] * (starList[star].value / 255) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
                 r = self.oneColorModeHex[0]*(starList[star].value / 255)
                 b = self.oneColorModeHex[1]*(starList[star].value / 255)
                 g = self.oneColorModeHex[2]*(starList[star].value / 255)
                 
-                PixelManager.Set_Pixel(starList[star].position, (r, g, b), False)
+                PixelManager.set_color(Color(r, g, b), starList[star].position)
                 starList[star].nextStep()
 
             newList = starList.copy()
@@ -79,4 +80,4 @@ class Stars(LedStrip):
                     del newList[i]
             starList = newList.copy()
             time.sleep(0.05)
-            PixelManager.Show_All()
+            PixelManager.show_all()

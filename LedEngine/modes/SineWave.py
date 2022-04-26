@@ -3,6 +3,7 @@ import math
 
 from LedStrip import LedStrip
 from pixel_manager import PixelManager
+from color import Color
 
 class SineWave(LedStrip):
     
@@ -27,7 +28,7 @@ class SineWave(LedStrip):
                 r = (((result + 1)/2) * self.oneColorModeHex[0])
                 g = (((result + 1)/2) * self.oneColorModeHex[1])
                 b = (((result + 1)/2) * self.oneColorModeHex[2])
-                PixelManager.Set_Pixel(i, (r, g, b), False)
+                PixelManager.set_color(Color(r, g, b), i)
                 #self.neopixels[i] = (((((result + 1)/2) * self.oneColorModeHex[0]) * (self.Rpercentage / 100)*(self.ledBrightness / 100), (((result + 1)/2) * self.oneColorModeHex[1]) * (self.Gpercentage / 100)*(self.ledBrightness / 100), (((result + 1)/2) * self.oneColorModeHex[2]) * (self.Bpercentage / 100)*(self.ledBrightness / 100)))
-            PixelManager.Show_All()
+            PixelManager.show_all()
             #time.sleep(0.01)

@@ -3,6 +3,7 @@ import time
 
 from LedPanel import LedPanel
 from pixel_manager import PixelManager
+from color import Color
 
 class GameOfLife(LedPanel):
     
@@ -32,10 +33,10 @@ class GameOfLife(LedPanel):
             for j in range(self.rows):
                 pixel = self.getPixelNumber(j, i)
                 if (self.grid[i][j] == 1):
-                    PixelManager.Set_Pixel(pixel, (50, 100, 50), False)
+                    PixelManager.set_color(Color(50, 100, 50), pixel)
                 else:
-                    PixelManager.Set_Pixel(pixel, (0, 0, 0), False)
-        PixelManager.Show_All()
+                    PixelManager.set_color(Color(0, 0, 0), pixel)
+        PixelManager.show_all()
         time.sleep(0.1)
         listCol = []
         listRow = [0] * self.rows

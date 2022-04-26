@@ -1,5 +1,6 @@
 from LedPanel import LedPanel
 from pixel_manager import PixelManager
+from color import Color
 
 class LangtonsAnt(LedPanel):
     
@@ -71,10 +72,11 @@ class LangtonsAnt(LedPanel):
                 self.antGrid[self.x][self.y] = 0
             if (self.antGrid[self.x][self.y] == 1):
                 self.color = (0, 0, 0)
-
+            col = Color()
+            col.set_color_rgb_tup(self.color)
             pixel = self.getPixelNumber(self.x, self.y)
-            PixelManager.Set_Pixel(pixel, self.color, False)
+            PixelManager.set_color(col, pixel)
 
             self.moveForward()
             #time.sleep(0.05)
-            PixelManager.Show_All()
+            PixelManager.show_all()
