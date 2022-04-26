@@ -34,7 +34,7 @@ from DisplayImageFile import DisplayImageFile
 from StaticColor import StaticColor
 from FishTank import FishTank
 
-PixelManager.init()
+
 
 pixel_manager = PixelManager()
 rainbow = Rainbow()
@@ -111,7 +111,8 @@ def CheckInput():
         "RequestJSONdata": RequestJSONdata,
         "LoadUploadedFile": LoadUploadedFile,
         "WriteToJson": WriteToJson,
-        "clear_leds" : clear_leds
+        "clear_leds" : clear_leds,
+        "reload_settings" : reload_settings
     }
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
@@ -216,6 +217,10 @@ def CheckDirectories():
     if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/uploads'):
         os.makedirs(os.path.dirname(os.path.realpath(__file__)) + '/uploads')
         print("Made directory uploads")
+        
+def reload_settings(aDict, addr):
+    PixelManager.init()
+    print("reloaded settings")
 
 #start
 if __name__ == "__main__":
@@ -224,6 +229,7 @@ if __name__ == "__main__":
     newclient()
     CheckJSON()
     
+    PixelManager.init()
     PixelManager.fill_colors(color.Color())
     PixelManager.show_all()
     mainProcess = Thread(target = CheckInput)

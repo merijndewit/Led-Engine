@@ -8,7 +8,6 @@ class WireWorld(LedPanel):
     
     def __init__(self) -> None:
         super().__init__()
-    
         self.wireWorldGrid = []
         self.wireWorldPixels = []
         self.cols = 0
