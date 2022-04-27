@@ -3,6 +3,8 @@ var socket = io();
 ledPanelsWidth = 0
 ledPanelsHeight = 0
 
+ledPanelOrderList = []
+
 window.addEventListener("load", function()
 {
   if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
@@ -191,9 +193,10 @@ function valuePanelChanged(e)
       e.id.indexOf("L") + 1, 
       e.id.lastIndexOf("l")
     );
-    console.log("xpos", xPosition, "ypos", yPosition)
     element.innerHTML = e.value;
-    socket.emit('msg',JSON.stringify({ SetValueFunction: "LedPanel.setPanelArray", args: {value : e.value, x : xPosition, y : yPosition}}));
+    ledPanelOrderList[xPosition][yPosition] = parseInt(e.value)
+    console.log(ledPanelOrderList)
+    //socket.emit('msg',JSON.stringify({ SetValueFunction: "LedPanel.setPanelArray", args: {value : e.value, x : xPosition, y : yPosition}}));
   }
 }
 
@@ -223,7 +226,7 @@ function amountOfLedPanelsChanged(value)
     socket.emit('msg',JSON.stringify({ valueChanged: {objectID : value.id, objectValue : value.value} }));
     ledPanelsWidth = value.value;
     displayLedPanelGrid();
-
+    ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
   }
   else if (value.id == "amountOfPanelsInHeight" && value.value != "")
   {
@@ -231,7 +234,8 @@ function amountOfLedPanelsChanged(value)
     element.innerHTML = value.value;
     socket.emit('msg',JSON.stringify({ valueChanged: {objectID : value.id, objectValue : value.value} }));
     ledPanelsHeight = value.value;
-    createLedPanelGrid();
+    displayLedPanelGrid();
+    ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
   }
 }
 function displayLedPanelGrid()
@@ -242,7 +246,6 @@ function displayLedPanelGrid()
     gridContainer.removeChild(gridContainer.lastChild);
   }
   
-  console.log("awdawdawd"+ledPanelsWidth);
   gridContainer.style.gridTemplateColumns = "repeat("+ledPanelsWidth+", 1fr)" //this is to set the amount of colums on the x position
   //var ledPanelPanel = document.createElement("INPUT");
 
@@ -259,6 +262,11 @@ function displayLedPanelGrid()
         document.getElementById('grid-container').appendChild(gridPanel);
       }
     }  
+}
+
+function SetPanels()
+{
+
 }
 
 function SetOneValue(e)

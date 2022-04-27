@@ -32,6 +32,8 @@ class LedPanel(LedController):
             self.amountOfPanelsInHeight = int(jsonHelper.Get_Key_Value("amountOfPanelsInHeight"))
         else:
             self.amountOfPanelsInHeight = 1
+            
+        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
 
         self.ledPanelsPixelWidth = self.ledPanelWidth * self.amountOfPanelsInWidth
         self.ledPanelsPixelHeight = self.ledPanelHeight * self.amountOfPanelsInHeight

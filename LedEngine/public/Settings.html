@@ -63,13 +63,15 @@
   <input type="text" value="0" id="LEDPanelHeight" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <small>Amount of LED-Panels in width:</small>
-  <input type="text" value="0" id="amountOfPanelsInWidth" class="smallTextBox" oninput="WriteToJson(this)">
+  <input type="text" value="0" id="amountOfPanelsInWidth" class="smallTextBox" oninput="amountOfLedPanelsChanged(this)">
   <br>
   <small>Amount of LED-Panels in height:</small>
-  <input type="text" value="0" id="amountOfPanelsInHeight" class="smallTextBox" oninput="WriteToJson(this)">
+  <input type="text" value="0" id="amountOfPanelsInHeight" class="smallTextBox" oninput="amountOfLedPanelsChanged(this)">
   <br>
   <div class="grid-container" id="grid-container">
   </div>
+  <br>
+  <button onclick="SetPanels()" class="stopstart">Set</button>
   <br><br>
 </div>
 
