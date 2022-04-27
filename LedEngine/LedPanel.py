@@ -32,7 +32,7 @@ class LedPanel(LedController):
             self.amountOfPanelsInHeight = int(jsonHelper.Get_Key_Value("amountOfPanelsInHeight"))
         else:
             self.amountOfPanelsInHeight = 1
-        if (jsonHelper.Key_In_JSON("amountOfPanelsInHeight")):
+        if (jsonHelper.Key_In_JSON("ledPanelOrderList")):
             self.panels2DArray = jsonHelper.Get_Key_Value("ledPanelOrderList")
         else:
             self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
@@ -42,7 +42,6 @@ class LedPanel(LedController):
         self.ledPanelsPixelWidth = self.ledPanelWidth * self.amountOfPanelsInWidth
         self.ledPanelsPixelHeight = self.ledPanelHeight * self.amountOfPanelsInHeight
         self.pixelArray = self.make2DArray(self.ledPanelsPixelWidth, self.ledPanelsPixelHeight)
-        self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
         self.NewPixelArray()
 
     # get pixel number with lookup table methode
@@ -85,6 +84,7 @@ class LedPanel(LedController):
         else:
             index = (int(panelPixelY) * self.ledPanelWidth) + int(panelPixelX)
         
+        print(panelY, panelX, "add to index:", self.panels2DArray, "*", (self.ledPanelWidth * self.ledPanelHeight))
         index += self.panels2DArray[panelY][panelX] * (self.ledPanelWidth * self.ledPanelHeight)
         return index
 

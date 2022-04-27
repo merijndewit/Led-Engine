@@ -223,7 +223,7 @@ function amountOfLedPanelsChanged(value)
   {
     var element = document.getElementById(value.id);
     element.innerHTML = value.value;
-    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : value.id, objectValue : value.value} }));
+    socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : value.id, value : value.value}));
     ledPanelsWidth = value.value;
     displayLedPanelGrid();
     ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
@@ -232,7 +232,7 @@ function amountOfLedPanelsChanged(value)
   {
     var element = document.getElementById(value.id);
     element.innerHTML = value.value;
-    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : value.id, objectValue : value.value} }));
+    socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : value.id, value : value.value}));
     ledPanelsHeight = value.value;
     displayLedPanelGrid();
     ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
