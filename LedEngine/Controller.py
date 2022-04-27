@@ -7,9 +7,7 @@ import sys
 import RPi.GPIO as GPIO
 import multiprocessing
 import jsonHelper
-from LedStrip import LedStrip
 from LedController import LedController
-from LedPanel import LedPanel
 from SaveCanvas import SaveCanvas
 from pixel_manager import PixelManager
 import color
@@ -33,8 +31,6 @@ from DisplayGif import DisplayGif
 from DisplayImageFile import DisplayImageFile
 from StaticColor import StaticColor
 from FishTank import FishTank
-
-
 
 pixel_manager = PixelManager()
 rainbow = Rainbow()
@@ -200,9 +196,7 @@ def terminateProcesses():
             
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') != 1):
-        JSONconfig = open(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'config.json'), "w")
-        JSONconfig.WriteToJsonFile("key", "value")
-        JSONconfig.close()
+        jsonHelper.WriteToJsonFile("1", "1")
     else: #Load all values that where set previously by the user
         pass
         #JsonHelper.LoadJsonValues()        
@@ -218,8 +212,44 @@ def CheckDirectories():
         os.makedirs(os.path.dirname(os.path.realpath(__file__)) + '/uploads')
         print("Made directory uploads")
         
+        
+def re_init():
+    global rainbow
+    rainbow = Rainbow()
+    global fire
+    fire = Fire()
+    global sine_wave
+    sine_wave = SineWave()
+    global stars
+    stars = Stars()
+    global knight_rider
+    knight_rider = KnightRider()
+    global display_text
+    display_text = DisplayText()
+    global game_of_life
+    game_of_life = GameOfLife()
+    global langtons_ant
+    langtons_ant = LangtonsAnt()
+    global brians_brain
+    brians_brain = BriansBrain()
+    global wire_world
+    wire_world = WireWorld()
+    global drawing_canvas
+    drawing_canvas = DrawingCanvas()
+    global display_image
+    display_image = DisplayImage()
+    global display_gif
+    display_gif = DisplayGif()
+    global display_image_file
+    display_image_file = DisplayImageFile()
+    global static_color
+    static_color = StaticColor()
+    global fish_tank
+    fish_tank = FishTank()
+    
 def reload_settings(aDict, addr):
     PixelManager.init()
+    re_init()
     print("reloaded settings")
 
 #start
