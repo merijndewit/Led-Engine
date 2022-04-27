@@ -4,7 +4,7 @@ import os
 jsonFile = os.path.dirname(os.path.realpath(__file__))+'/config.json'
 
 def WriteToJsonFile(key, value):
-    if (os.path.exists(jsonFile) != 1):
+    if (os.path.exists(jsonFile) != True):
         data = {key:value}
         with open(jsonFile, 'w') as json_file:
             json.dump(data, json_file)
@@ -20,20 +20,23 @@ def GetDecodedJSON():
         return json.load(json_file)
     
 def Key_In_JSON(key):
-    with open(jsonFile) as json_file:
-        loaded_json = json.load(json_file)
-        if not (loaded_json.get(key) is None):
-            return True
-        else:
-            return False
+    if (os.path.exists(jsonFile)):
+        with open(jsonFile) as json_file:
+            loaded_json = json.load(json_file)
+            if not (loaded_json.get(key) is None):
+                return True
+            else:
+                return False
     
 def Get_Key_Value(key):
-    with open(jsonFile) as json_file:
-        loaded_json = json.load(json_file)
-        if not (loaded_json.get(key) is None):
-            return loaded_json.get(key)
-        else:
-            return
+    if (os.path.exists(jsonFile)):
+        with open(jsonFile) as json_file:
+            loaded_json = json.load(json_file)
+            if not (loaded_json.get(key) is None):
+                return loaded_json.get(key)
+            else:
+                return    
+    
     
     
 #def LoadJsonValues():

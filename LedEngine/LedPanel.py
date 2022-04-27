@@ -15,6 +15,7 @@ class LedPanel(LedController):
         super().__init__()
         self.pixelArray = []
         self.panels2DArray = []
+        print("panel init")
 
         if (jsonHelper.Key_In_JSON("LEDPanelWidth")):
             self.ledPanelWidth = int(jsonHelper.Get_Key_Value("LEDPanelWidth"))
@@ -37,8 +38,6 @@ class LedPanel(LedController):
         else:
             self.panels2DArray = self.make2DArray(self.amountOfPanelsInWidth, self.amountOfPanelsInHeight)
             
-
-
         self.ledPanelsPixelWidth = self.ledPanelWidth * self.amountOfPanelsInWidth
         self.ledPanelsPixelHeight = self.ledPanelHeight * self.amountOfPanelsInHeight
         self.pixelArray = self.make2DArray(self.ledPanelsPixelWidth, self.ledPanelsPixelHeight)
@@ -84,7 +83,6 @@ class LedPanel(LedController):
         else:
             index = (int(panelPixelY) * self.ledPanelWidth) + int(panelPixelX)
         
-        index += self.panels2DArray[panelY][panelX] * (self.ledPanelWidth * self.ledPanelHeight)
         return index
 
     def NewPixelArray(self):
