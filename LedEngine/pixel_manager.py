@@ -86,7 +86,6 @@ class PixelManager():
         
     @classmethod
     def Create_Image(cls):
-        cls.imageName = "test"
         if cls.imageName != "":
             img = Image.new('RGB', [16, 16])
             data = img.load()
