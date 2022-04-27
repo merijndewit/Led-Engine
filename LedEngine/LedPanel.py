@@ -84,7 +84,6 @@ class LedPanel(LedController):
         else:
             index = (int(panelPixelY) * self.ledPanelWidth) + int(panelPixelX)
         
-        print(panelY, panelX, "add to index:", self.panels2DArray, "*", (self.ledPanelWidth * self.ledPanelHeight))
         index += self.panels2DArray[panelY][panelX] * (self.ledPanelWidth * self.ledPanelHeight)
         return index
 

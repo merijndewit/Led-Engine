@@ -123,12 +123,14 @@ socket.on('FB',function (data) {
       {
         document.getElementById("amountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
         ledPanelsWidth = obj2.JSONdata[0].amountOfPanelsInWidth;
+        ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
         displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].amountOfPanelsInHeight)
       {
         document.getElementById("amountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
         ledPanelsHeight = obj2.JSONdata[0].amountOfPanelsInHeight;
+        ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
         displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].redCalibration)
@@ -195,7 +197,7 @@ function valuePanelChanged(e)
     );
     element.innerHTML = e.value;
     ledPanelOrderList[xPosition][yPosition] = parseInt(e.value)
-    console.log(ledPanelOrderList)
+    
     socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : "ledPanelOrderList", value : ledPanelOrderList}));
   }
 }
@@ -262,11 +264,6 @@ function displayLedPanelGrid()
         document.getElementById('grid-container').appendChild(gridPanel);
       }
     }  
-}
-
-function SetPanels()
-{
-
 }
 
 function SetOneValue(e)
