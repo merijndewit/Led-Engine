@@ -168,7 +168,7 @@ socket.on('FB',function (data) {
       }
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("LedController.SetBrightness").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("brightnessValue").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }

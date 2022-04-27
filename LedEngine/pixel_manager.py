@@ -1,4 +1,3 @@
-import board
 import jsonHelper
 import os
 import color

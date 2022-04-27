@@ -82,7 +82,7 @@ socket.on('FB',function (data) {
     {
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("LedController.SetBrightness").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("brightnessValue").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }
@@ -94,6 +94,11 @@ function SetOneValue(e)
   {
     socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
   }
+}
+
+function WriteToJson(e)
+{
+  socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : e.id, value : e.value}));
 }
 
 function Start()
