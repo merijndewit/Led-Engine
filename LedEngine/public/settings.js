@@ -196,7 +196,7 @@ function valuePanelChanged(e)
     element.innerHTML = e.value;
     ledPanelOrderList[xPosition][yPosition] = parseInt(e.value)
     console.log(ledPanelOrderList)
-    //socket.emit('msg',JSON.stringify({ SetValueFunction: "LedPanel.setPanelArray", args: {value : e.value, x : xPosition, y : yPosition}}));
+    socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : "ledPanelOrderList", value : ledPanelOrderList}));
   }
 }
 
