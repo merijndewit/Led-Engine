@@ -15,7 +15,6 @@ class LedPanel(LedController):
         super().__init__()
         self.pixelArray = []
         self.panels2DArray = []
-        print("panel init")
 
         if (jsonHelper.Key_In_JSON("LEDPanelWidth")):
             self.ledPanelWidth = int(jsonHelper.Get_Key_Value("LEDPanelWidth"))
