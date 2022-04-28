@@ -16,63 +16,143 @@
 
 
 <div class="Brightness">
-  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="brightnessValue" oninput="WriteToJson(this)">
 </div>
 <div class="Modes">
-  <h1>Modes:</h1>
+  <h1>LED-Strip</h1>
   <br>
 </div>
-<div class="Panel">
-  <strong>LED-Strip:</strong>
   <div class="Panel">
-    <strong>Static Color</strong>
-    <input type="color" id="colorChoice" oninput="valueHexChanged(this)">
+    <div class="Header-Panel">
+      <strong>Static Color</strong>
+    </div>
+    <br>
+    <input type="color" id="StaticColor.setColor" oninput="SetOneValue(this)">
   </div>
 <br>
-  <div class="Panel">
-    <strong>Rainbow Mode:</strong>
-    <br><br>
-    <b>Wave Length:</b>
-    <input type="text" min="1" value="100" id="WaveLengthInput" oninput="WaveLengthInputChanged(this)">
-    <br>
-    <b>Speed:</b>
-    <input type="text" min="1" value="100" id="SpeedInput" oninput="SpeedInputChanged(this)">
-    <br><br>
-    <button id="rainbowButton">Start</button>
-    <button id="stopButton">Stop</button>
-    <br>
+<div class="Panel">
+  <div class="Header-Panel">
+    <strong>Rainbow Mode</strong>
   </div>
+  
+  <br><br>
+  <small>Wave Length:</small>
+  <input type="text" min="1" value="100" id="Rainbow.SetwaveLength" oninput="SetOneValue(this)">
+  <br>
+  <small>Speed:</small>
+  <input type="text" min="1" value="100" id="Rainbow.SetSpeedValue" oninput="SetOneValue(this)">
+  <br><br>
+  <button onclick="ExecuteFunction(this)" id="Rainbow.Start" class="stopstart">Start</button>
+  <button onclick="StopProcesses()" class="stopstart">Stop</button>
+  <br>
 </div>
 <br>
-
 <div class="Panel">
-  <strong>LED-Panel:</strong>
+  <div class="Header-Panel">
+    <strong>One-color Effects</strong>
+  </div>
+  <br>
+  <b>Color:</b>
+  <br>
+  <input type="color" id="colorEffect" oninput="WriteToJson(this)">
+  <br>
+  <div class="Header-Panel">
+    <strong>_</strong>
+  </div>
+  <br>
+  <button id="SineWave">Sine Wave</button>
+  <div class="dropdown" id="dropdown-container">
+    <small>frequency:</small>
+    <input type="text" min="1" value="1" id="SineWave.setSineWaveFrequency" oninput="SetOneValue(this)">
+    <br>
+    <small>waveLength:</small>
+    <input type="text" min="1" value="1" id="SineWave.setSineWaveLength" oninput="SetOneValue(this)">
+  </div>
+  <br>
+  <button id="FireEffect">Fire Effect</button>
+  <br>
+  <button id="StarsEffect">Stars Effect</button>
+  <div class="dropdown" id="dropdown-StarsEffect">
+    <small>star-rate:</small>
+    <input type="text" min="1" value="1" id="Stars.setStarsPerSecond" oninput="SetOneValue(this)">
+  </div>
+  <br>
+  <button id="KnightRider">Knight Rider</button>
+  <div class="dropdown" id="dropdown-KnightRider">
+    <small>Knight rider fade:</small>
+    <input type="text" min="1" value="100" id="KnightRider.setKnightRiderFade" oninput="SetOneValue(this)">
+    <br>
+    <small>Knight rider speed:</small>
+    <input type="text" min="1" value="1" id="KnightRider.setKnightRiderSpeed" oninput="SetOneValue(this)">
+  </div>
+  <br>
+  <button id="DisplayText">Display Text</button>
+  <div class="dropdown" id="dropdown-DisplayText">
+    <small>Text to display:</small>
+    <input type="text" value="" id="DisplayText.SetDisplayText" oninput="SetOneValue(this)">
+    <br>
+    <small>Font size:</small>
+    <input type="text" value="9" id="DisplayText.SetTextFontSize" oninput="SetOneValue(this)">
+    <br>
+    <small>Text speed(ms):</small>
+    <input type="text" value="300" id="DisplayText.SetTextSpeed" oninput="SetOneValue(this)">
+    <br>
+    <small>Remove top pixels:</small>
+    <input type="text" value="0" id="DisplayText.SetRemoveTopPixels" oninput="SetOneValue(this)">
+  </div>
+  <br><br>
+  <button id="StartOneColorMode" class="stopstart" onclick="ExecuteFunction(this)">Start</button>
+  <button onclick="StopProcesses()" class="stopstart">Stop</button>
+  <br>
+</div>
+<br>
+<h1>LED-Panel:</h1>
+
   <div class="Panel">
-    <strong>Conway's Game of Life:</strong>
+    <div class="Header-Panel"> 
+      <strong>Conway's Game of Life:</strong>
+    </div>
+    
     <br><br>
-    <button id="startGameOfLife">Start</button>
-    <button id="stopGameOfLife">Stop</button>
+    <button onclick="ExecuteFunction(this)" id="GameOfLife.Start" class="stopstart">Start</button>
+    <button onclick="StopProcesses()" class="stopstart">Stop</button>
     <br>
   </div>
   <br>
   <div class="Panel">
-    <strong>Langton's Ant:</strong>
+    <div class="Header-Panel"> 
+      <strong>Langton's Ant:</strong>
+    </div>
     <br><br>
-    <button id="startAnt">Start</button>
-    <button id="stopAnt">Stop</button>
+    <button onclick="ExecuteFunction(this)" id="LangtonsAnt.Start" class="stopstart">Start</button>
+    <button onclick="StopProcesses()" class="stopstart">Stop</button>
 
   </div>
   <br>
   <div class="Panel">
-    <strong>Brian's Brain:</strong>
+    <div class="Header-Panel"> 
+      <strong>Brian's Brain:</strong>
+    </div>
     <br><br>
-    <button id="startBriansBrain">Start</button>
-    <button id="stopBriansBrain">Stop</button>
+    <button onclick="ExecuteFunction(this)" id="BriansBrain.Start" class="stopstart">Start</button>
+    <button onclick="StopProcesses()" class="stopstart">Stop</button>
+
+  </div>
+  <br>
+  <div class="Panel">
+    <div class="Header-Panel"> 
+      <strong>Fish Tank:</strong>
+    </div>
+    <br><br>
+    <button onclick="ExecuteFunction(this)" id="FishTank.Start" class="stopstart">Start</button>
+    <button onclick="StopProcesses()" class="stopstart">Stop</button>
 
   </div>
   <br>
   <div class="Panel" id="canvasPanel">
-    <strong>WireWorld:</strong>
+    <div class="Header-Panel"> 
+      <strong>WireWorld:</strong>
+      </div>
     <br><br>
     <button id="WireWorldEmpty" class="WireWorldEmpty" oninput="WireWorldEmpty()">Empty</button>
     <button id="WireWorldConductor" class="WireWorldConductor" oninput="WireWorldConductor()">Conductor</button>
@@ -81,10 +161,9 @@
     <br>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
     <br><br>
-    <button id="startWireWorld">Start</button>
-    <button id="stopWireWorld">Stop</button>
+    <button onclick="ExecuteFunction(this)" id="WireWorld.Start" class="stopstart">Start</button>
+    <button onclick="StopProcesses()" class="stopstart">Stop</button>
 
-  </div>
 </div>
 
 

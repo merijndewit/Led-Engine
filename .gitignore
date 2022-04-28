@@ -3,3 +3,8 @@ LedEngine/__pycache__/
 LedEngine/savedImages/*
 LedEngine/tmpImages/*
 LedEngine/config.json
+.vscode
+.vscode/*
+LedEngine/modes/__pycache__/
+LedEngine/modes/__pycache__/*
+__pycache__/*

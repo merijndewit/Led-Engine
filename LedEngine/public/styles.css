@@ -124,7 +124,8 @@ button {
   background-color: rgb(40, 40, 40); 
   color: white;
   border: 1px solid #3d3d3d;
-  border-radius: 5px;
+  border-radius: 0px;
+  width: 100%;
 }
 
 button:hover {
@@ -164,9 +165,45 @@ button:hover {
 }
 
 .Panel {
+  max-width: 400px;
   background-color: rgb(25, 25, 25);
-  border: 3px solid #5c5c5c;
+  border: 3px solid rgb(42, 42, 42);
   border-radius: 5px;
 }
 
+.stopstart {
+  width: 49%;
+}
 
+.Header-Panel {
+  background-color: rgb(48, 48, 48);
+  padding-bottom: 6px;
+  padding-top: 6px;
+  text-align: center; 
+}
+
+.dropdown {
+  display: none;
+  background-color: #262626;
+}
+
+.smallTextBox {
+  width: 50px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(0, 1fr);
+  padding: 0px;
+  grid-column-end: 1;
+}
+
+.grid-item {
+  background-color: rgb(48, 48, 48);
+  border: 3px solid rgb(57, 57, 57);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+}

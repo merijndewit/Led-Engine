@@ -1,14 +1,76 @@
 from threading import Thread
 from time import sleep     # Import the sleep function from the time module
 import socket
-import RPi.GPIO as GPIO
 import json
-import multiprocessing
 import os
+import sys
+import RPi.GPIO as GPIO
+import multiprocessing
+import jsonHelper
+from LedController import LedController
+from SaveCanvas import SaveCanvas
+from pixel_manager import PixelManager
+import color
 
 #LedEngine Scripts
-import LedstripController as Ledstrip
-import jsonHelper
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/modes/')
+print(os.path.dirname(os.path.realpath(__file__)) + '/modes/')
+
+
+from Rainbow import Rainbow
+from Fire import Fire
+from SineWave import SineWave
+from Stars import Stars
+from KnightRider import KnightRider
+from DisplayText import DisplayText
+from GameOfLife import GameOfLife
+from LangtonsAnt import LangtonsAnt
+from BriansBrain import BriansBrain
+from WireWorld import WireWorld
+from DrawingCanvas import DrawingCanvas
+from DisplayImage import DisplayImage
+from DisplayGif import DisplayGif
+from DisplayImageFile import DisplayImageFile
+from StaticColor import StaticColor
+from FishTank import FishTank
+
+pixel_manager = PixelManager()
+rainbow = Rainbow()
+fire = Fire()
+sine_wave = SineWave()
+stars = Stars()
+knight_rider = KnightRider()
+display_text = DisplayText()
+game_of_life = GameOfLife()
+langtons_ant = LangtonsAnt()
+brians_brain = BriansBrain()
+wire_world = WireWorld()
+drawing_canvas = DrawingCanvas()
+display_image = DisplayImage()
+display_gif = DisplayGif()
+display_image_file = DisplayImageFile()
+static_color = StaticColor()
+fish_tank = FishTank()
+
+get_instantiated_class = {
+    "Rainbow": rainbow,
+    "Fire": fire,
+    "SineWave": sine_wave,
+    "Stars": stars,
+    "KnightRider": knight_rider,
+    "DisplayText": display_text,
+    "GameOfLife": game_of_life,
+    "LangtonsAnt": langtons_ant,
+    "BriansBrain": brians_brain,
+    "WireWorld": wire_world,
+    "DrawingCanvas": drawing_canvas,
+    "DisplayImage": display_image,
+    "DisplayGif": display_gif,
+    "DisplayImageFile": display_image_file,
+    "StaticColor": static_color,
+    "FishTank": fish_tank,
+    "pixel_manager": pixel_manager
+}
 
 UDP_TX_IP = "127.0.0.1"
 UDP_TX_PORT = 3000
@@ -19,7 +81,7 @@ UDP_RX_PORT = 3001
 print("UDP target IP: %s" % UDP_TX_IP)
 print("UDP target port: %s" % UDP_TX_PORT)
 
-sockTX = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+sockTX = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sockRX = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # UDP
 sockRX.bind((UDP_RX_IP, UDP_RX_PORT))
 
@@ -36,158 +98,110 @@ def newclient():
         sockTX.sendto(bytes('{"LedStrip0":1}', "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
           
 def CheckInput():
-    Ledstrip.setColor(0, 0, 0)
+    switcher = {
+        "ExecuteFunction": ExecuteFunction,
+        "SetValueFunction": SetValueFunction,
+        "SetOneValueFunction": SetOneValueFunction,
+        "StopProcesses": StopProcesses,
+        "searchImages": searchImages,
+        "DisplayImage": displayImage,
+        "LoadUrl": LoadUrl,
+        "RequestJSONdata": RequestJSONdata,
+        "LoadUploadedFile": LoadUploadedFile,
+        "WriteToJson": WriteToJson,
+        "clear_leds" : clear_leds,
+        "reload_settings" : reload_settings
+    }
     while True:
         data, addr = sockRX.recvfrom(2048) # buffer size is 2048 bytes
         JsonStr = data.decode('utf_8')
-        key = "HEX"
         if JsonStr:
-            sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT)) 
+            sockTX.sendto(bytes(JsonStr, "utf-8"), (UDP_TX_IP, UDP_TX_PORT))
             aDict = json.loads(JsonStr)
         if (JsonStr.find('{"NewClient":1}') != -1):
             newclient()
-        elif (key in aDict):
-            string = str(aDict[key]).lstrip("#")
-            Ledstrip.setColor(int(string[:2], 16), int(string[2:4], 16), int(string[4:6], 16)) #simple way to convert hex to rgb
-        elif ("rainbowButton" in aDict):
-            terminateProcesses()
-            rainbow = multiprocessing.Process(target=Ledstrip.rainbow_cycle, args=()) #multiprocessing so we can stop the process
-            modeProcs.append(rainbow)
-            rainbow.start()
-        elif ("stopButton" in aDict):
-            rainbow.terminate()
-            Ledstrip.Clear()
-        elif ("A1" in aDict):
-            if (aDict["A1"] != "0"):
-                Ledstrip.SetBrightness(int(aDict["A1"]))
-                jsonHelper.WriteToJsonFile("brightnessValue", str(aDict["A1"]))
-        elif ("WaveLengthInput" in aDict):
-            if (aDict["WaveLengthInput"] != "0" and aDict["WaveLengthInput"]):
-                waveLengthValue = int(aDict["WaveLengthInput"])
-                Ledstrip.SetwaveLength(waveLengthValue)
-        elif ("SpeedInput" in aDict):
-            if (aDict["SpeedInput"] != "0"):
-                speedValue = int(aDict["SpeedInput"])
-                Ledstrip.SetSpeedValue(speedValue)
-        elif ("setPixel" in aDict):
-            #gets all values after ":"
-            x = aDict["setPixel"].get("X")
-            y = aDict["setPixel"].get("Y")
-            hexString = aDict["setPixel"].get("color")
-            Ledstrip.setPixel(x, y, hexString)
-        elif ("ClearPixels" in aDict):
-            Ledstrip.Clear()
-        elif ("RedCalibration" in aDict):
-            Ledstrip.RedCalibration(int(aDict["RedCalibration"]))
-            jsonHelper.WriteToJsonFile("redCalibration", str(aDict["RedCalibration"]))
-        elif ("GreenCalibration" in aDict):
-            Ledstrip.GreenCalibration(int(aDict["GreenCalibration"]))
-            jsonHelper.WriteToJsonFile("greenCalibration", str(aDict["GreenCalibration"]))
-        elif ("BlueCalibration" in aDict):
-            Ledstrip.BlueCalibration(int(aDict["BlueCalibration"]))
-            jsonHelper.WriteToJsonFile("blueCalibration", str(aDict["BlueCalibration"]))
-        elif ("LedCount" in aDict):
-            Ledstrip.BlueCalibration(int(aDict["LedCount"]))
-            jsonHelper.WriteToJsonFile("LedCount", str(aDict["LedCount"]))
-        elif ("MakePicture" in aDict):
-            Ledstrip.CreateImage()
-        elif ("ImageName" in aDict):
-            Ledstrip.SetImageName(aDict["ImageName"])
-        elif ("searchImages" in aDict):
-            data = Ledstrip.GetImageNames()
-            for i in range(len(data)):
-                string = '{"LoadableImageName":"'+data[i]+'"}'
-                sockRX.sendto( string.encode('utf-8'), addr)
-        elif ("DisplayImage" in aDict):
-            Ledstrip.DisplayImageFile(aDict["DisplayImage"])
-        elif ("LoadUrl" in aDict):
-            pixelsToSend = []
-            pixelsToSend = Ledstrip.DisplayUrl()
-            if pixelsToSend:
-                for i in range(len(pixelsToSend)):
-                    sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("Url" in aDict):
-            Ledstrip.UpdateUrl(aDict["Url"])
-        elif ("LoadgifUrl" in aDict):
-            path = Ledstrip.DisplayGIF()
-            gifProcess = multiprocessing.Process(target=Ledstrip.PlayGif, args=()) #multiprocessing so we can stop the process
-            modeProcs.append(gifProcess)
-            gifProcess.start()
-        elif ("gifUrl" in aDict):
-            Ledstrip.UpdategifUrl(aDict["gifUrl"])
-        elif ("StopgifUrl" in aDict):
-            gifProcess.terminate()
-        elif ("setConfigPanelWidth" in aDict):
-            Ledstrip.setConfigPanelWidth(int(aDict["setConfigPanelWidth"]))
-            jsonHelper.WriteToJsonFile("LEDPanelWidth", str(aDict["setConfigPanelWidth"]))
-        elif ("setConfigPanelHeight" in aDict):
-            Ledstrip.setConfigPanelHeight(int(aDict["setConfigPanelHeight"]))
-            jsonHelper.WriteToJsonFile("LEDPanelHeight", str(aDict["setConfigPanelHeight"]))
-        elif ("RequestJSONdata" in aDict):
-            data = jsonHelper.GetDecodedJSON()
-            string = json.dumps({'JSONdata':[data]})
-            sockRX.sendto( string.encode('utf-8'), addr)
-        elif ("LoadUploadedFile" in aDict):
-            pixelsToSend = []
-            pixelsToSend = Ledstrip.LoadUploadedFile()
-            for i in range(len(pixelsToSend)):
-                sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
-        elif ("startGameOfLife" in aDict):
-            terminateProcesses()
-            if (aDict["startGameOfLife"] == 1):
-                gameOfLifeProcess = multiprocessing.Process(target=Ledstrip.startGameOfLife, args=())
-                modeProcs.append(gameOfLifeProcess)
-                gameOfLifeProcess.start()
-        elif ("stopGameOfLife" in aDict):
-            if (aDict["stopGameOfLife"] == 1):
-                gameOfLifeProcess.terminate()
-                Ledstrip.Clear()
-        elif ("startAnt" in aDict):
-            if (aDict["startAnt"] == 1):
-                terminateProcesses()
-                antProcess = multiprocessing.Process(target=Ledstrip.StartAnt, args=())
-                modeProcs.append(antProcess)
-                antProcess.start()
-        elif ("stopAnt" in aDict):
-            antProcess.terminate()
-        elif ("startBriansBrain" in aDict):
-            if (aDict["startBriansBrain"] == 1):
-                terminateProcesses()
-                BrainProcess = multiprocessing.Process(target=Ledstrip.startBriansBrain, args=())
-                modeProcs.append(BrainProcess)
-                BrainProcess.start()
-        elif ("stopBriansBrain" in aDict):
-            BrainProcess.terminate()
-        elif ("setPixelWireWorld" in aDict):
-            #gets all values after ":"
-            x = aDict["setPixelWireWorld"].get("X")
-            y = aDict["setPixelWireWorld"].get("Y")
-            mode = aDict["setPixelWireWorld"].get("mode")
-            print("setPixel", x, y, mode)
-            Ledstrip.setWireWorldPixel(x, y, mode)
-        elif ("startWireWorld" in aDict):
-            if (aDict["startWireWorld"] == 1):
-                terminateProcesses()
-                WireWorldProcess = multiprocessing.Process(target=Ledstrip.StartWireWorld, args=())
-                modeProcs.append(WireWorldProcess)
-                WireWorldProcess.start()
-        elif ("stopWireWorld" in aDict):
-            WireWorldProcess.terminate()
+        key = next(iter(aDict))
+        print(JsonStr, key)
+        func = switcher.get(key, doNothing)
+        func(aDict, addr)
+    
+def doNothing(aDict, addr):
+    print(next(iter(aDict)), "does not exist in switcher")
 
+def ExecuteFunction(aDict, addr):
+    string = aDict["ExecuteFunction"].split(".", 1)
+    instantiated_class = get_instantiated_class.get(string[0], doNothing)
+    func = getattr(instantiated_class, string[1])
+    process = multiprocessing.Process(target=func, args=()) #multiprocessing so we can stop the process
+    modeProcs.append(process)
+    process.start()
+    
+def SetValueFunction(aDict, addr):
+    string = aDict["SetValueFunction"].split(".", 1)
+    instantiated_class = get_instantiated_class.get(string[0], doNothing)
+    func = getattr(instantiated_class, string[1])
+    func(aDict["args"])
+    
+def SetOneValueFunction(aDict, addr):
+    string = aDict["SetOneValueFunction"].split(".", 1)
+    instantiated_class = get_instantiated_class.get(string[0], doNothing)
+    func = getattr(instantiated_class, string[1])
+    func(aDict["value"])
+    
+def StopProcesses(aDict, addr):
+    terminateProcesses()
+    controller = LedController()
+    PixelManager.clear(True)
+    
+def searchImages(aDict, addr):
+    data = SaveCanvas.GetImageNames()
+    for i in range(len(data)):
+        string = '{"LoadableImageName":"'+data[i]+'"}'
+        sockRX.sendto( string.encode('utf-8'), addr)
+        
+def displayImage(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = display_image.DisplayImageFile(aDict["DisplayImage"])
+    for i in range(len(pixelsToSend)):
+        sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+        
+def LoadUrl(aDict, addr):
+    pixelsToSend = []
+    pixelsToSend = display_image.DisplayUrl()
+    if pixelsToSend:
+        for i in range(len(pixelsToSend)):
+            sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+            
+def RequestJSONdata(aDict, addr):
+    data = jsonHelper.GetDecodedJSON()
+    string = json.dumps({'JSONdata':[data]})
+    sockRX.sendto( string.encode('utf-8'), addr)
+    
+def LoadUploadedFile(aDict, addr):
+    pixelsToSend = []
+    instantiated_class = get_instantiated_class.get("DisplayImageFile", doNothing)
+    pixelsToSend = instantiated_class.LoadUploadedFile()
+    for i in range(len(pixelsToSend)):
+        sockRX.sendto( pixelsToSend[i].encode('utf-8'), addr)
+        
+def WriteToJson(aDict, addr):
+    jsonHelper.WriteToJsonFile(aDict["key"], aDict["value"])
+    
+def clear_leds(aDict, addr):
+    PixelManager.clear(True)
         
 def terminateProcesses():
     for proc in modeProcs:
         #proc.join(timeout=0)
         if proc.is_alive():
             proc.terminate()
-
+            
 def CheckJSON(): #this function creates an empty JSON file if one doesnt exist
     if(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'/config.json') != 1):
-        JSONconfig = open(os.path.exists(os.path.dirname(os.path.realpath(__file__))+'config.json'), "w")
-        jsonHelper.WriteToJsonFile("key", "value")
-        JSONconfig.close()
+        jsonHelper.WriteToJsonFile("1", "1")
     else: #Load all values that where set previously by the user
-        Ledstrip.LoadJsonValues()
+        pass
+        #JsonHelper.LoadJsonValues()        
 
 def CheckDirectories():
     if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/savedImages'):
@@ -199,18 +213,59 @@ def CheckDirectories():
     if not os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/uploads'):
         os.makedirs(os.path.dirname(os.path.realpath(__file__)) + '/uploads')
         print("Made directory uploads")
+        
+        
+def re_init():
+    global rainbow
+    rainbow.super_init()
+    global fire
+    fire.super_init()
+    global sine_wave
+    sine_wave.super_init()
+    global stars
+    stars.super_init()
+    global knight_rider
+    knight_rider.super_init()
+    global display_text
+    display_text.super_init()
+    global game_of_life
+    game_of_life.super_init()
+    global langtons_ant
+    langtons_ant.super_init()
+    global brians_brain
+    brians_brain.super_init()
+    global wire_world
+    wire_world.super_init()
+    global drawing_canvas
+    drawing_canvas.super_init()
+    global display_image
+    display_image.super_init()
+    global display_gif
+    display_gif.super_init()
+    global display_image_file
+    display_image_file.super_init()
+    global static_color
+    static_color.super_init()
+    global fish_tank
+    fish_tank.super_init()
+    
+def reload_settings(aDict, addr):
+    PixelManager.init()
+    re_init()
+    print("reloaded settings")
 
 #start
 if __name__ == "__main__":
+    
     CheckDirectories()
     newclient()
     CheckJSON()
+    
+    PixelManager.init()
+    PixelManager.fill_colors(color.Color())
+    PixelManager.show_all()
     mainProcess = Thread(target = CheckInput)
     mainProcess.start()
 
 while True:
     sleep(1)
-
-
-
-               

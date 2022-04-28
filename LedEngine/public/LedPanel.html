@@ -17,12 +17,14 @@
     </div>
 
     <div class="Brightness">
-      <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+      <input type="range" min="0" max="100" value="100" class="range-slider" id="brightnessValue" oninput="WriteToJson(this)">
       <br>
       <br>
     </div>
     <div class="Panel" id="canvasPanel">
-      <strong>Canvas</strong>
+      <div class="Header-Panel">
+        <strong>Canvas</strong>
+      </div>
       <br>
       <input type="color" id="PixelColorPicker" oninput="PixelColorChanged(this)" value="#000000">
       <button id="color0" class="color0"></button>
@@ -31,39 +33,47 @@
       <button id="color3" class="color3"></button>
       <button id="color4" class="color4"></button>
       <br>
-      <button id="PixelPicker">Pixel Picker</button>
-      <button id="ClearPixels">Clear</button>
+      <button id="PixelPicker" class="stopstart" >Pixel Picker</button>
+      <button onclick="ClearPanel(this)" id="pixel_manager.ClearLeds" class="stopstart">Clear</button>
       <br>
       <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
     </div>
     <br>
     <div class="Panel">
-      <strong>Save Canvas</strong>
+      <div class="Header-Panel">
+        <strong>Save Canvas</strong>
+      </div>
       <br>
-      <input type="text" id="ImageName" oninput="ImageNameChanged(this)">
-      <button id="MakePicture" class="createPicture">Save</button>
+      <input type="text" id="pixel_manager.SetImageName" oninput="SetOneValue(this)">
+      <button onclick="ExecuteFunction(this)" id="pixel_manager.Create_Image" class="stopstart">Save</button>
     </div>
     <br>
 
     <div class="Panel">
-      <strong>Load Image</strong>
+      <div class="Header-Panel">
+        <strong>Load Image</strong>
+      </div>
       <br>
       <small>Enter Image URL:</small>
-      <input type="text" id="url" oninput="urlChanged(this)"> 
-      <button id="LoadUrl" class="LoadUrl">Load</button>
+      <input type="text" id="DisplayImage.UpdateUrl" oninput="SetOneValue(this)"> 
+      <button id="LoadUrl" class="LoadUrl">Load</button>  
     </div>
     <br>
     <div class="Panel">
-      <strong>Load GIF</strong>
+      <div class="Header-Panel">
+        <strong>Load GIF</strong>
+      </div>
       <br>
       <small>Enter .gif URL:</small>
-      <input type="text" id="gif" oninput="gifURLChanged(this)"> 
-      <button id="LoadgifUrl" class="LoadgifUrl">Load</button>
-      <button id="StopgifUrl" class="StopgifUrl">Stop</button>
+      <input type="text" id="DisplayGif.UpdategifUrl" oninput="SetOneValue(this)"> 
+      <button onclick="ExecuteFunction(this)" id="DisplayGif.PlayGif" class="stopstart">Play</button>
+      <button onclick="StopProcesses()" class="stopstart">Stop</button>
     </div>
     <br>
     <div class="Panel">
-      <strong>Upload image</strong>
+      <div class="Header-Panel">
+        <strong>Upload image</strong>
+      </div>
       <br>
       <form action="FileUploaded.html" method="post" enctype="multipart/form-data">
         <input type="file" name="filetoupload">
@@ -73,7 +83,9 @@
     </div>
     <br>
     <div class="Panel">
-      <strong>Load a saved image</strong>
+      <div class="Header-Panel">
+        <strong>Load a saved image</strong>
+      </div>
       <br>
       <small>Search for saved images:</small>
       <button id="searchImages" class="searchImages">Search</button>

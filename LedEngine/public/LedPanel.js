@@ -138,15 +138,15 @@ socket.on('FB',function (data) {
     }
     else if (id == 'JSONdata')
     {
-      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth)
+      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth && obj2.JSONdata[0].amountOfPanelsInWidth && obj2.JSONdata[0].amountOfPanelsInHeight)
       {
-        rowX = obj2.JSONdata[0].LEDPanelWidth;
-        rowY = obj2.JSONdata[0].LEDPanelHeight;
+        rowX = obj2.JSONdata[0].LEDPanelWidth * obj2.JSONdata[0].amountOfPanelsInWidth;
+        rowY = obj2.JSONdata[0].LEDPanelHeight * obj2.JSONdata[0].amountOfPanelsInHeight;
         setup2();
       }
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("brightnessValue").value = obj2.JSONdata[0].brightnessValue;
       }
     }
     else if (id == 'LoadableImageName')
@@ -208,11 +208,6 @@ function PixelColorChanged(e)
   col = e.value;
 }
 
-function ImageNameChanged(e)
-{
-  socket.emit('msg','{"ImageName":"'+e.value+'"}');
-}
-
 function setup(){} //p5js setup
 
 function setup2()
@@ -221,15 +216,15 @@ function setup2()
   Xwidth = waitForElement();
   if (Xwidth != 0 || rowY != 0)
   {
-    canvas = createCanvas(200, 200);
+    canvas = createCanvas(8 * rowX, 8 * rowY);
     canvas.parent('canvasPanel');
     background(120);
-    var row = new Array(rowY).fill('#000000');
-    for (let i = 0; i < Xwidth; i++) 
-    {
-      grid[i] = row;
+
+    for (var i = 0; i < rowY; i++) {
+      grid[i] = Array(Xwidth).fill('#000000');
     }
-    colorMode(RGB)
+
+    colorMode(RGB);
     renderBoard();
     //background(255, 204, 0);
   }
@@ -247,7 +242,41 @@ function Clear()
   var row = new Array(rowY).fill('#000000');
   for (let i = 0; i < rowX; i++) 
   {
-    grid[i] = row;
+    grid[i] = row.slice();
+  }
+}
+
+let previousX = -1;
+let previousY = -1;
+
+function mouseDragged() 
+{
+  if (pickColor == false)
+  {
+    let spotX = floor(mouseX / (width / rowX));
+    let spotY = floor(mouseY / (height / rowY));
+    if (spotX >= 0 && spotX <= rowX - 1 && spotY >= 0 && spotY <= rowY - 1 && previousX != spotX || previousY != spotY)
+    {
+      previousX = spotX;
+      previousY = spotY;
+      drawPixel(spotX, spotY, col);
+      // send changed pixel to python program
+      //socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
+      var object = {  SetValueFunction: "DrawingCanvas.setPixel", args : { X: spotX, Y: spotY, color: col}}
+
+      socket.emit('msg',JSON.stringify(object));
+    }
+  }
+  else if (pickColor)
+  {
+    let spotX = floor(mouseX / (width / rowX));
+    let spotY = floor(mouseY / (height / rowY));
+    if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
+    {
+      var hex = grid[spotX][spotY];
+      SetColor(hex);
+      pickColor = false;
+    }
   }
 }
 
@@ -257,17 +286,19 @@ function mousePressed()
   {
     let spotX = floor(mouseX / (width / rowX));
     let spotY = floor(mouseY / (height / rowY));
-    if (spotX >= 0 && spotX <= rowX && spotY >= 0 && spotY <= rowY)
+    if (spotX >= 0 && spotX <= rowX - 1 && spotY >= 0 && spotY <= rowY - 1)
     {
+      previousX = spotX;
+      previousY = spotY;
       drawPixel(spotX, spotY, col);
       // send changed pixel to python program
       //socket.emit('msg',JSON.stringify('{"a":'+'[{'+"X:"+spotX+','+"Y:"+spotY+','+"color:"+col+'}]'+'}'));
-      var object = {  setPixel: { X: spotX, Y: spotY, color: col}}
+      var object = {  SetValueFunction: "DrawingCanvas.setPixel", args : { X: spotX, Y: spotY, color: col}}
 
       socket.emit('msg',JSON.stringify(object));
     }
   }
-  else
+  else if (pickColor)
   {
     let spotX = floor(mouseX / (width / rowX));
     let spotY = floor(mouseY / (height / rowY));
@@ -289,32 +320,16 @@ function renderBoard()
     stroke(50, 50, 50);
     strokeWeight(1);
     fill("#000000");
-    rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
+    rect(x*(width / rowX),y*(height / rowY), width / rowX, height / rowY);
   }
  }
 }
 
 function drawPixel(spotX, spotY, pickedColor)
 {
-  //add pixel to grid
-  //adding a pixel like this: "grid[spotX][spotY] = col" sets the whole row for some reason
-  //so we just create a array and add the whole array to the grid array
-  //There must be a better way so please improve my code here:
-  gridY = []
-  for (let i = 0; i < rowY; i++)
-  {
-    if (spotY != i)
-    {
-      gridY.push(grid[spotX][i]);
-    }
-    else
-    {
-      gridY.push(pickedColor);
-    }
-  }
-  grid[spotX] = gridY;
+  grid[spotX][spotY] = pickedColor;
   fill(color(grid[spotX][spotY]));
-  rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
+  rect(spotX*(width / rowX),spotY*(height / rowY), width / rowX, height / rowY);
 }
 
 var names = []
@@ -334,16 +349,6 @@ function AddName(name)
 function ResetNames()
 {
   names = [];
-}
-
-function urlChanged(value)
-{
-  socket.emit('msg','{"Url":"'+value.value+'"}');
-}
-
-function gifURLChanged(value)
-{
-  socket.emit('msg','{"gifUrl":"'+value.value+'"}');
 }
 
 //only used for debugging
@@ -376,10 +381,41 @@ function waitForElement()
 function Start()
 {
   //here we read the json file for the previous settings
+  //this only gets called when the page gets opened/refreshed
   socket.emit('msg','{"RequestJSONdata":"1"}');
+  socket.emit('msg','{"reload_settings":"1"}');
 }
 
-function awa(e)
+function ExecuteFunction(e)
+{ 
+  socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
+}
+
+function ClearPanel(e)
+{ 
+  socket.emit('msg',JSON.stringify({ "clear_leds": 1 }));
+  Clear()
+}
+
+function SetValue(e)
 {
-  console.log("AAAAWWWWWDDDDD: "+e)
+  socket.emit('msg', JSON.stringify({  SetValueFunction: e.id, args : { arg0: e.value}}));
+}
+
+function SetOneValue(e)
+{
+  if (e.value != "")
+  {
+    socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+  }
+}
+
+function StopProcesses()
+{ 
+  socket.emit('msg',JSON.stringify({ "StopProcesses": 1 }));
+}
+
+function WriteToJson(e)
+{
+  socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : e.id, value : e.value}));
 }

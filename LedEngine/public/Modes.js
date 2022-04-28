@@ -3,6 +3,8 @@ var socket = io();
 var rowX = 0;
 var rowY = 0;
 
+var lastClickedMode = ""
+
 window.addEventListener("load", function()
 {
   if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
@@ -101,27 +103,87 @@ socket.on('FB',function (data) {
           SetColor('#FF0000');
           SetMode(3);
         }
+        else if (id == "SineWave")
+        {
+          CollapseAllMenus();
+          var dropdown = document.getElementById("dropdown-container");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+          lastClickedMode = "SineWave.Start"
+        }
+        else if (id == "FireEffect")
+        {
+          CollapseAllMenus();
+          lastClickedMode = "Fire.Start"
+        }
+        else if (id == "StarsEffect")
+        {
+          CollapseAllMenus();
+          var dropdown = document.getElementById("dropdown-StarsEffect");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+          lastClickedMode = "Stars.Start"
+        }
+        else if (id == "KnightRider")
+        {
+          CollapseAllMenus();
+          var dropdown = document.getElementById("dropdown-KnightRider");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+          lastClickedMode = "KnightRider.Start"
+        }
+        else if (id == "DisplayText")
+        {
+          CollapseAllMenus();
+          var dropdown = document.getElementById("dropdown-DisplayText");
+          dropdown.classList.toggle("active");
+          if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+          } else {
+            dropdown.style.display = "block";
+          } 
+          lastClickedMode = "DisplayText.Start"
+        }
       }
     }
     else if (id == 'JSONdata')
     {
-      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth)
+      if (obj2.JSONdata[0].LEDPanelHeight && obj2.JSONdata[0].LEDPanelWidth && obj2.JSONdata[0].amountOfPanelsInWidth && obj2.JSONdata[0].amountOfPanelsInHeight)
       {
-        rowX = obj2.JSONdata[0].LEDPanelWidth;
-        rowY = obj2.JSONdata[0].LEDPanelHeight;
+        rowX = obj2.JSONdata[0].LEDPanelWidth * obj2.JSONdata[0].amountOfPanelsInWidth;
+        rowY = obj2.JSONdata[0].LEDPanelHeight * obj2.JSONdata[0].amountOfPanelsInHeight;
         setup2();
       }
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("brightnessValue").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }
 });
 
-function valueHexChanged(value)
+function CollapseAllMenus()
 {
-  socket.emit('msg','{"HEX":"'+value.value+'"}');
+  var dropdown0 = document.getElementById("dropdown-container");
+  var dropdown1 = document.getElementById("dropdown-StarsEffect");
+  var dropdown2 = document.getElementById("dropdown-KnightRider");
+  var dropdown3 = document.getElementById("dropdown-DisplayText");
+  dropdown0.style.display = "none";
+  dropdown1.style.display = "none";
+  dropdown2.style.display = "none";
+  dropdown3.style.display = "none";
 }
 
 function SetColor(colorValue)
@@ -132,26 +194,6 @@ function SetColor(colorValue)
 function SetMode(value)
 {
   mode = value
-}
-
-function valueChanged(e){
-  let a = e.value;
-
-  // this updates the brightness slider value
-  var sliderDiv = document.getElementById("A1");
-  sliderDiv.innerHTML = a;
-
-  socket.emit('msg','{"A1":'+a+'}');
-}
-
-function WaveLengthInputChanged(e){
-  // this updates the brightness slider value
-  if (e.value != 0)
-  {
-    var sliderValue = document.getElementById("WaveLengthInput");
-    sliderValue.innerHTML = e.value;
-    socket.emit('msg','{"WaveLengthInput":'+e.value+'}');
-  }
 }
 
 function SpeedInputChanged(e){
@@ -181,6 +223,7 @@ function Start()
 {
   //here we read the json file for the previous settings
   socket.emit('msg','{"RequestJSONdata":"1"}');
+  socket.emit('msg','{"reload_settings":"1"}');
 }
 Start();
 
@@ -202,7 +245,7 @@ function setup2()
   Xwidth = waitForElement();
   if (Xwidth != 0 || rowY != 0)
   {
-    canvas = createCanvas(200, 200);
+    canvas = createCanvas(8 * rowX, 8 * rowY);
     canvas.parent('canvasPanel');
     background(120);
     var row = new Array(rowY).fill('#000000');
@@ -241,7 +284,8 @@ function mousePressed()
   {
     drawPixel(spotX, spotY, col);
     // send changed pixel to python program
-    var object = {  setPixelWireWorld: { X: spotX, Y: spotY, mode: mode}}
+
+    var object = {  SetValueFunction: "WireWorld.setWireWorldPixel", args : { X: spotX, Y: spotY, mode: mode}}
 
     socket.emit('msg',JSON.stringify(object));
   }
@@ -267,7 +311,7 @@ function renderBoard()
     stroke(50, 50, 50);
     strokeWeight(1);
     fill("#000000");
-    rect(x*(width / rowX),y*(width / rowY),width / rowX,height / rowX);
+    rect(x*(width / rowX),y*(height / rowY), width / rowX, height / rowY);
   }
  }
 }
@@ -292,6 +336,54 @@ function drawPixel(spotX, spotY, pickedColor)
   }
   grid[spotX] = gridY;
   fill(color(grid[spotX][spotY]));
-  rect(spotX*(width / rowX),spotY*(width / rowY),width / rowX,height / rowX);
+  rect(spotX*(width / rowX),spotY*(height / rowY), width / rowX, height / rowY);
 }
 
+var oneColorEffect
+
+function effecthexChanged(e)
+{ 
+  console.log(e.id);
+  socket.emit('msg',JSON.stringify({ effecthexChanged: e.value }));
+}
+
+function valueObjectChanged(e)
+{ 
+  if (e.value != "")
+  {
+    var element = document.getElementById(e.id);
+    element.innerHTML = e.value;
+    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
+  }
+}
+
+function ExecuteFunction(e)
+{ 
+  if (e.id == "StartOneColorMode")
+  {
+    socket.emit('msg',JSON.stringify({ ExecuteFunction: lastClickedMode }));
+    return
+  }
+  else 
+  {
+    socket.emit('msg',JSON.stringify({ ExecuteFunction: e.id }));
+  }
+}
+
+function StopProcesses()
+{ 
+  socket.emit('msg',JSON.stringify({ "StopProcesses": 1 }));
+}
+
+function SetOneValue(e)
+{
+  if (e.value != "")
+  {
+    socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+  }
+}
+
+function WriteToJson(e)
+{
+  socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : e.id, value : e.value}));
+}

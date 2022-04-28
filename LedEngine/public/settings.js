@@ -1,5 +1,10 @@
 var socket = io(); 
 
+ledPanelsWidth = 0
+ledPanelsHeight = 0
+
+ledPanelOrderList = []
+
 window.addEventListener("load", function()
 {
   if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) 	
@@ -108,31 +113,45 @@ socket.on('FB',function (data) {
     {
       if (obj2.JSONdata[0].LEDPanelHeight)
       {
-        document.getElementById("configPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
+        document.getElementById("LEDPanelHeight").value = obj2.JSONdata[0].LEDPanelHeight;
       }
       if (obj2.JSONdata[0].LEDPanelWidth)
       {
-        document.getElementById("configPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
+        document.getElementById("LEDPanelWidth").value = obj2.JSONdata[0].LEDPanelWidth;
+      }
+      if (obj2.JSONdata[0].amountOfPanelsInWidth)
+      {
+        document.getElementById("amountOfPanelsInWidth").value = obj2.JSONdata[0].amountOfPanelsInWidth;
+        ledPanelsWidth = obj2.JSONdata[0].amountOfPanelsInWidth;
+        ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
+        displayLedPanelGrid();
+      }
+      if (obj2.JSONdata[0].amountOfPanelsInHeight)
+      {
+        document.getElementById("amountOfPanelsInHeight").value = obj2.JSONdata[0].amountOfPanelsInHeight;
+        ledPanelsHeight = obj2.JSONdata[0].amountOfPanelsInHeight;
+        ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
+        displayLedPanelGrid();
       }
       if (obj2.JSONdata[0].redCalibration)
       {
-        document.getElementById("RedCalibrationPercentage").value = obj2.JSONdata[0].redCalibration;
+        document.getElementById("redCalibration").value = obj2.JSONdata[0].redCalibration;
       }
       if (obj2.JSONdata[0].greenCalibration)
       {
-        document.getElementById("GreenCalibrationPercentage").value = obj2.JSONdata[0].greenCalibration;
+        document.getElementById("greenCalibration").value = obj2.JSONdata[0].greenCalibration;
       }
       if (obj2.JSONdata[0].blueCalibration)
       {
-        document.getElementById("BlueCalibrationPercentage").value = obj2.JSONdata[0].blueCalibration;
+        document.getElementById("blueCalibration").value = obj2.JSONdata[0].blueCalibration;
       }
       if (obj2.JSONdata[0].LedCount)
       {
-        document.getElementById("configPanelLedCount").value = obj2.JSONdata[0].LedCount;
+        document.getElementById("LedCount").value = obj2.JSONdata[0].LedCount;
       }
       if (obj2.JSONdata[0].brightnessValue)
       {
-        document.getElementById("A1").value = obj2.JSONdata[0].brightnessValue;
+        document.getElementById("brightnessValue").value = obj2.JSONdata[0].brightnessValue;
       }
     }
   }
@@ -153,59 +172,115 @@ function valueHexChanged(value)
   socket.emit('msg','{"HEX":"'+value+'"}');
 }
 
-function RedCalibrationChanged(value)
-{
-  if (value.value != 0)
+function valueObjectChanged(e)
+{ 
+  if (e.value != "")
   {
-    socket.emit('msg','{"RedCalibration":"'+value.value+'"}');
+    var element = document.getElementById(e.id);
+    element.innerHTML = e.value;
+    socket.emit('msg',JSON.stringify({ valueChanged: {objectID : e.id, objectValue : e.value} }));
   }
 }
 
-function GreenCalibrationChanged(value)
-{
-  if (value.value != 0)
+function valuePanelChanged(e)
+{ 
+  if (e.value != "")
   {
-    socket.emit('msg','{"GreenCalibration":"'+value.value+'"}');
+    var element = document.getElementById(e.id);
+    var xPosition = e.id.substring(
+      e.id.indexOf("F") + 1, 
+      e.id.lastIndexOf("f")
+    );
+    var yPosition = e.id.substring(
+      e.id.indexOf("L") + 1, 
+      e.id.lastIndexOf("l")
+    );
+    element.innerHTML = e.value;
+    ledPanelOrderList[xPosition][yPosition] = parseInt(e.value)
+    
+    socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : "ledPanelOrderList", value : ledPanelOrderList}));
   }
 }
 
-function BlueCalibrationChanged(value)
+function make2DArray(cols, rows)
 {
-  if (value.value != 0)
+  var listRow = []
+  for (let i = 0; i < cols; i++) 
   {
-    socket.emit('msg','{"BlueCalibration":"'+value.value+'"}');
-  }
+    listRow.push(0)
+  }  
+  
+  listCol = []
+  for (let i = 0; i < rows; i++) 
+  {
+    listCol[i] = listRow.slice()
+  }  
+  return listCol
 }
 
-function configPanelLedCountChanged(value)
+
+function amountOfLedPanelsChanged(value)
 {
-  if (value.value != 0)
+  if (value.id == "amountOfPanelsInWidth" && value.value != "")
   {
-    socket.emit('msg','{"LedCount":"'+value.value+'"}');
+    var element = document.getElementById(value.id);
+    element.innerHTML = value.value;
+    socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : value.id, value : value.value}));
+    ledPanelsWidth = value.value;
+    displayLedPanelGrid();
+    ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
+  }
+  else if (value.id == "amountOfPanelsInHeight" && value.value != "")
+  {
+    var element = document.getElementById(value.id);
+    element.innerHTML = value.value;
+    socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : value.id, value : value.value}));
+    ledPanelsHeight = value.value;
+    displayLedPanelGrid();
+    ledPanelOrderList = make2DArray(ledPanelsWidth, ledPanelsHeight)
   }
 }
-
-
-function configPanelWidthChanged(value)
+function displayLedPanelGrid()
 {
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"setConfigPanelWidth":"'+value.value+'"}');
+  var ledPanelArray = make2DArray(ledPanelsWidth, ledPanelsHeight);
+  var gridContainer = document.getElementById("grid-container");
+  while (gridContainer.firstChild) {
+    gridContainer.removeChild(gridContainer.lastChild);
   }
+  
+  gridContainer.style.gridTemplateColumns = "repeat("+ledPanelsWidth+", 1fr)" //this is to set the amount of colums on the x position
+  //var ledPanelPanel = document.createElement("INPUT");
+
+    for (let x = 0; x < ledPanelArray.length; x++) 
+    {
+      for (let y = 0; y < ledPanelArray[x].length; y++) 
+      {
+        var gridPanel = document.createElement("INPUT");
+        gridPanel.type = "text";
+        gridPanel.value = 0;
+        gridPanel.className = "grid-item";
+        gridPanel.oninput = function(){valuePanelChanged(this)};
+        gridPanel.id = "gridPan"+"F"+x+"f"+"L"+y+"l";
+        document.getElementById('grid-container').appendChild(gridPanel);
+      }
+    }  
 }
 
-function configPanelHeightChanged(value)
+function SetOneValue(e)
 {
-  if (value.value != 0)
-  {
-    socket.emit('msg','{"setConfigPanelHeight":"'+value.value+'"}');
-  }
+  socket.emit('msg', JSON.stringify({ SetOneValueFunction: e.id, value : e.value}));
+}
+
+function WriteToJson(e)
+{
+  socket.emit('msg', JSON.stringify({ WriteToJson: 1, key : e.id, value : e.value}));
 }
 
 function Start()
 {
   //here we read the json file for the previous settings
   socket.emit('msg','{"RequestJSONdata":"1"}');
+  displayLedPanelGrid();
 }
 Start();
 

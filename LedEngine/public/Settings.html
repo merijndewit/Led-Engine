@@ -16,37 +16,61 @@
 
 
 <div class="Brightness">
-  <input type="range" min="1" max="100" value="100" class="range-slider" id="A1" oninput="valueChanged(this)">
+  <input type="range" min="0" max="100" value="100" class="range-slider" id="brightnessValue" oninput="WriteToJson(this)">
 </div>
-<div>
+<h1>Setup/Settings</h1>
+<div class="Panel">
+  <div class="Header-Panel">
+    <strong>Calibrate Colors:</strong>
+  </div>
   <br>
-  <strong>Calibrate Colors:</strong>
+  <small>Red percentage:</small>
+  <input type="text" min="1" value="100" id="redCalibration" class="smallTextBox" oninput="WriteToJson(this)">
+  <br>
+  <small>Green percentage:</small>
+  <input type="text" min="1" value="100" id="greenCalibration" class="smallTextBox" oninput="WriteToJson(this)">
+  <br>
+  <small>Blue percentage:</small>
+  <input type="text" min="1" value="100" id="blueCalibration" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
   <button id="color0" class="color0"></button>
   <button id="color1" class="color1"></button>
   <button id="color2" class="color2"></button>
   <button id="color3" class="color3"></button>
   <button id="color4" class="color4"></button>
-  <br>
-  <strong>Red percentage:</strong>
-  <input type="text" min="1" value="100" id="RedCalibrationPercentage" oninput="RedCalibrationChanged(this)">
-  <br>
-  <strong>Green percentage:</strong>
-  <input type="text" min="1" value="100" id="GreenCalibrationPercentage" oninput="GreenCalibrationChanged(this)">
-  <br>
-  <strong>Blue percentage:</strong>
-  <input type="text" min="1" value="100" id="BlueCalibrationPercentage" oninput="BlueCalibrationChanged(this)">
-  <br>
-  <strong>Led count</strong>>
-  <input type="text" value="0" id="configPanelLedCount" oninput="configPanelLedCountChanged(this)">
   <br><br>
-  <strong>LED-Panel Settings</strong>>
+</div>
+<br>
+<div class="Panel">
+  <div class="Header-Panel">
+    <strong>LED-Strip settings:</strong>
+  </div>
+  <br>  
+  <small>Led count:</small >
+  <input type="text" value="0" id="LedCount" class="smallTextBox" oninput="WriteToJson(this)">
+  <br><br>
+</div>
+<br>
+<div class="Panel">
+  <div class="Header-Panel">
+    <strong>LED-Panel settings:</strong>
+  </div>
   <br>
-  <strong>LED-Panel Width</strong>>
-  <input type="text" value="16" id="configPanelWidth" oninput="configPanelWidthChanged(this)">
+  <small>LED-Panel Width:</small>
+  <input type="text" value="0" id="LEDPanelWidth" class="smallTextBox" oninput="WriteToJson(this)">
   <br>
-  <strong>LED-Panel Height</strong>>
-  <input type="text" value="16" id="configPanelHeight" oninput="configPanelHeightChanged(this)">
+  <small>LED-Panel Height:</small>
+  <input type="text" value="0" id="LEDPanelHeight" class="smallTextBox" oninput="WriteToJson(this)">
+  <br>
+  <small>Amount of LED-Panels in width:</small>
+  <input type="text" value="0" id="amountOfPanelsInWidth" class="smallTextBox" oninput="amountOfLedPanelsChanged(this)">
+  <br>
+  <small>Amount of LED-Panels in height:</small>
+  <input type="text" value="0" id="amountOfPanelsInHeight" class="smallTextBox" oninput="amountOfLedPanelsChanged(this)">
+  <br>
+  <div class="grid-container" id="grid-container">
+  </div>
+  <br><br>
 </div>
 
 
