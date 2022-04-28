@@ -13,6 +13,9 @@ class WireWorld(LedPanel):
         self.cols = 0
         self.rows = 0
 
+    def super_init(self):
+        super().__init__()
+
     class wireWorldPixel:
         x = 0
         y = 0

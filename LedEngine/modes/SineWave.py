@@ -13,6 +13,9 @@ class SineWave(LedStrip):
         self.sineWaveFrequency = 1
         self.sineWaveLength = 1
 
+    def super_init(self):
+        super().__init__()
+
     def setSineWaveFrequency(self, value):
         self.sineWaveFrequency = int(value)
 

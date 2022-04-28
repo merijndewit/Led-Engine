@@ -12,6 +12,9 @@ class Rainbow(LedStrip):
         self.rainbowSpeed = 100
         #self.Start()
 
+    def super_init(self):
+        super().__init__()
+
     def SetwaveLength(self, waveLengthValue):
         self.waveLength = int(waveLengthValue)
     

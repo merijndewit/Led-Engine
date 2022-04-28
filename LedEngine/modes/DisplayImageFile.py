@@ -12,6 +12,9 @@ class DisplayImageFile(LedPanel):
         super().__init__()
         self.imageName = "tmp.png"
 
+    def super_init(self):
+        super().__init__()
+
     def LoadUploadedFile(self):
         super().__init__()
         path = os.path.dirname(os.path.realpath(__file__))+"/../uploads"

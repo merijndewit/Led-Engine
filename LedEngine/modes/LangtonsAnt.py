@@ -18,6 +18,8 @@ class LangtonsAnt(LedPanel):
         self.ANTDOWN = 2
         self.ANTLEFT = 3
     
+    def super_init(self):
+        super().__init__()
 
     def Start(self):
         super().__init__()

@@ -7,6 +7,9 @@ class DrawingCanvas(LedPanel):
     def __init__(self) -> None:
         super().__init__()
 
+    def super_init(self):
+        super().__init__()
+
     def setPixel(self, pixel):
         x = pixel.get("X")
         y = pixel.get("Y")

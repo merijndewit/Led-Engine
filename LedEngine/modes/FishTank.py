@@ -16,7 +16,9 @@ class FishTank(LedPanel):
         self.food_respawn_time = 5
         self.fish_count = 3
 
-    
+    def super_init(self):
+        super().__init__()
+
     def Start(self):
         super().__init__()
         #FishTank.fish_tank_grid = LedPanel.make2DArray(LedPanel.ledPanelsPixelWidth, LedPanel.ledPanelsPixelHeight)

@@ -13,6 +13,9 @@ class GameOfLife(LedPanel):
         self.cols = self.ledPanelsPixelWidth
         self.rows = self.ledPanelsPixelHeight
 
+    def super_init(self):
+        super().__init__()
+
     def Start(self):
         super().__init__()
         self.cols = self.ledPanelsPixelWidth

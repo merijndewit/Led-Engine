@@ -13,6 +13,9 @@ class DisplayGif(LedPanel):
         super().__init__()
         self.gifUrl = ""
 
+    def super_init(self):
+        super().__init__()
+
     def UpdategifUrl(self, value):
         self.gifUrl = str(value)
 

@@ -11,6 +11,9 @@ class Stars(LedStrip):
         super().__init__()
         self.starsPerSecond = 1
 
+    def super_init(self):
+        super().__init__()
+
     class Star:
         step = 1
         def __init__(self): #constructor

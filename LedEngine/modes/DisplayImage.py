@@ -12,9 +12,13 @@ class DisplayImage(LedPanel):
     def __init__(self):
         super().__init__()
         self.url = ""
+
+    def super_init(self):
+        super().__init__()
         
     def UpdateUrl(self, value):
         self.url = str(value)
+        print(self.url)
 
     def LoadUploadedFile(self):
         super().__init__()
@@ -67,7 +71,7 @@ class DisplayImage(LedPanel):
             self.DownscaleImage(path, "tmp.png")
             return self.DisplayImageFile(imageName)
 
-        print("no url entered")
+        print("no url entered", self.url)
         return
 
 

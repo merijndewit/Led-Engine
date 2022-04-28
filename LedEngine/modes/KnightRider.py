@@ -11,6 +11,9 @@ class KnightRider(LedStrip):
         self.knightRiderFade = 100
         self.knightRiderSpeed = 1
 
+    def super_init(self):
+        super().__init__()
+
     def setKnightRiderFade(self, value):
         self.knightRiderFade = int(value)
 

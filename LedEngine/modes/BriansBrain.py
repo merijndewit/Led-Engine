@@ -13,6 +13,9 @@ class BriansBrain(LedPanel):
         self.cols = 0
         self.rows = 0
 
+    def super_init(self):
+        super().__init__()
+
     def Start(self):
         super().__init__()
         self.cols = self.ledPanelsPixelWidth

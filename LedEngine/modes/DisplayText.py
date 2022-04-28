@@ -14,6 +14,9 @@ class DisplayText(LedPanel):
         self.textFontSize = 9
         self.removeTopPixels = 0
 
+    def super_init(self):
+        super().__init__()
+
     def SetDisplayText(self, value):
         self.textToDisplay = value
 

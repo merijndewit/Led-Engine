@@ -9,6 +9,9 @@ class Fire(LedStrip):
     def __init__(self) -> None:
         super().__init__()
 
+    def super_init(self):
+        super().__init__()
+
     def Start(self):
         super().__init__()
         pixelList = []
