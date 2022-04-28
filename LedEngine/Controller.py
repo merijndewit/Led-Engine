@@ -217,37 +217,37 @@ def CheckDirectories():
         
 def re_init():
     global rainbow
-    rainbow = Rainbow()
+    rainbow.super_init()
     global fire
-    fire = Fire()
+    fire.super_init()
     global sine_wave
-    sine_wave = SineWave()
+    sine_wave.super_init()
     global stars
-    stars = Stars()
+    stars.super_init()
     global knight_rider
-    knight_rider = KnightRider()
+    knight_rider.super_init()
     global display_text
-    display_text = DisplayText()
+    display_text.super_init()
     global game_of_life
-    game_of_life = GameOfLife()
+    game_of_life.super_init()
     global langtons_ant
-    langtons_ant = LangtonsAnt()
+    langtons_ant.super_init()
     global brians_brain
-    brians_brain = BriansBrain()
+    brians_brain.super_init()
     global wire_world
-    wire_world = WireWorld()
+    wire_world.super_init()
     global drawing_canvas
-    drawing_canvas = DrawingCanvas()
+    drawing_canvas.super_init()
     global display_image
-    display_image = DisplayImage()
+    display_image.super_init()
     global display_gif
-    display_gif = DisplayGif()
+    display_gif.super_init()
     global display_image_file
-    display_image_file = DisplayImageFile()
+    display_image_file.super_init()
     global static_color
-    static_color = StaticColor()
+    static_color.super_init()
     global fish_tank
-    fish_tank = FishTank()
+    fish_tank.super_init()
     
 def reload_settings(aDict, addr):
     PixelManager.init()
