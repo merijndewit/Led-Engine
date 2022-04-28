@@ -13,7 +13,9 @@ from pixel_manager import PixelManager
 import color
 
 #LedEngine Scripts
-sys.path.append(os. getcwd() + '/modes/')
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/modes/')
+print(os.path.dirname(os.path.realpath(__file__)) + '/modes/')
+
 
 from Rainbow import Rainbow
 from Fire import Fire
