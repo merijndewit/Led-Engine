@@ -1,10 +1,17 @@
-if [ -d "/Led-Engine/LedEngine/" ]
-then
-    sudo python3 /Led-Engine/LedEngine/Controller.py &
-    node /Led-Engine/LedEngine/webserver.js
-elif [ -d "/home/pi/Led-Engine/LedEngine/" ]
-then
-    sudo python3 /home/pi/Led-Engine/LedEngine/Controller.py &
-    node /home/pi/Led-Engine/LedEngine/webserver.js
-fi
+function cleanup {
+  echo "Stopping processes"
+  sudo pkill -f Controller.py
+  sudo pkill -f webserver.js
+
+}
+
+trap cleanup EXIT
+
+dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+
+cd $dir
+
+sudo python3 Controller.py & 
+node webserver.js
+
 
