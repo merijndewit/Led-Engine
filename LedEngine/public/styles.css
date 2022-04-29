@@ -1,55 +1,73 @@
+:root {
+  --background-color:#3a3b45;
+  --background-color2:#2e2e36;
+  --text-color:#FFDAC9;
+  --shadow-brightness-slider:#FFB87A;
+  --highlight-brightness-slider:#61462e;
+
+  --color-0:#3a3b45;
+  --color-1:#FFB87A;
+  --color-2:#FF8099;
+  --color-3:#FFDAC9;
+}
+
 body {
   /*Banner font: hieragino maru gothic proN*/
     font-family: Helvetica;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--background-color);
     /*background: url("img/circuit.png") repeat; this is for a background*/
   }
 h1{
-  color: white;
+  color: var(--text-color);
+  
 }
 b{
-  color: white;
+  color: var(--text-color);
 }
 strong{
-  color: white;
+  color: var(--text-color);
 }
 small{
-  color: white;
+  color: var(--text-color);
 }
 
 input{
-  color:white
+  color: var(--text-color)
+}
+
+img {
+  width: 145px;
+  height: 40px;
+  padding-top: 20px;
 }
 
 .StaticColor{
-  color: white;
+  color: var(--text-color);
 }
 
+
 .range-slider {
+  overflow: hidden;
+  width: 100%;
   -webkit-appearance: none;
-  width: 99%;
-  height: 5px;
-  border-radius: 5px;  
-  background: #d3d3d3;
+  background-color: var(--highlight-brightness-slider);
+}
+
+.range-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  -webkit-appearance: none;
+  color: var(--shadow-brightness-slider);
+  margin-top: -1px;
 }
 
 .range-slider::-webkit-slider-thumb {
+  width: 20px;
   -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
-  background: #333333;
-  cursor: pointer;
+  height: 12px;
+  background: #FF8099;
+  box-shadow: calc(-1 * 100vh) 0 0 100vh var(--shadow-brightness-slider);
 }
 
-.range-slider::-moz-range-thumb {
-  width: 15px;
-  height: 5px;
-  border-radius: 5px;
-  background: #04AA6D;
-  cursor: pointer;
-}
 
 .mode-slider {
   -webkit-appearance: none;
@@ -86,28 +104,25 @@ input{
 
 ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: rgb(34, 34, 34);
-    border-radius: 15px;
+    background-color: var(--background-color);
+    width: auto;
+    float: right;
 }
   
 li {
-    float: left;
+    float: right;
 }
   
 li a {
     display: block;
-    color: white;
+    color: var(--text-color);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
   
-  /* Change the link color to #111 (black) on hover */
 li a:hover {
-    background-color: #111;
+    background-color: #999999;
 }
 
 p {
@@ -121,16 +136,26 @@ input{
 }
 
 button {
-  background-color: rgb(40, 40, 40); 
-  color: white;
+  background-color: var(--color-2); 
+  color: var(--text-color);
   border: 1px solid #3d3d3d;
-  border-radius: 0px;
+  border-radius: 5px;
   width: 100%;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 button:hover {
   background-color: #3d3d3d;
-  color: white;
+  color: var(--color-3);
+}
+
+input[type=text] {
+  float: right;
+  border-radius: 5px;
+  width: 50px;
+  background-color: var(--background-color2);
+  border: 3px solid var(--background-color);
 }
 
 .color0 {
@@ -138,48 +163,86 @@ button:hover {
   width: 25px;
   height: 25px;
   border-radius: 5px;
+
 }
 .color1 {
   background-color: #D81159;
   width: 25px;
   height: 25px;
   border-radius: 5px;
+
 }
 .color2 {
   background-color: #8F2D56;
   width: 25px;
   height: 25px;
   border-radius: 5px;
+
 }
 .color3 {
   background-color: #218380;
   width: 25px;
   height: 25px;
   border-radius: 5px;
+
 }
 .color4 {
   background-color: #73D2DE;
   width: 25px;
   height: 25px;
   border-radius: 5px;
+  
+}
+
+.color-picker { 
+  appearance: none;
+  border: 0;
+  padding: 0;
+  border-radius: 5px;
+  height: 23px;
+  width: 23px;
+  position: relative; 
+  top: -3px;
+  background-color: var(--color-2);
+}
+
+.colors {
+  align-items: center;
+}
+
+.tool-container {
+  width: 30px;
+  float: right;
+}
+
+.canvas-tool {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  float: right;
+  margin: 2px;
 }
 
 .Panel {
-  max-width: 400px;
-  background-color: rgb(25, 25, 25);
-  border: 3px solid rgb(42, 42, 42);
+  background-color: var(--background-color2);
+  border: 10px solid var(--background-color2);
   border-radius: 5px;
+  display: inline-block;
+  margin: 10px;
+  font-weight: bold;
 }
 
 .stopstart {
-  width: 49%;
+  width: 40%;
 }
 
 .Header-Panel {
-  background-color: rgb(48, 48, 48);
   padding-bottom: 6px;
   padding-top: 6px;
   text-align: center; 
+  text-decoration: underline;
+  text-decoration-color: var(--color-1);
+  text-underline-offset: 5px;
 }
 
 .dropdown {
@@ -206,4 +269,11 @@ button:hover {
   text-align: center;
   width: 50px;
   height: 50px;
+}
+
+canvas {
+  border: 3px solid var(--background-color);
+  border-radius: 5px;
+  position: relative; 
+  top: -10px;
 }
