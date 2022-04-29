@@ -32,7 +32,7 @@ sudo apt-get install libopenjp2-7
 sudo apt install libtiff5
 
 echo "Successfully installed LED-Engine!"
-echo "Type 'sh /Led-Engine/LedEngine/startLedEngine.sh' to start LED-Engine."
+echo "Type './Led-Engine/LedEngine/startLedEngine.sh' to start LED-Engine."
 echo "Enjoy using LED-Engine!"
 
 
